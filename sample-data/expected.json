@@ -1,0 +1,297 @@
+{
+  "2026-07-26": {
+    "exercise_minutes": 1,
+    "sleep_hours": 8.55,
+    "water_liters": 1.855
+  },
+  "2026-07-27": {
+    "exercise_minutes": 55,
+    "sleep_hours": 7.92,
+    "water_liters": 2.08
+  },
+  "2026-07-28": {
+    "exercise_minutes": 4,
+    "sleep_hours": 6.48,
+    "water_liters": 2.24
+  },
+  "2026-07-29": {
+    "exercise_minutes": 59,
+    "sleep_hours": null,
+    "water_liters": 1.5
+  },
+  "2026-07-30": {
+    "exercise_minutes": 20,
+    "sleep_hours": 7.67,
+    "water_liters": null
+  },
+  "2026-07-31": {
+    "exercise_minutes": 65,
+    "sleep_hours": null,
+    "water_liters": 2.17
+  },
+  "2026-08-01": {
+    "exercise_minutes": 6,
+    "sleep_hours": 7.07,
+    "water_liters": 1.62
+  },
+  "2026-08-02": {
+    "exercise_minutes": 3,
+    "sleep_hours": 6.65,
+    "water_liters": null
+  },
+  "2026-08-03": {
+    "exercise_minutes": 63,
+    "sleep_hours": 6.75,
+    "water_liters": 1.855
+  },
+  "2026-08-04": {
+    "exercise_minutes": 41,
+    "sleep_hours": 6.93,
+    "water_liters": 2.725
+  },
+  "2026-08-05": {
+    "exercise_minutes": 71,
+    "sleep_hours": 6.75,
+    "water_liters": 3.355
+  },
+  "2026-08-06": {
+    "exercise_minutes": 42,
+    "sleep_hours": null,
+    "water_liters": 1.71
+  },
+  "2026-08-07": {
+    "exercise_minutes": 52,
+    "sleep_hours": 7.98,
+    "water_liters": 2.79
+  },
+  "2026-08-08": {
+    "exercise_minutes": 2,
+    "sleep_hours": 8.35,
+    "water_liters": null
+  },
+  "2026-08-09": {
+    "exercise_minutes": 57,
+    "sleep_hours": 8.32,
+    "water_liters": 2.435
+  },
+  "2026-08-10": {
+    "exercise_minutes": 4,
+    "sleep_hours": 7.52,
+    "water_liters": 1.015
+  },
+  "2026-08-11": {
+    "exercise_minutes": null,
+    "sleep_hours": 7.68,
+    "water_liters": null
+  },
+  "2026-08-12": {
+    "exercise_minutes": 36,
+    "sleep_hours": 7,
+    "water_liters": 2.015
+  },
+  "2026-08-13": {
+    "exercise_minutes": 66,
+    "sleep_hours": 7.97,
+    "water_liters": 1.54
+  },
+  "2026-08-14": {
+    "exercise_minutes": 31,
+    "sleep_hours": 7.67,
+    "water_liters": null
+  },
+  "2026-08-15": {
+    "exercise_minutes": null,
+    "sleep_hours": 8.48,
+    "water_liters": null
+  },
+  "2026-08-16": {
+    "exercise_minutes": null,
+    "sleep_hours": null,
+    "water_liters": 1.015
+  },
+  "2026-08-17": {
+    "exercise_minutes": null,
+    "sleep_hours": 5.88,
+    "water_liters": 2.21
+  },
+  "2026-08-18": {
+    "exercise_minutes": null,
+    "sleep_hours": 6.42,
+    "water_liters": 1.99
+  },
+  "2026-08-19": {
+    "exercise_minutes": 68,
+    "sleep_hours": 6.18,
+    "water_liters": 0.91
+  },
+  "2026-08-20": {
+    "exercise_minutes": 6,
+    "sleep_hours": 7.37,
+    "water_liters": 1.99
+  },
+  "2026-08-21": {
+    "exercise_minutes": 47,
+    "sleep_hours": null,
+    "water_liters": null
+  },
+  "2026-08-22": {
+    "exercise_minutes": 27,
+    "sleep_hours": null,
+    "water_liters": 3.265
+  },
+  "2026-08-23": {
+    "exercise_minutes": 1,
+    "sleep_hours": 8.13,
+    "water_liters": 1.87
+  },
+  "2026-08-24": {
+    "exercise_minutes": 20,
+    "sleep_hours": 7.08,
+    "water_liters": 2.83
+  },
+  "2026-08-25": {
+    "exercise_minutes": 55,
+    "sleep_hours": 5.53,
+    "water_liters": 1.37
+  },
+  "2026-08-26": {
+    "exercise_minutes": 54,
+    "sleep_hours": 5.9,
+    "water_liters": 1.515
+  },
+  "2026-08-27": {
+    "exercise_minutes": 44,
+    "sleep_hours": 5.52,
+    "water_liters": null
+  },
+  "2026-08-28": {
+    "exercise_minutes": 26,
+    "sleep_hours": null,
+    "water_liters": 2.54
+  },
+  "2026-08-29": {
+    "exercise_minutes": 44,
+    "sleep_hours": 6.52,
+    "water_liters": 1.685
+  },
+  "2026-08-30": {
+    "exercise_minutes": 57,
+    "sleep_hours": 8.63,
+    "water_liters": 1.355
+  },
+  "2026-08-31": {
+    "exercise_minutes": 64,
+    "sleep_hours": 5.88,
+    "water_liters": 2.2
+  },
+  "2026-09-01": {
+    "exercise_minutes": 20,
+    "sleep_hours": 5.83,
+    "water_liters": 2.24
+  },
+  "2026-09-02": {
+    "exercise_minutes": 36,
+    "sleep_hours": 5.52,
+    "water_liters": null
+  },
+  "2026-09-03": {
+    "exercise_minutes": 63,
+    "sleep_hours": 6.6,
+    "water_liters": 2.08
+  },
+  "2026-09-04": {
+    "exercise_minutes": 31,
+    "sleep_hours": 6.83,
+    "water_liters": 0.83
+  },
+  "2026-09-05": {
+    "exercise_minutes": 69,
+    "sleep_hours": 7.27,
+    "water_liters": null
+  },
+  "2026-09-06": {
+    "exercise_minutes": 2,
+    "sleep_hours": 8.22,
+    "water_liters": 2.515
+  },
+  "2026-09-07": {
+    "exercise_minutes": 71,
+    "sleep_hours": 6.43,
+    "water_liters": 1.99
+  },
+  "2026-09-08": {
+    "exercise_minutes": 35,
+    "sleep_hours": null,
+    "water_liters": 2.515
+  },
+  "2026-09-09": {
+    "exercise_minutes": 64,
+    "sleep_hours": 7.92,
+    "water_liters": null
+  },
+  "2026-09-10": {
+    "exercise_minutes": 5,
+    "sleep_hours": 6.95,
+    "water_liters": 2.79
+  },
+  "2026-09-11": {
+    "exercise_minutes": 47,
+    "sleep_hours": null,
+    "water_liters": 1.105
+  },
+  "2026-09-12": {
+    "exercise_minutes": 52,
+    "sleep_hours": 7.67,
+    "water_liters": 2.04
+  },
+  "2026-09-13": {
+    "exercise_minutes": 46,
+    "sleep_hours": null,
+    "water_liters": 1.845
+  },
+  "2026-09-15": {
+    "exercise_minutes": 5,
+    "sleep_hours": 7.92,
+    "water_liters": 2.62
+  },
+  "2026-09-16": {
+    "exercise_minutes": 4,
+    "sleep_hours": 5.52,
+    "water_liters": 1.54
+  },
+  "2026-09-17": {
+    "exercise_minutes": 70,
+    "sleep_hours": 5.88,
+    "water_liters": 3.25
+  },
+  "2026-09-18": {
+    "exercise_minutes": 1,
+    "sleep_hours": 6.9,
+    "water_liters": 2.685
+  },
+  "2026-09-19": {
+    "exercise_minutes": null,
+    "sleep_hours": 8.5,
+    "water_liters": 2.66
+  },
+  "2026-09-20": {
+    "exercise_minutes": 37,
+    "sleep_hours": null,
+    "water_liters": 1.355
+  },
+  "2026-09-21": {
+    "exercise_minutes": 24,
+    "sleep_hours": 6.43,
+    "water_liters": 2.25
+  },
+  "2026-09-22": {
+    "exercise_minutes": 17,
+    "sleep_hours": null,
+    "water_liters": 2.015
+  },
+  "2026-09-23": {
+    "exercise_minutes": 40,
+    "sleep_hours": 6.37,
+    "water_liters": 1.935
+  }
+}

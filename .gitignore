@@ -1,0 +1,11 @@
+# Dependencies and build output (recreated by npm install / npm run build)
+node_modules
+dist
+*.tsbuildinfo
+
+# Local secrets and settings: never commit
+.env
+.env.local
+
+# macOS
+.DS_Store
