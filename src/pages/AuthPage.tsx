@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import CityPicker from '../components/CityPicker';
+import type { HomeCity } from '../lib/location';
 
 type Mode = 'login' | 'signup';
 
@@ -18,6 +20,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
   const from = (location.state as { from?: string } | null)?.from ?? '/dashboard';
 
   const [fullName, setFullName] = useState('');
+  const [home, setHome] = useState<(HomeCity & { label: string }) | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -42,7 +45,16 @@ export default function AuthPage({ mode }: { mode: Mode }) {
       email,
       password,
       options: {
-        data: { full_name: fullName.trim() },
+        // The sign-up trigger copies these into profiles; the city is optional.
+        data: {
+          full_name: fullName.trim(),
+          ...(home && {
+            home_city: home.city,
+            home_country_code: home.countryCode,
+            home_latitude: home.latitude,
+            home_longitude: home.longitude,
+          }),
+        },
         emailRedirectTo: `${window.location.origin}/dashboard`,
       },
     });
@@ -91,6 +103,26 @@ export default function AuthPage({ mode }: { mode: Mode }) {
                 />
               </label>
             )}
+
+            {mode === 'signup' &&
+              (home ? (
+                <div className="text-sm">
+                  <span className="font-medium">Home city</span>
+                  <p className="mt-1.5 flex items-center justify-between rounded-md border border-line bg-white px-3 py-2.5">
+                    {home.label}
+                    <button type="button" className="text-spruce/70 underline underline-offset-4" onClick={() => setHome(null)}>
+                      Change
+                    </button>
+                  </p>
+                </div>
+              ) : (
+                <div>
+                  <CityPicker label="Home city (optional)" onPick={setHome} />
+                  <span className="mt-1.5 block text-xs text-spruce/60">
+                    Used for local weather on days you do not share your location. You can add it later in Settings.
+                  </span>
+                </div>
+              ))}
 
             <label className="block text-sm font-medium">
               Email
