@@ -220,7 +220,7 @@ What happened:
 2. Miah created the new project and ran the SQL of `0001_init.sql` and `0002_goals_one_per_type.sql` by hand in the SQL Editor. Because they were not run through the CLI or `apply_migration`, the new project's migration history is empty even though the schema is in place.
 3. Claude Code checked the result in the dashboard: 3 tables with RLS, 11 policies, `on_auth_user_created` on `auth.users` calling `handle_new_user`, and the goals indexes (`goals_one_per_type` present, `goals_user_id_idx` gone). These match the old project.
 4. The Supabase connector was re-authorized for OlmstedDataPlayground only, and `.env.local` now points at the new project. The new publishable key works; the old project's key is rejected by the new project (control).
-5. The security advisor on the new project reports 2 warnings, both about `public.rls_auto_enable()`, a function Supabase adds to new projects. `anon` and `authenticated` can call it through `/rest/v1/rpc/rls_auto_enable`. Not yet fixed; the likely fix is a new migration that revokes `execute` from those roles.
+5. The security advisor on the new project reports 2 warnings, both about `public.rls_auto_enable()`, a function Supabase adds to new projects. `anon` and `authenticated` can call it through `/rest/v1/rpc/rls_auto_enable`. Fixed the same day by migration `0003_revoke_rls_auto_enable_execute.sql`; the advisor now reports 0 findings (see docs/schema-log.md).
 
 Still open:
 

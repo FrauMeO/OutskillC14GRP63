@@ -67,6 +67,22 @@ No new tables or columns. Changes to `public.goals`:
 
 Prompt 3 has not been built, so no migration exists for it yet. The existing `habit_logs` table already supports one row per user per day with upsert. The Prompt 3 text (see docs/handover.md) also asks for steps, multiple feelings, weather, and biometrics, which will need new columns or tables in a future migration.
 
+## Project move: 0003_revoke_rls_auto_enable_execute (2026-09-25)
+
+Applied to the new project `gzsawayrorlcjmpssalc` through the Supabase connector as migration `revoke_rls_auto_enable_execute`.
+
+### What changed
+- Revoked `execute` on `public.rls_auto_enable()` from `public`, `anon`, and `authenticated`.
+
+### Why
+- Supabase adds this `security definer` function to new projects for its `ensure_rls` event trigger. In the `public` schema it was callable through `/rest/v1/rpc/rls_auto_enable`, which the security advisor flagged twice (lints 0028 and 0029).
+- No app code, table, or type changes, so `database.types.ts` and `goals.ts` are unchanged.
+
+### Verified
+- Before: `anon` and `authenticated` could execute it (control that the check can see the grant). After: both false; `postgres` still true.
+- Rolled-back test: a new probe table inside a transaction that ends in `raise exception` still had RLS switched on, so `ensure_rls` still works.
+- Security advisor: 2 warnings before, 0 after.
+
 ## Not schema, but touches the data
 
 - `sample-data/seed_habit_logs.sql` inserts 59 days of sample rows for `demo@healthapp.test` using `on conflict (user_id, log_date) do update`. It has never been run.
