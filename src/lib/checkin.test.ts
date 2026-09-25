@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { EMPTY_FORM, buildLogFields, formFromRow, hasAnyValue, parseOptionalNumber } from './checkin';
+import { EMPTY_FORM, FEELINGS, RATING_SCALES, buildLogFields, formFromRow, hasAnyValue, parseOptionalNumber } from './checkin';
 
 describe('parseOptionalNumber', () => {
   it('treats blank as not logged (null)', () => {
@@ -54,6 +54,16 @@ describe('buildLogFields', () => {
     const { fields, errors } = buildLogFields({ ...EMPTY_FORM, sleep: '30', water: 'x' });
     expect(fields).toBeNull();
     expect(errors).toHaveLength(2);
+  });
+});
+
+describe('labels', () => {
+  it('no feeling word repeats a rating level word', () => {
+    const levelWords = new Set(RATING_SCALES.flatMap((s) => s.levels.map((l) => l.toLowerCase())));
+    const clashes = FEELINGS.filter((f) => levelWords.has(f.label.toLowerCase()));
+    expect(clashes).toEqual([]);
+    // Control: the check does catch a clash when one exists.
+    expect(levelWords.has('happy')).toBe(true);
   });
 });
 

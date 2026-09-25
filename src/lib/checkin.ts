@@ -22,12 +22,14 @@ export const RATING_SCALES: RatingScale[] = [
   { key: 'stress', label: 'Stress', levels: ['Very low', 'Low', 'Moderate', 'High', 'Very high'] },
 ];
 
+// `value` is what is stored (fixed by migration 0004). `label` is a synonym shown next to the
+// face, chosen so no word repeats a Mood, Energy or Stress level label.
 export const FEELINGS = [
-  { value: 'angry', label: 'Angry', face: '😠' },
-  { value: 'sad', label: 'Sad', face: '😢' },
-  { value: 'stable', label: 'Stable', face: '😐' },
-  { value: 'happy', label: 'Happy', face: '🙂' },
-  { value: 'energized', label: 'Energized', face: '⚡' },
+  { value: 'angry', label: 'Irritated', face: '😠' },
+  { value: 'sad', label: 'Down', face: '😢' },
+  { value: 'stable', label: 'Steady', face: '😐' },
+  { value: 'happy', label: 'Cheerful', face: '🙂' },
+  { value: 'energized', label: 'Lively', face: '⚡' },
 ] as const;
 
 export type Feeling = (typeof FEELINGS)[number]['value'];
