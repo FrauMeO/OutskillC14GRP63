@@ -175,14 +175,14 @@ Not tested:
 |---|---|
 | `supabase/migrations/0001_init.sql` | Applied on 2026-09-24 as migration `init_health_schema`. The file keeps its comments; the applied copy had comments removed. The SQL statements are identical. |
 | `supabase/migrations/0002_goals_one_per_type.sql` | Applied as migration `goals_one_per_type` after a duplicate check found an empty table. |
-| `sample-data/seed_habit_logs.sql` | **Never run.** It needs `demo@healthapp.test` to exist first, and that account was never created. |
+| `sample-data/seed_habit_logs.sql` | Never run on the old project. Run on the new project on 2026-09-25 for `msolmsted+demo@gmail.com` (section 10). |
 | `supabase/tests/*.sql` | Run once each, then rolled back on purpose. They are tests, not migrations. |
 
 Both "applied" statements come from the chat transcript, where Claude applied them through the Supabase connector and then verified the result. When building this package, a fresh check of the live migration list was not approved, so the live database was not re-read today. On 2026-09-25 Claude Code ran `list_migrations` on that project and confirmed both. The app has since moved to a new project; see section 10.
 
 ## 8. Known bugs and risks
 
-1. **The demo account cannot confirm its email.** `demo@healthapp.test` cannot receive mail, and email confirmation is on by default. Either turn off confirmation for testing (Authentication > Sign In / Providers > Email) or have Claude Code mark the demo user confirmed in the database.
+1. ~~**The demo account cannot confirm its email.**~~ Resolved 2026-09-25: Supabase rejects `demo@healthapp.test` as invalid (the `.test` domain cannot receive mail), so the demo account is `msolmsted+demo@gmail.com`, confirmed through the normal email link. Email confirmation stays on.
 2. **Authentication URL settings are not done.** Add `http://localhost:5173`, and later the Vercel URL, under Authentication > URL Configuration. Without this, confirmation links point to the wrong place.
 3. **Default water target differs between screens.** The dashboard falls back to 2 L when no goal exists; the Goals form suggests 2.5 L. Both are intended defaults, but the numbers differ.
 4. **Environment file name.** The error message in `src/lib/supabase.ts` says to copy `.env.example` to `.env`. This handover uses `.env.local`. Vite reads both, and both are git-ignored, so either works.
@@ -195,8 +195,8 @@ Both "applied" statements come from the chat transcript, where Claude applied th
 ## 9. Unfinished work, in suggested order
 
 1. ~~Confirm migrations 0001 and 0002 on the live project.~~ Done on 2026-09-25, then the app moved to a new project (section 10).
-2. Finish Supabase Authentication settings (URL configuration, email confirmation choice).
-3. Sign up `demo@healthapp.test`, confirm it, run `sample-data/seed_habit_logs.sql`, and check that 59 rows exist.
+2. ~~Finish Supabase Authentication settings.~~ Done 2026-09-25 on the new project: Site URL `http://localhost:5173`, redirect URL `http://localhost:5173/**`, email confirmation on. Add the Vercel URL once deployed.
+3. ~~Sign up the demo account, confirm it, run `sample-data/seed_habit_logs.sql`, and check that 59 rows exist.~~ Done 2026-09-25 on the new project (section 10).
 4. Test the Goals page end to end while logged in: set, replace, edit, delete, and watch the dashboard change.
 5. Build Prompt 3 (the Log Habits form) from the text in section 3. First decide with the team what "Weather w Insights" and "what biometrics can yield" mean, then add a migration for steps, feelings, and any agreed weather or biometric fields.
 6. Build Prompt 4 from the text in section 3. The chat had confirmed that recharts 3.10.1 supports React 19 and also needs `react-is`; neither was installed.
@@ -225,5 +225,11 @@ What happened:
 Still open:
 
 - Delete the old project `dfjkeuqycklxnvitmjby` from the Impact Arts account once the new one is confirmed working. Only Miah can do this.
-- Supabase Authentication settings (section 9, step 2) must be done on the new project.
+- Supabase Authentication settings: done (section 9, step 2).
+
+Demo account and sample data (2026-09-25):
+
+- `demo@healthapp.test` was rejected by Supabase as an invalid address. The demo account is `msolmsted+demo@gmail.com` (profile "Demo User"), confirmed through the normal email link. The profile row was created by the `on_auth_user_created` trigger.
+- `scripts/import-apple-health.mjs` now defaults to that email, and `sample-data/seed_habit_logs.sql` was regenerated; only the 4 email lines changed. `npm run test:import` still passes (59 days, control CAUGHT).
+- The seed was run through the Supabase connector: 59 rows from 2026-07-26 to 2026-09-23, with exercise on 53 days, sleep on 47 and water on 48, matching the verifier.
 

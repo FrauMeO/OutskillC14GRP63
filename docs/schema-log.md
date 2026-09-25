@@ -85,4 +85,4 @@ Applied to the new project `gzsawayrorlcjmpssalc` through the Supabase connector
 
 ## Not schema, but touches the data
 
-- `sample-data/seed_habit_logs.sql` inserts 59 days of sample rows for `demo@healthapp.test` using `on conflict (user_id, log_date) do update`. It has never been run.
+- `sample-data/seed_habit_logs.sql` inserts 59 days of sample rows for `msolmsted+demo@gmail.com` using `on conflict (user_id, log_date) do update`. It was run on the new project on 2026-09-25 (59 rows).

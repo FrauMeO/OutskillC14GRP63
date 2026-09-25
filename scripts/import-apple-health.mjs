@@ -16,7 +16,7 @@ import { createReadStream, writeFileSync } from 'node:fs';
 import { createInterface } from 'node:readline';
 
 const input = process.argv[2] ?? new URL('../sample-data/apple_health_export/export.xml', import.meta.url).pathname;
-const email = process.argv[3] ?? 'demo@healthapp.test';
+const email = process.argv[3] ?? 'msolmsted+demo@gmail.com';
 const OUT = new URL('../sample-data/', import.meta.url);
 
 const ASLEEP = new Set(['AsleepCore', 'AsleepDeep', 'AsleepREM', 'AsleepUnspecified', 'Asleep']);

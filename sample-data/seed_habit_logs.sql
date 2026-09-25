@@ -1,8 +1,8 @@
 -- Seed habit_logs for the demo account from the sample Apple Health export.
--- 1) Sign up demo@healthapp.test in the app first.  2) Run this in the Supabase SQL editor. Safe to re-run.
+-- 1) Sign up msolmsted+demo@gmail.com in the app first.  2) Run this in the Supabase SQL editor. Safe to re-run.
 do $$ begin
-  if not exists (select 1 from auth.users where email = 'demo@healthapp.test') then
-    raise exception 'No user demo@healthapp.test. Sign up in the app first, then re-run.';
+  if not exists (select 1 from auth.users where email = 'msolmsted+demo@gmail.com') then
+    raise exception 'No user msolmsted+demo@gmail.com. Sign up in the app first, then re-run.';
   end if;
 end $$;
 
@@ -70,7 +70,7 @@ cross join (values
   ('2026-09-22', 17::int, null::numeric, 2.015::numeric),
   ('2026-09-23', 40::int, 6.37::numeric, 1.935::numeric)
 ) as v(log_date, ex, sleep, water)
-where u.email = 'demo@healthapp.test'
+where u.email = 'msolmsted+demo@gmail.com'
 on conflict (user_id, log_date) do update
   set exercise_minutes = excluded.exercise_minutes,
       sleep_hours      = excluded.sleep_hours,
