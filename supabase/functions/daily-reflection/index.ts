@@ -64,6 +64,7 @@ Deno.serve(async (req) => {
       fallbacks: 'default',
     } as unknown as Anthropic.Beta.MessageCreateParamsNonStreaming);
 
+    console.log('daily-reflection: reply from', response.model, 'stop', response.stop_reason);
     if (response.stop_reason === 'refusal') return json({ text: FALLBACK_MESSAGE, source: 'fixed', note: 'declined' });
     const raw = response.content
       .filter((b): b is Anthropic.Beta.BetaTextBlock => b.type === 'text')
@@ -73,6 +74,8 @@ Deno.serve(async (req) => {
     return json(text ? { text, source: 'ai', model: response.model } : { text: FALLBACK_MESSAGE, source: 'fixed', note: 'filtered' });
   } catch (err) {
     const status = err instanceof Anthropic.APIError ? err.status : 'network';
+    // Logs only the error, never the person's data.
+    console.error('daily-reflection: Claude call failed', status, err instanceof Error ? err.message : String(err));
     return json({ text: FALLBACK_MESSAGE, source: 'fixed', note: `ai-unavailable-${status}` });
   }
 });
