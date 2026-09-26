@@ -3,6 +3,7 @@
 // Uses Claude through the official Anthropic SDK. Secrets, set in Supabase (never in the app or repo):
 //   ANTHROPIC_API_KEY  (required)
 //   ANTHROPIC_MODEL    (optional, default claude-opus-5-5)
+//   ANTHROPIC_WORKSPACE_ID (optional; defaults to the project workspace)
 // Nothing is stored. Only today's logged values are sent; hard days get a fixed message instead.
 import Anthropic from 'npm:@anthropic-ai/sdk';
 import { createClient } from 'npm:@supabase/supabase-js@2';
@@ -54,7 +55,14 @@ Deno.serve(async (req) => {
   if (!apiKey) return json({ error: 'The reflection service is not set up yet.' }, 503);
   const model = Deno.env.get('ANTHROPIC_MODEL') ?? 'claude-opus-5-5';
 
-  const client = new Anthropic({ apiKey, timeout: 25_000, maxRetries: 1 });
+  // The key is not scoped to a workspace, so each request names one (an ID, not a secret).
+  const workspace = Deno.env.get('ANTHROPIC_WORKSPACE_ID') ?? 'wrkspc_01BCPNrrVJvGvupRdSrw17kG';
+  const client = new Anthropic({
+    apiKey,
+    timeout: 25_000,
+    maxRetries: 1,
+    defaultHeaders: { 'anthropic-workspace-id': workspace },
+  });
   try {
     const response = await client.beta.messages.create({
       model,
