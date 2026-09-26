@@ -10,6 +10,7 @@ import { FEELINGS, RATING_SCALES } from '../lib/checkin';
 import type { GoalConfig } from '../lib/goals';
 import { OFFER_TEXT, checkinState, type DayRow } from '../lib/reflection';
 import { PILLARS, PILLAR_ORDER } from '../lib/pillars';
+import AiReflectionCard from '../features/aiReflection/AiReflectionCard';
 import {
   CATEGORY_FIELDS,
   CATEGORY_LABELS,
@@ -297,6 +298,8 @@ export default function Dashboard() {
         </section>
       )}
       <StreakBanner streak={streak} />
+      {/* TEMPORARY (hackathon): AI reflection on today. Remove with src/features/aiReflection. */}
+      <AiReflectionCard date={todayIso} hasEntry={Boolean(today)} />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card title={PILLARS.nutrition.name} subtitle={PILLARS.nutrition.subtitle} accent={COLORS.nutrition}>
