@@ -1,4 +1,4 @@
-// Gentle encouragement shown around the app: after saving a day, under the streak, and on
+// Gentle encouragement shown around the app: after saving a day, under the weekly rhythm, and on
 // reflection results. The voice of the whole product (CLAUDE.md, Product principles): kind,
 // patient, never judging, never comparing. The first three lines are Miah's own words
 // (2026-09-26); the rest follow them. Never shown in place of crisis resources.

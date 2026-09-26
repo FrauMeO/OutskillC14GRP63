@@ -50,7 +50,7 @@ export function goalsIn(category: GoalConfig['category']): GoalConfig[] {
   return GOAL_TYPES.filter((g) => g.category === category);
 }
 
-// ---------- Categories and the logging streak ----------
+// ---------- Categories ----------
 
 export type Category = 'exercise' | 'sleep' | 'nutrition' | 'wellbeing';
 
@@ -83,27 +83,6 @@ export function addDays(iso: string, n: number): string {
   return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
 }
 
-export type Streak = { days: number; endsOn: string | null; todayComplete: boolean; todayMissing: Category[] };
-
-// Consecutive days, ending today or yesterday, where all four categories have at least one
-// logged value. Notes do not count, and goals do not need to be met. If today is not complete
-// yet, the streak counts through yesterday and lists what is still missing today.
-export function loggingStreak(rows: (Row & { log_date: string })[], todayIso: string): Streak {
-  const byDate = new Map(rows.map((r) => [r.log_date, r]));
-  const complete = (iso: string) => byDate.has(iso) && missingCategories(byDate.get(iso)).length === 0;
-  const todayMissing = missingCategories(byDate.get(todayIso));
-  const todayComplete = todayMissing.length === 0;
-
-  let day = todayComplete ? todayIso : addDays(todayIso, -1);
-  const endsOn = complete(day) ? day : null;
-  let days = 0;
-  while (complete(day)) {
-    days++;
-    day = addDays(day, -1);
-  }
-  return { days, endsOn, todayComplete, todayMissing };
-}
-
 // ---------- Seven-day series (missing days are gaps, never zero) ----------
 
 export function lastSevenDates(todayIso: string): string[] {
@@ -113,4 +92,50 @@ export function lastSevenDates(todayIso: string): string[] {
 export function series(rows: (Row & { log_date: string })[], field: string, todayIso: string): { date: string; value: number | null }[] {
   const byDate = new Map(rows.map((r) => [r.log_date, r]));
   return lastSevenDates(todayIso).map((date) => ({ date, value: num(byDate.get(date), field) }));
+}
+
+// ---------- Weekly rhythm (replaces the daily streak on the Dashboard) ----------
+// Miah, 2026-09-26, from what people say about health apps: daily streaks punish rest, illness
+// and travel, and a broken streak makes people give up. So a day counts when anything is logged,
+// a full week is FULL_WEEK_DAYS logged days in the last seven, rest days are part of the rhythm,
+// and nothing ever says a streak was lost.
+
+export const FULL_WEEK_DAYS = 4;
+const MAX_WEEKS = 52;
+
+export type Rhythm = { daysThisWeek: number; fullWeek: boolean; weeksInRow: number; loggedToday: boolean };
+
+export function weeklyRhythm(rows: (Row & { log_date: string })[], todayIso: string): Rhythm {
+  const logged = new Set(rows.filter((r) => missingCategories(r).length < CATEGORIES.length).map((r) => r.log_date));
+  // Week k is the seven days ending k weeks before today (week 0 ends today).
+  const daysIn = (k: number) => Array.from({ length: 7 }, (_, i) => addDays(todayIso, -7 * k - i)).filter((d) => logged.has(d)).length;
+
+  const daysThisWeek = daysIn(0);
+  const fullWeek = daysThisWeek >= FULL_WEEK_DAYS;
+  // A week still in progress never breaks the run: if it is not full yet, count from last week.
+  let k = fullWeek ? 0 : 1;
+  let weeksInRow = 0;
+  while (k < MAX_WEEKS && daysIn(k) >= FULL_WEEK_DAYS) {
+    weeksInRow++;
+    k++;
+  }
+  return { daysThisWeek, fullWeek, weeksInRow, loggedToday: logged.has(todayIso) };
+}
+
+// The words on the Dashboard. Celebrates arrivals; never counts or names missed days.
+export function rhythmText(r: Rhythm): { title: string; body: string } {
+  const days = (n: number) => `${n} ${n === 1 ? 'day' : 'days'}`;
+  if (r.fullWeek) {
+    const run = r.weeksInRow >= 2 ? ` That is ${r.weeksInRow} full weeks in a row.` : '';
+    return { title: 'A full week', body: `You logged ${days(r.daysThisWeek)} in the last seven.${run}` };
+  }
+  // Weeks before this one that were full, said as something to be glad of.
+  const before =
+    r.weeksInRow === 0 ? '' : r.weeksInRow === 1 ? ' The week before was a full one.' : ` The ${r.weeksInRow} weeks before were full ones.`;
+  if (r.daysThisWeek === 0) return { title: 'A fresh week', body: `Log whenever you are ready.${before}` };
+  const toGo = FULL_WEEK_DAYS - r.daysThisWeek;
+  return {
+    title: `${days(r.daysThisWeek)} this week`,
+    body: `${toGo === 1 ? 'One more day makes' : `${toGo} more days make`} a full week, whenever it suits you.${before}`,
+  };
 }

@@ -9,22 +9,23 @@ import TrendChart, { type TrendMetric } from '../components/TrendChart';
 import { FEELINGS, RATING_SCALES } from '../lib/checkin';
 import type { GoalConfig } from '../lib/goals';
 import { OFFER_TEXT, checkinState, type DayRow } from '../lib/reflection';
-import { PILLARS, PILLAR_ORDER } from '../lib/pillars';
+import { PILLARS } from '../lib/pillars';
 import AiReflectionCard from '../features/aiReflection/AiReflectionCard';
 import TodayWeather from '../components/TodayWeather';
 import {
   CATEGORY_FIELDS,
-  CATEGORY_LABELS,
+  FULL_WEEK_DAYS,
   addDays,
   goalTargets,
   goalsIn,
   indicatorFor,
-  loggingStreak,
   netCalories,
   num,
   progress,
+  rhythmText,
   series,
-  type Streak,
+  weeklyRhythm,
+  type Rhythm,
 } from '../lib/dashboard';
 
 type Row = Record<string, unknown> & { log_date: string };
@@ -108,20 +109,20 @@ function Value({ label, value, unit, decimals = 0 }: { label: string; value: num
   );
 }
 
-function StreakBanner({ streak }: { streak: Streak }) {
-  const missing = streak.todayMissing.map((c) => CATEGORY_LABELS[c]);
+// Weekly rhythm, not a daily streak (see weeklyRhythm in lib/dashboard.ts): rest days count,
+// and nothing ever says a streak was lost.
+function RhythmBanner({ rhythm }: { rhythm: Rhythm }) {
+  const { title, body } = rhythmText(rhythm);
   return (
-    <section aria-labelledby="streak" className="mb-6 rounded-lg border border-line bg-white p-5">
-      <h2 id="streak" className="font-display text-2xl font-bold">
-        {streak.days === 0 ? 'No logging streak yet' : `${streak.days}-day logging streak`}
+    <section aria-labelledby="rhythm" className="mb-6 rounded-lg border border-line bg-white p-5">
+      <h2 id="rhythm" className="font-display text-2xl font-bold">
+        {title}
       </h2>
-      <p className="mt-1 text-spruce/75">
-        {streak.todayComplete
-          ? 'Today is fully logged. Nice work.'
-          : `${streak.days > 0 ? 'Counting through yesterday. ' : ''}Still to log today: ${missing.join(', ')}.`}{' '}
-        A day counts when {PILLAR_ORDER.map((k) => PILLARS[k].name).join(', ').replace(/, ([^,]*)$/, ' and $1')} each have at least one entry.
+      <p className="mt-1 text-spruce/75">{body}</p>
+      <p className="mt-1 text-sm text-spruce/60">
+        Rest days are part of the rhythm: any {FULL_WEEK_DAYS} logged days in seven make a full week.
       </p>
-      {!streak.todayComplete && (
+      {!rhythm.loggedToday && (
         <Link to="/habits" className="mt-2 inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
           Log today
         </Link>
@@ -165,7 +166,7 @@ export default function Dashboard() {
     const [profileRes, logsRes, streakRes, goalsRes] = await Promise.all([
       supabase.from('profiles').select('full_name').eq('id', user.id).maybeSingle(),
       supabase.from('habit_logs').select('*').gte('log_date', addDays(todayIso, -6)).lte('log_date', todayIso),
-      // Separate query for the streak: only dates and the category columns, up to 365 days.
+      // Separate query for the weekly rhythm: only dates and the category columns, up to 365 days.
       supabase.from('habit_logs').select(streakFields).gte('log_date', addDays(todayIso, -364)).lte('log_date', todayIso),
       supabase.from('goals').select('goal_type, target_value'),
     ]);
@@ -241,7 +242,7 @@ export default function Dashboard() {
         <section className="max-w-xl rounded-lg border border-line bg-white p-6">
           <h2 className="font-display text-2xl font-bold">Welcome! Let's log your first day.</h2>
           <p className="mt-2 text-spruce/75">
-            Your cards, charts and streak fill in as you log. It takes about a minute.
+            Your cards, charts and weekly rhythm fill in as you log. It takes about a minute.
           </p>
           <Link to="/habits" className="mt-4 inline-flex min-h-11 items-center rounded-md bg-spruce px-5 font-semibold text-mist hover:bg-spruce-soft">
             Log today
@@ -251,7 +252,7 @@ export default function Dashboard() {
     );
   }
 
-  const streak = loggingStreak(streakRows, todayIso);
+  const rhythm = weeklyRhythm(streakRows, todayIso);
   const net = netCalories(today);
   const moodScale = RATING_SCALES[0];
   const mood = num(today, 'mood');
@@ -298,7 +299,7 @@ export default function Dashboard() {
           </div>
         </section>
       )}
-      <StreakBanner streak={streak} />
+      <RhythmBanner rhythm={rhythm} />
       {user && <TodayWeather userId={user.id} todayIso={todayIso} />}
       {/* TEMPORARY (hackathon): AI reflection on today. Remove with src/features/aiReflection. */}
       <AiReflectionCard date={todayIso} hasEntry={Boolean(today)} />
