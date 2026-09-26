@@ -31,6 +31,20 @@ function longDate(iso: string): string {
   return new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
 }
 
+// What the Location line says: the day's saved place, or what saving will use.
+function locationText({ saved, isToday, home }: { saved: LoggedLocation | null; isToday: boolean; home: HomeCity | null }): string {
+  if (saved) {
+    const name = saved.name ?? 'Unnamed place';
+    return `${name} (${saved.source === 'device' ? 'from your device' : 'your home city'})`;
+  }
+  if (isToday) {
+    return home
+      ? `your device location if you allow it when you save, otherwise ${home.city}`
+      : 'your device location if you allow it when you save';
+  }
+  return home ? `${home.city} (your home city) when you save` : 'none yet; add a home city to include the weather';
+}
+
 function RatingGroup({
   scale,
   value,
@@ -285,6 +299,12 @@ export default function LogHabits() {
           <p className="mt-2 text-sm text-spruce/70" role="status">
             {loadingDay ? 'Loading…' : isExisting ? `Editing your entry for ${longDate(date)}.` : `New entry for ${longDate(date)}.`}
           </p>
+          {!loadingDay && (
+            <p className="mt-1 text-sm">
+              <span className="font-medium">Location: </span>
+              {locationText({ saved: existingLocation, isToday: date === todayIso, home })}
+            </p>
+          )}
         </section>
 
         <section aria-labelledby="checkin" className="space-y-5 rounded-lg border border-line bg-white p-5 md:p-6">

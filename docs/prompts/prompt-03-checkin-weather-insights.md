@@ -171,8 +171,14 @@ Seattle for 2026-08-20 to 2026-08-29), `location_source = 'home'`. Update
 - Show a warm, calm note and an optional screening the user can skip.
 - PHQ-2 first. If its score is 3 or higher, offer the full PHQ-9: all 9 items, standard
   wording and response options, scored 0 to 27. Never a partial set.
-- PHQ-9 total above 6: show support resources for the country of the user's home city
-  (US and Canada: call or text 988; elsewhere, link to findahelpline.com).
+- PHQ-9 support tiers (Miah, 2026-09-25; a cautious early warning, deliberately below the
+  standard "moderate" cut-off of 10), using resources for the country of the user's home city:
+  - Total above 6 (7 to 10): share one support resource.
+  - Total above 10 (11 to 15): share a different support resource.
+  - Total above 15 (16 to 27): share 988 (call or text, US and Canada; elsewhere
+    findahelpline.com) and two support resources, with a gentle suggestion to call their
+    doctor.
+  The exact resources are chosen at the 3C checkpoint.
 - PHQ-9 item 9 above 0: show crisis resources immediately, before any total, whatever the
   total score.
 - Label every screen "A screening tool, not a diagnosis."
@@ -181,7 +187,7 @@ Seattle for 2026-08-20 to 2026-08-29), `location_source = 'home'`. Update
   select and delete their own rows only. Settings has "Delete my screening history".
 - Migration `0006_screenings.sql` under the same approval rule (0005 was used for the feelings labels).
 - Tests with fixed fixtures: trigger fires at exactly 7 of 14 and not at 6 (control);
-  the 14-day limit; PHQ-2 at 2 vs 3; PHQ-9 total 6 vs 7; item 9 at 1 with a low total.
+  the 14-day limit; PHQ-2 at 2 vs 3; PHQ-9 totals 6, 7, 10, 11, 15 and 16 (each tier edge); item 9 at 1 with a low total.
   RLS test on `screenings`. Run every earlier check. Write `docs/reports/prompt-03c.md`.
 
 ---
