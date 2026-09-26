@@ -1,0 +1,162 @@
+import { useCallback, useEffect, useState } from 'react';
+import { supabase } from '../lib/supabase';
+import PageHeader from '../components/PageHeader';
+import {
+  FACTORS,
+  MIN_LOGGED_DAYS,
+  MIN_PAIRED_LIKELY,
+  runInsights,
+  type Comparison,
+  type FactorGroup,
+  type InsightDay,
+  type InsightsResult,
+} from '../lib/insights/engine';
+
+const GROUP_ORDER: FactorGroup[] = [...new Set(FACTORS.map((f) => f.group))];
+
+function Grouped({ items, tone }: { items: Comparison[]; tone: 'likely' | 'explore' }) {
+  return (
+    <div className="mt-4 space-y-5">
+      {GROUP_ORDER.filter((g) => items.some((c) => c.factor.group === g)).map((group) => (
+        <div key={group}>
+          <h3 className="text-sm font-semibold uppercase tracking-wide text-spruce/60">{group}</h3>
+          <ul className="mt-2 space-y-2">
+            {items
+              .filter((c) => c.factor.group === group)
+              .map((c) => (
+                <li
+                  key={`${c.factor.key}-${c.measure.key}`}
+                  className={`rounded-lg border bg-white p-4 ${tone === 'likely' ? 'border-current/40' : 'border-dashed border-line'}`}
+                >
+                  <p>{c.sentence}</p>
+                  {tone === 'explore' && (
+                    <p className="mt-1 text-sm text-spruce/65">Early hint. This may disappear as you log more days.</p>
+                  )}
+                </li>
+              ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default function Insights() {
+  const [result, setResult] = useState<InsightsResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    setError(null);
+    setResult(null);
+    const [logs, conditions] = await Promise.all([
+      supabase.from('habit_logs').select('log_date, exercise_minutes, sleep_hours, water_liters, mood, energy, stress'),
+      supabase.from('daily_conditions').select('*'),
+    ]);
+    if (logs.error || conditions.error) {
+      setError(`Could not load your data: ${(logs.error ?? conditions.error)!.message}`);
+      return;
+    }
+    const byDate = new Map((conditions.data ?? []).map((c) => [c.date, c as unknown as Record<string, number | null>]));
+    const days: InsightDay[] = (logs.data ?? []).map((l) => ({
+      date: l.log_date,
+      measures: l,
+      conditions: byDate.get(l.log_date) ?? null,
+    }));
+    setResult(runInsights(days));
+  }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  return (
+    <>
+      <PageHeader title="Insights">
+        Patterns between your local conditions and your habits and check-ins. They show what tends to happen together,
+        not what causes what.
+      </PageHeader>
+
+      {error && (
+        <div role="alert" className="mb-6 max-w-2xl rounded-md bg-alert/10 px-4 py-3 text-sm text-alert">
+          {error}{' '}
+          <button type="button" onClick={load} className="ml-2 font-semibold underline underline-offset-4">
+            Try again
+          </button>
+        </div>
+      )}
+
+      {!result && !error && (
+        <p role="status" className="text-sage">
+          Looking for patterns…
+        </p>
+      )}
+
+      {result && !result.ready && (
+        <section aria-labelledby="progress" className="max-w-xl rounded-lg border border-line bg-white p-6">
+          <h2 id="progress" className="font-display text-xl font-bold">
+            {result.loggedDays} of {MIN_LOGGED_DAYS} days logged
+          </h2>
+          <div
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={MIN_LOGGED_DAYS}
+            aria-valuenow={result.loggedDays}
+            aria-label="Days logged toward insights"
+            className="mt-3 h-3 overflow-hidden rounded-full bg-mist"
+          >
+            <div className="h-full bg-current" style={{ width: `${(result.loggedDays / MIN_LOGGED_DAYS) * 100}%` }} />
+          </div>
+          <p className="mt-3 text-spruce/75">
+            Insights appear after {MIN_LOGGED_DAYS} logged days. Keep logging, and they will show up here.
+          </p>
+        </section>
+      )}
+
+      {result && result.ready && (
+        <div className="max-w-3xl space-y-10">
+          <section aria-labelledby="likely">
+            <h2 id="likely" className="font-display text-2xl font-bold">
+              Likely patterns
+            </h2>
+            <p className="mt-1 text-sm text-spruce/70">
+              These held up after checking every comparison together, with at least {MIN_PAIRED_LIKELY} days of data.
+            </p>
+            {result.likely.length ? (
+              <Grouped items={result.likely} tone="likely" />
+            ) : (
+              <p className="mt-4 text-spruce/80">No likely patterns yet. They need more days, or there may be none.</p>
+            )}
+          </section>
+
+          <section aria-labelledby="explore">
+            <h2 id="explore" className="font-display text-2xl font-bold">
+              Worth exploring
+            </h2>
+            <p className="mt-1 text-sm text-spruce/70">
+              Early hints that stand out on their own but did not hold up once every comparison was checked together.
+            </p>
+            {result.explore.length ? (
+              <Grouped items={result.explore} tone="explore" />
+            ) : (
+              <p className="mt-4 text-spruce/80">Nothing to explore yet.</p>
+            )}
+          </section>
+
+          <footer className="border-t border-line pt-4 text-sm text-spruce/65">
+            <p>
+              Based on {result.loggedDays} logged days and {result.tested} comparisons. Pollen shows only in Europe; elsewhere it
+              is not available in your area.
+            </p>
+            <p className="mt-1">
+              Weather and air-quality data by{' '}
+              <a href="https://open-meteo.com/" className="underline underline-offset-4" target="_blank" rel="noreferrer">
+                Open-Meteo.com
+              </a>{' '}
+              (CC BY 4.0), used under its free non-commercial terms.
+            </p>
+          </footer>
+        </div>
+      )}
+    </>
+  );
+}
