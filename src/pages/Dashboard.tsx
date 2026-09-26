@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
@@ -8,6 +8,8 @@ import ProgressIndicator from '../components/ProgressIndicator';
 import TrendChart, { type TrendMetric } from '../components/TrendChart';
 import { FEELINGS, RATING_SCALES } from '../lib/checkin';
 import type { GoalConfig } from '../lib/goals';
+import { encouragementFor } from '../lib/encouragement';
+import { OFFER_TEXT, checkinState, type DayRow } from '../lib/reflection';
 import {
   CATEGORY_FIELDS,
   CATEGORY_LABELS,
@@ -103,7 +105,7 @@ function Value({ label, value, unit, decimals = 0 }: { label: string; value: num
   );
 }
 
-function StreakBanner({ streak }: { streak: Streak }) {
+function StreakBanner({ streak, todayIso }: { streak: Streak; todayIso: string }) {
   const missing = streak.todayMissing.map((c) => CATEGORY_LABELS[c]);
   return (
     <section aria-labelledby="streak" className="mb-6 rounded-lg border border-line bg-white p-5">
@@ -116,6 +118,7 @@ function StreakBanner({ streak }: { streak: Streak }) {
           : `${streak.days > 0 ? 'Counting through yesterday. ' : ''}Still to log today: ${missing.join(', ')}.`}{' '}
         A day counts when Exercise, Sleep, Nutrition and Wellbeing each have at least one entry.
       </p>
+      <p className="mt-2 italic text-spruce/80">{encouragementFor(todayIso)}</p>
       {!streak.todayComplete && (
         <Link to="/habits" className="mt-2 inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
           Log today
@@ -146,6 +149,8 @@ export default function Dashboard() {
   const [goals, setGoals] = useState<{ goal_type: string; target_value: unknown }[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [checkinOffer, setCheckinOffer] = useState<string | null>(null); // reflections row id
+  const offerChecked = useRef(false);
 
   const todayIso = toISODate(new Date());
 
@@ -173,6 +178,28 @@ export default function Dashboard() {
     }
     setLoading(false);
   }, [user, todayIso]);
+
+  // Gentle check-in: decided by the rules in src/lib/reflection.ts (more than 10 sequential days of
+  // check-ins, 7 of the last 14 harder, not offered in 14 days, setting on). Each offer is saved,
+  // so the 14-day limit counts it whether or not the person reflects.
+  useEffect(() => {
+    if (!user || loading || offerChecked.current || streakRows.length === 0) return;
+    offerChecked.current = true;
+    (async () => {
+      const [profile, offers] = await Promise.all([
+        supabase.from('profiles').select('gentle_checkin_enabled').eq('id', user.id).maybeSingle(),
+        supabase.from('reflections').select('id, offered_on, taken_on').order('offered_on', { ascending: false }).limit(5),
+      ]);
+      if (profile.error || offers.error) return; // never block the dashboard on this
+      const days: DayRow[] = streakRows.map((r) => ({ log_date: r.log_date, mood: num(r, 'mood'), stress: num(r, 'stress') }));
+      const state = checkinState({ enabled: profile.data?.gentle_checkin_enabled ?? true, days, offers: offers.data ?? [], todayIso });
+      if (!state.show) return;
+      const existing = (offers.data ?? []).find((o) => o.offered_on === todayIso && !o.taken_on);
+      if (existing) return setCheckinOffer(existing.id);
+      const { data } = await supabase.from('reflections').insert({ offered_on: todayIso }).select('id').single();
+      if (data) setCheckinOffer(data.id);
+    })();
+  }, [user, loading, streakRows, todayIso]);
 
   useEffect(() => {
     load();
@@ -250,7 +277,26 @@ export default function Dashboard() {
   return (
     <>
       {header}
-      <StreakBanner streak={streak} />
+      {checkinOffer && (
+        <section aria-labelledby="gentle-checkin" className="mb-6 rounded-lg border border-bloom/40 bg-bloom/5 p-5">
+          <h2 id="gentle-checkin" className="font-display text-xl font-bold">
+            A gentle check-in
+          </h2>
+          <p className="mt-1">{OFFER_TEXT}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Link
+              to={`/reflect?offer=${checkinOffer}`}
+              className="inline-flex min-h-11 items-center rounded-md bg-spruce px-5 font-semibold text-mist hover:bg-spruce-soft"
+            >
+              Take a moment to reflect
+            </Link>
+            <button type="button" onClick={() => setCheckinOffer(null)} className="min-h-11 rounded-md px-4 font-semibold hover:bg-white">
+              Not now
+            </button>
+          </div>
+        </section>
+      )}
+      <StreakBanner streak={streak} todayIso={todayIso} />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card title="Exercise" accent={COLORS.exercise}>

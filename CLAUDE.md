@@ -95,9 +95,10 @@ Supabase Authentication settings that the chat could not change through the conn
 2. **No streak shaming or pressure.** Streaks and goals count logging, not meeting targets. Missed days are gaps, never zeros or red marks. Nothing guilts a person for a missing day.
 3. **Association, never cause.** Insights say what tends to happen together and always give the number of days. No verbs like "causes", "lowers", "raises".
 4. **Personal, not comparative.** Never compare a person with other people, averages or ideal bodies. Goals are theirs to set, change or leave blank.
-5. **Gentle check-ins, not diagnosis.** Never use the word "screening" or diagnostic language in the interface. Frame check-ins as reflection: "This is encouragement to reflect a little more deeply today. It is not medical advice." Encourage talking with a trusted friend or family member alongside any support line.
+5. **Gentle check-ins, not diagnosis.** Offer one only after a real trend: more than 10 consecutive days of check-ins (the most important rule, Miah). Never use the word "screening" or diagnostic language in the interface. Frame check-ins as reflection: "This is encouragement to reflect a little more deeply today. It is not medical advice." Encourage talking with a trusted friend or family member alongside any support line.
 6. **Words that travel.** The app launches in the US, Canada, India, the UAE and Germany. Prefer plain words that translate well (for example "harder" rather than "heavier"). Resources follow the person's home country, with findahelpline.com as the fallback.
-7. **Privacy and control.** Store the minimum (scores and dates, never free-text answers to sensitive questions), keep everything under RLS, and let people turn features off and delete their history.
+7. **Encourage, kindly.** The voice is patient and warm, in Miah's words: "Change is hard, be gentle with yourself." "Growth takes work and time (and can be painful at times), but you are worth it." "Your future self is grateful for the self-care you are putting in today." Shared lines live in `src/lib/encouragement.ts`. Crisis messages stay direct and are never softened by encouragement.
+8. **Privacy and control.** Store the minimum (scores and dates, never free-text answers to sensitive questions), keep everything under RLS, and let people turn features off and delete their history.
 
 The full history of how these came about is in `docs/development-log.md`.
 

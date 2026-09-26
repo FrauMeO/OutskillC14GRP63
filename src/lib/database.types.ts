@@ -1,4 +1,4 @@
-// Generated from the live database (project gzsawayrorlcjmpssalc) after migration 0006,
+// Generated from the live database (project gzsawayrorlcjmpssalc) after migration 0007,
 // with the Supabase connector's generate_typescript_types. Regenerate after every schema change:
 //   npx supabase gen types typescript --project-id gzsawayrorlcjmpssalc > src/lib/database.types.ts
 // then re-add the aliases at the bottom.
@@ -206,6 +206,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          gentle_checkin_enabled: boolean
           created_at: string
           full_name: string | null
           home_city: string | null
@@ -215,6 +216,7 @@ export type Database = {
           id: string
         }
         Insert: {
+          gentle_checkin_enabled?: boolean
           created_at?: string
           full_name?: string | null
           home_city?: string | null
@@ -224,6 +226,7 @@ export type Database = {
           id: string
         }
         Update: {
+          gentle_checkin_enabled?: boolean
           created_at?: string
           full_name?: string | null
           home_city?: string | null
@@ -231,6 +234,39 @@ export type Database = {
           home_latitude?: number | null
           home_longitude?: number | null
           id?: string
+        }
+        Relationships: []
+      }
+      reflections: {
+        Row: {
+          created_at: string
+          id: string
+          offered_on: string
+          phq2_score: number | null
+          phq9_item9: number | null
+          phq9_score: number | null
+          taken_on: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          offered_on?: string
+          phq2_score?: number | null
+          phq9_item9?: number | null
+          phq9_score?: number | null
+          taken_on?: string | null
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          offered_on?: string
+          phq2_score?: number | null
+          phq9_item9?: number | null
+          phq9_score?: number | null
+          taken_on?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -254,3 +290,4 @@ export type Profile = Database['public']['Tables']['profiles']['Row'];
 export type Goal = Database['public']['Tables']['goals']['Row'];
 export type HabitLog = Database['public']['Tables']['habit_logs']['Row'];
 export type DailyConditions = Database['public']['Tables']['daily_conditions']['Row'];
+export type Reflection = Database['public']['Tables']['reflections']['Row'];

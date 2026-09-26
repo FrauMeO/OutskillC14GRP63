@@ -18,6 +18,7 @@ import {
 } from '../lib/checkin';
 import { chooseLocation, cityNameFor, deviceCoordinates, type HomeCity, type LoggedLocation } from '../lib/location';
 import { ensureConditions } from '../lib/conditions';
+import { encouragementFor } from '../lib/encouragement';
 
 type Flash = { kind: 'ok' | 'error'; text: string } | null;
 
@@ -252,7 +253,7 @@ export default function LogHabits() {
       }
     }
     setSaving(false);
-    setFlash({ kind: 'ok', text: `Saved for ${longDate(date)}.${weatherNote}` });
+    setFlash({ kind: 'ok', text: `Saved for ${longDate(date)}.${weatherNote} ${encouragementFor(todayIso)}` });
   }
 
   return (

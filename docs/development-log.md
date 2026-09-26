@@ -138,6 +138,27 @@ decision below should be read in that light.
   validated questionnaire changes what its scores mean. Only the framing around them uses
   reflection language. The new table is named `reflections`, not `screenings`.
 
+### 10. Encouragement throughout (2026-09-26)
+- Miah: use language like "change is hard, be gentle with yourself", "Growth takes work and time
+  (and can be painful at times), but you are worth it" and "Your future self is grateful for the
+  self-care you are putting in today".
+- These became `src/lib/encouragement.ts` (Miah's three lines first, five more in the same voice),
+  one line per day, shown after saving a day, under the dashboard streak and on reflection
+  results. Not used in the item 9 crisis message, which stays direct.
+- Added to CLAUDE.md principles as point 7, "Encourage, kindly".
+
+### 11. The most important rule for the gentle check-in (2026-09-26)
+- Miah: "The most important thing is to make sure that the code only triggers these comments
+  after a trend line shows frequency collected with >10 sequential entries."
+- Implemented in `src/lib/reflection.ts`: the check-in is offered only when there is an unbroken
+  run of **more than 10 consecutive calendar days with a mood or stress check-in**, ending today
+  or yesterday, **and** at least 7 of the last 14 logged days were harder days (mood 1 or 2, or
+  stress 4 or 5), **and** nothing was offered in the last 14 days, **and** the setting is on.
+- A missed day, or a day with habits but no mood or stress, breaks the run. Tests cover 10 vs 11
+  in a row, gaps, habit-only days, and a run that ended two days ago.
+- The demo sample never reaches this (its check-ins have gaps), so browser testing needs a
+  dedicated test account or fixture.
+
 ### Working agreements that emerged
 - Claude shows every migration and waits for approval; destructive or tightening changes state
   the affected row count first.
