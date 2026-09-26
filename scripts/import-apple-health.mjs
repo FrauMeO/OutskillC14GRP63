@@ -1,6 +1,6 @@
 // Reads an Apple Health export.xml and produces one habit_logs row per local date.
-//   node scripts/import-apple-health.mjs [path/to/export.xml] [demo-email]
-// Outputs: sample-data/habit_logs.csv, sample-data/seed_habit_logs.sql
+//   node scripts/import-apple-health.mjs [path/to/export.xml]
+// Output: sample-data/habit_logs.csv (scripts/build-demo-seed.mjs turns it into the demo seed)
 //
 // Rules:
 //  - Dates follow the local time printed in each record (its own UTC offset), so data logged in
@@ -16,7 +16,6 @@ import { createReadStream, writeFileSync } from 'node:fs';
 import { createInterface } from 'node:readline';
 
 const input = process.argv[2] ?? new URL('../sample-data/apple_health_export/export.xml', import.meta.url).pathname;
-const email = process.argv[3] ?? 'msolmsted+demo@gmail.com';
 const OUT = new URL('../sample-data/', import.meta.url);
 
 const ASLEEP = new Set(['AsleepCore', 'AsleepDeep', 'AsleepREM', 'AsleepUnspecified', 'Asleep']);
@@ -105,29 +104,6 @@ const cell = (v) => (v === null ? '' : v);
 writeFileSync(new URL('habit_logs.csv', OUT),
   'log_date,exercise_minutes,sleep_hours,water_liters\n' +
   rows.map((r) => [r.log_date, cell(r.exercise_minutes), cell(r.sleep_hours), cell(r.water_liters)].join(',')).join('\n') + '\n');
-
-const sqlv = (v) => (v === null ? 'null' : v);
-writeFileSync(new URL('seed_habit_logs.sql', OUT), `-- Seed habit_logs for the demo account from the sample Apple Health export.
--- 1) Sign up ${email} in the app first.  2) Run this in the Supabase SQL editor. Safe to re-run.
-do $$ begin
-  if not exists (select 1 from auth.users where email = '${email}') then
-    raise exception 'No user ${email}. Sign up in the app first, then re-run.';
-  end if;
-end $$;
-
-insert into public.habit_logs (user_id, log_date, exercise_minutes, sleep_hours, water_liters, notes)
-select u.id, v.log_date::date, v.ex, v.sleep, v.water, 'Imported: sample Apple Health export'
-from auth.users u
-cross join (values
-${rows.map((r) => `  ('${r.log_date}', ${sqlv(r.exercise_minutes)}::int, ${sqlv(r.sleep_hours)}::numeric, ${sqlv(r.water_liters)}::numeric)`).join(',\n')}
-) as v(log_date, ex, sleep, water)
-where u.email = '${email}'
-on conflict (user_id, log_date) do update
-  set exercise_minutes = excluded.exercise_minutes,
-      sleep_hours      = excluded.sleep_hours,
-      water_liters     = excluded.water_liters,
-      notes            = excluded.notes;
-`);
 
 console.log(`Read ${counts.records} records, used ${counts.used}, produced ${rows.length} daily rows.`);
 console.log('Ignored types:', Object.fromEntries(counts.ignoredTypes));

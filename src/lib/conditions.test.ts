@@ -1,9 +1,5 @@
-import { describe, expect, it, vi } from 'vitest';
-
-// conditions.ts imports the Supabase client, which needs env vars; the pure functions do not use it.
-vi.mock('./supabase', () => ({ supabase: {} }));
-
-const { maxOrNull, meanOrNull, moonFor, needsFetch, toConditionValues } = await import('./conditions');
+import { describe, expect, it } from 'vitest';
+import { maxOrNull, meanOrNull, moonFor, needsFetch, splitByDate, toConditionValues } from './conditionsCore';
 
 describe('moonFor', () => {
   it('matches known 2024 moon phases', () => {
@@ -95,5 +91,19 @@ describe('needsFetch cache rules', () => {
 
   it('refetches when the place changed', () => {
     expect(needsFetch({ latitude: 47.6, longitude: -122.3, is_final: true }, place, '2026-09-20', today)).toBe(true);
+  });
+});
+
+describe('splitByDate', () => {
+  it('splits a two-day response into one entry per local date', () => {
+    const body = {
+      daily: { time: ['2026-08-01', '2026-08-02'], rain_sum: [0, 4.5] },
+      hourly: { time: ['2026-08-01T00:00', '2026-08-01T01:00', '2026-08-02T00:00'], surface_pressure: [1010, 1012, 1000] },
+    };
+    const days = splitByDate(body as never);
+    expect([...days.keys()]).toEqual(['2026-08-01', '2026-08-02']);
+    expect(days.get('2026-08-02')).toEqual({ daily: { rain_sum: [4.5] }, hourly: { surface_pressure: [1000] } });
+    // Control: the first day keeps its own two hours, not the second day's.
+    expect(days.get('2026-08-01')!.hourly!.surface_pressure).toEqual([1010, 1012]);
   });
 });

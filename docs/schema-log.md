@@ -117,4 +117,4 @@ Applied as migration `feelings_apple_labels` after Miah approved the SQL. 0 rows
 
 ## Not schema, but touches the data
 
-- `sample-data/seed_habit_logs.sql` inserts 59 days of sample rows for `msolmsted+demo@gmail.com` using `on conflict (user_id, log_date) do update`. It was run on the new project on 2026-09-25 (59 rows).
+- `sample-data/seed_habit_logs.sql` (built by `scripts/build-demo-seed.mjs` since Prompt 3A) inserts 59 days of sample rows, check-ins, locations and matching `daily_conditions` for `msolmsted+demo@gmail.com` using `on conflict (user_id, log_date) do update`. It was run on the new project on 2026-09-25 (59 rows).

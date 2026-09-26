@@ -9,8 +9,11 @@
     "preview": "vite preview",
     "sample:generate": "node scripts/generate-sample-export.mjs",
     "sample:import": "node scripts/import-apple-health.mjs",
-    "test:import": "npm run -s sample:generate && npm run -s sample:import && node scripts/verify-import.mjs",
-    "test": "vitest run"
+    "test:import": "npm run -s sample:generate && npm run -s sample:import && node scripts/verify-import.mjs && npm run -s sample:checkins && npm run -s sample:seed && node scripts/verify-seed.mjs",
+    "test": "vitest run",
+    "sample:checkins": "node scripts/generate-sample-checkins.mjs",
+    "sample:conditions": "node scripts/fetch-sample-conditions.mjs",
+    "sample:seed": "node scripts/build-demo-seed.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.0",
