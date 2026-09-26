@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import CityPicker from '../components/CityPicker';
-import { PILLARS, PILLAR_ORDER, PILLAR_TAGLINE } from '../lib/pillars';
+import { PILLARS, PILLAR_ORDER, PILLAR_PS, PILLAR_TAGLINE } from '../lib/pillars';
 import type { HomeCity } from '../lib/location';
 
 type Mode = 'login' | 'signup';
@@ -82,7 +82,8 @@ export default function AuthPage({ mode }: { mode: Mode }) {
             </span>
           ))}
         </p>
-        <p className="mt-6 max-w-sm text-lg text-mist/75">{PILLAR_TAGLINE}</p>
+        <p className="mt-6 max-w-sm text-lg text-mist/85">{PILLAR_TAGLINE}</p>
+        <p className="mt-2 max-w-sm italic text-mist/70">{PILLAR_PS}</p>
       </section>
 
       <section className="flex items-center justify-center px-6 py-12">

@@ -200,7 +200,8 @@ decision below should be read in that light.
   your way; Balance, stress, mood and how you feel. Order everywhere: Eat, Sleep, Move, Balance.
 - Tagline, from Miah's words ("Create the pillars of health in your own house. Live long. Judge
   yourself less."). Claude's polished version was rejected ("terrible brand slogan"); Miah's final
-  wording is **"Build four pillars of health. Live well. Judge yourself less."**
+  wording, after trying "four", is **"Build your pillars of health. Live Well."** with a lighter
+  line beneath it: *"p.s. judge yourself a lot less"*.
 - Miah asked to map the pillars cleanly to Apple Health and Google. `src/lib/healthMapping.ts` and
   `docs/health-mapping.md` map every measure to Apple Health, Google Health Connect and the Google
   Health API, with tests. Findings: Apple has State of Mind (mood and our six feelings, one to one)

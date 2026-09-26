@@ -21,5 +21,6 @@ export const PILLARS: Record<Category, Pillar> = {
 // Display order everywhere: Eat, Sleep, Move, Balance.
 export const PILLAR_ORDER: Category[] = ['nutrition', 'sleep', 'exercise', 'wellbeing'];
 
-// Miah, 2026-09-26 (her final wording).
-export const PILLAR_TAGLINE = 'Build four pillars of health. Live well. Judge yourself less.';
+// Miah, 2026-09-26 (her final wording): the tagline, then a lighter p.s. line beneath it.
+export const PILLAR_TAGLINE = 'Build your pillars of health. Live Well.';
+export const PILLAR_PS = 'p.s. judge yourself a lot less';
