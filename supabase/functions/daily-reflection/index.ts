@@ -1,11 +1,12 @@
 // Supabase Edge Function: a short AI reflection on the signed-in person's day.
 // TEMPORARY, for the hackathon; see the removal note in logic.ts.
-// Uses OpenAI (hackathon requirement). Secrets, set in Supabase (never in the app or the repo):
-//   OPENAI_API_KEY  (required)
-//   OPENAI_MODEL    (optional, default gpt-4o-mini)
+// Uses Claude through the official Anthropic SDK. Secrets, set in Supabase (never in the app or repo):
+//   ANTHROPIC_API_KEY  (required)
+//   ANTHROPIC_MODEL    (optional, default claude-opus-5)
 // Nothing is stored. Only today's logged values are sent; hard days get a fixed message instead.
+import Anthropic from 'npm:@anthropic-ai/sdk';
 import { createClient } from 'npm:@supabase/supabase-js@2';
-import { FALLBACK_MESSAGE, HARD_DAY_MESSAGE, buildMessages, cleanReply, describeDay, isHardDay, type Day } from './logic.ts';
+import { FALLBACK_MESSAGE, HARD_DAY_MESSAGE, SYSTEM_PROMPT, cleanReply, describeDay, isHardDay, userMessage, type Day } from './logic.ts';
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -45,22 +46,32 @@ Deno.serve(async (req) => {
   if (isHardDay(day as Day)) return json({ text: HARD_DAY_MESSAGE, source: 'fixed' });
   if (describeDay(day as Day).length === 0) return json({ text: FALLBACK_MESSAGE, source: 'fixed' });
 
-  const key = Deno.env.get('OPENAI_API_KEY');
-  if (!key) return json({ error: 'The reflection service is not set up yet.' }, 503);
-  const model = Deno.env.get('OPENAI_MODEL') ?? 'gpt-4o-mini';
+  const apiKey = Deno.env.get('ANTHROPIC_API_KEY');
+  if (!apiKey) return json({ error: 'The reflection service is not set up yet.' }, 503);
+  const model = Deno.env.get('ANTHROPIC_MODEL') ?? 'claude-opus-5';
 
+  const client = new Anthropic({ apiKey, timeout: 25_000, maxRetries: 1 });
   try {
-    const res = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model, messages: buildMessages(day as Day), max_tokens: 200, temperature: 0.7 }),
-      signal: AbortSignal.timeout(20_000),
-    });
-    if (!res.ok) return json({ text: FALLBACK_MESSAGE, source: 'fixed', note: `ai-unavailable-${res.status}` });
-    const body = await res.json();
-    const text = cleanReply(body?.choices?.[0]?.message?.content);
-    return json(text ? { text, source: 'ai', model } : { text: FALLBACK_MESSAGE, source: 'fixed', note: 'filtered' });
-  } catch {
-    return json({ text: FALLBACK_MESSAGE, source: 'fixed', note: 'ai-timeout' });
+    const response = await client.beta.messages.create({
+      model,
+      max_tokens: 2000, // a few sentences of reply plus room for brief adaptive thinking
+      system: SYSTEM_PROMPT,
+      messages: [{ role: 'user', content: userMessage(day as Day) }],
+      output_config: { effort: 'low' }, // short, simple writing task
+      // Server-side fallback: if the model declines, the API re-runs the request on a suitable model.
+      betas: ['server-side-fallback-2026-07-01'],
+      fallbacks: 'default',
+    } as unknown as Anthropic.Beta.MessageCreateParamsNonStreaming);
+
+    if (response.stop_reason === 'refusal') return json({ text: FALLBACK_MESSAGE, source: 'fixed', note: 'declined' });
+    const raw = response.content
+      .filter((b): b is Anthropic.Beta.BetaTextBlock => b.type === 'text')
+      .map((b) => b.text)
+      .join(' ');
+    const text = cleanReply(raw);
+    return json(text ? { text, source: 'ai', model: response.model } : { text: FALLBACK_MESSAGE, source: 'fixed', note: 'filtered' });
+  } catch (err) {
+    const status = err instanceof Anthropic.APIError ? err.status : 'network';
+    return json({ text: FALLBACK_MESSAGE, source: 'fixed', note: `ai-unavailable-${status}` });
   }
 });

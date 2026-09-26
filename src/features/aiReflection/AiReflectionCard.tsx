@@ -39,13 +39,13 @@ export default function AiReflectionCard({ date, hasEntry }: { date: string; has
             {result.text}
           </p>
           <p className="mt-2 text-xs text-spruce/60">
-            {result.source === 'ai' ? 'Written by AI (OpenAI) from today’s entry. ' : ''}Not medical advice. Nothing is saved.
+            {result.source === 'ai' ? 'Written by AI (Claude, by Anthropic) from today’s entry. ' : ''}Not medical advice. Nothing is saved.
           </p>
         </>
       ) : (
         <>
           <p className="mt-1 text-spruce/75">
-            Get a few gentle sentences about today. Only today’s numbers, ratings and feelings are sent to OpenAI to write it:
+            Get a few gentle sentences about today. Only today’s numbers, ratings and feelings are sent to Claude (Anthropic) to write it:
             never your name, email, location or reflection answers. Nothing is saved.
           </p>
           <button

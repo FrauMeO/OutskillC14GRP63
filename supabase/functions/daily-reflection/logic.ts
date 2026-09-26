@@ -96,11 +96,9 @@ Write 2 to 4 short sentences, under 80 words, in plain, warm English that transl
 - End with one gentle encouragement or a small, curious question.
 - No emojis, no lists, no headings.`;
 
-export function buildMessages(d: Day): { role: 'system' | 'user'; content: string }[] {
-  return [
-    { role: 'system', content: SYSTEM_PROMPT },
-    { role: 'user', content: `Today (${d.log_date}), the person logged:\n${describeDay(d).map((l) => `- ${l}`).join('\n')}` },
-  ];
+// The user turn sent to Claude (the system prompt goes in the separate `system` field).
+export function userMessage(d: Day): string {
+  return `Today (${d.log_date}), the person logged:\n${describeDay(d).map((l) => `- ${l}`).join('\n')}`;
 }
 
 // Replies that break the principles are replaced with the fallback message.

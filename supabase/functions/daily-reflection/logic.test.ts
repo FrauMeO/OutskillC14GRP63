@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { FEELINGS } from '../../../src/lib/checkin';
-import { SYSTEM_PROMPT, buildMessages, cleanReply, describeDay, isHardDay } from './logic';
+import { SYSTEM_PROMPT, cleanReply, describeDay, isHardDay, userMessage } from './logic';
 
 const day = { log_date: '2026-09-26', sleep_hours: '7.5', steps: 6200, water_liters: '2', mood: 4, energy: 3, stress: 2, feelings: ['calm', 'grateful'] };
 
@@ -16,7 +16,7 @@ describe('what is sent', () => {
       'Balance: stress low',
       'Balance: felt calm, grateful',
     ]);
-    const sent = JSON.stringify(buildMessages({ ...day, location_name: 'Philadelphia', email: 'x@y.z' } as never));
+    const sent = SYSTEM_PROMPT + userMessage({ ...day, location_name: 'Philadelphia', email: 'x@y.z' } as never);
     expect(sent).not.toMatch(/Philadelphia|@/);
   });
 
