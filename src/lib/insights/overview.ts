@@ -140,7 +140,22 @@ export function harderSituation(c: Comparison): string {
   return `days with ${plain(firstIsHarder ? c.factor.most : c.factor.least)}`;
 }
 
-export type Invitation = { key: MeasureKey; text: string; basedOn: 'pattern' | 'week' };
+// why: the evidence from the person's own days, shown under "Why am I seeing this?".
+export type Invitation = { key: MeasureKey; text: string; basedOn: 'pattern' | 'week'; why: string };
+
+const NOT_CAUSE = 'It shows what went together, not what caused what.';
+
+export function whyPattern(c: Comparison): string {
+  const strength =
+    c.tier === 'likely'
+      ? 'This pattern held up after every comparison was checked together.'
+      : 'This is an early hint: it stood out on its own but may change as you log more days.';
+  return `From your own days: ${c.sentence} ${strength} ${NOT_CAUSE}`;
+}
+
+export function whyWeek(w: WeekLine): string {
+  return `From your own days: ${w.label}. ${w.sentence} This compares this week's middle value with your own eight weeks before it, never with anyone else.`;
+}
 
 // Up to two invitations, one per measure: first from patterns in the person's own data (likely
 // before early hints), then from this week against their usual. Nothing is invented.
@@ -156,6 +171,7 @@ export function invitations(patterns: Comparison[], week: WeekLine[], max = 2): 
       key,
       basedOn: 'pattern',
       text: `On ${harderSituation(c)}, you have tended to have ${HARDER[key]}. On the next few, if you like, try ${IDEAS[key]}, and notice how it feels.`,
+      why: whyPattern(c),
     });
   }
   for (const w of week) {
@@ -168,6 +184,7 @@ export function invitations(patterns: Comparison[], week: WeekLine[], max = 2): 
       key: w.key,
       basedOn: 'week',
       text: `Your ${LABELS[w.key]} has been a little ${w.direction === 'more' ? 'higher' : 'lower'} than your usual this week. If you like, try ${IDEAS[w.key]}, and see how the next few days feel.`,
+      why: whyWeek(w),
     });
   }
   return out;
