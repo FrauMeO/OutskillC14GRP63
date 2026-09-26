@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { FACTORS, FDR, MIN_LOGGED_DAYS, runInsights, type InsightDay, type MeasureKey } from './engine';
+import { FACTORS, FDR, factorCatalog, MIN_LOGGED_DAYS, runInsights, type InsightDay, type MeasureKey } from './engine';
 
 // The demo seed rows: 59 sample days with real weather and the planted rain-and-mood pattern.
 type SeedRows = {
@@ -153,3 +153,16 @@ function shufflerRandom(seedValue: number) {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
+
+describe('what Insights looks at', () => {
+  it('lists all 34 factors in plain words, grouped, with what each is compared with', () => {
+    const catalog = factorCatalog();
+    const items = catalog.flatMap((g) => g.items);
+    expect(items).toHaveLength(34);
+    expect(new Set(items.map((i) => i.key)).size).toBe(34);
+    expect(catalog.map((g) => g.group)).toEqual(['Rain and humidity', 'Temperature', 'Sun and daylight', 'Air', 'Pressure', 'Moon', 'Day to day']);
+    expect(items.find((i) => i.key === 'rainy_day')).toEqual({ key: 'rainy_day', label: 'Rainy days (over 2 mm)', comparedWith: 'mood, energy, stress, sleep, exercise and water' });
+    expect(items.find((i) => i.key === 'grey_day')).toEqual({ key: 'grey_day', label: 'Grey days (under 2 hours of sunshine)', comparedWith: 'mood and energy' });
+    expect(items.find((i) => i.key === 'temp_swing')!.label).toBe('Days with a bigger day-to-night temperature swing');
+  });
+});

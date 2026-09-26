@@ -195,6 +195,26 @@ export type InsightsResult = {
 const avg = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / xs.length;
 const fmt = (n: number, d: number) => n.toFixed(d);
 
+// "What Insights looks at": every factor in plain words, grouped, with what it is compared with.
+export type CatalogGroup = { group: FactorGroup; items: { key: string; label: string; comparedWith: string }[] };
+
+export function factorCatalog(): CatalogGroup[] {
+  const everything = 'mood, energy, stress, sleep, exercise and water';
+  const label = (f: Factor) => {
+    const text = f.kind === 'binary' ? f.yes : `days with ${f.more}`;
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  };
+  const order = [...new Set(FACTORS.map((f) => f.group))];
+  return order.map((group) => ({
+    group,
+    items: FACTORS.filter((f) => f.group === group).map((f) => ({
+      key: f.key,
+      label: label(f),
+      comparedWith: f.measures ? f.measures.join(' and ') : everything,
+    })),
+  }));
+}
+
 // Calendar arithmetic on YYYY-MM-DD (noon avoids daylight-saving edges).
 function dayBefore(iso: string, days: number): string {
   const [y, m, d] = iso.split('-').map(Number);

@@ -4,6 +4,7 @@ import PageHeader from '../components/PageHeader';
 import {
   FACTORS,
   MIN_LOGGED_DAYS,
+  factorCatalog,
   MIN_PAIRED_LIKELY,
   runInsights,
   type Comparison,
@@ -120,6 +121,37 @@ function OverviewSection({ summary }: { summary: Summary }) {
   );
 }
 
+// Every weather factor Insights checks, so people can see the depth even before patterns appear.
+function WhatWeLookAt() {
+  const catalog = factorCatalog();
+  const total = catalog.reduce((n, g) => n + g.items.length, 0);
+  return (
+    <details className="max-w-3xl rounded-lg border border-line bg-white p-5">
+      <summary className="cursor-pointer font-display text-xl font-bold">What Insights looks at ({total} weather factors)</summary>
+      <p className="mt-2 text-sm text-spruce/70">
+        Each logged day is paired with its real weather. Insights compares every factor below with your own days, checks all
+        the comparisons together so chance findings are not shown as facts, and only ever says what went together, never
+        what caused what.
+      </p>
+      <div className="mt-4 grid gap-5 sm:grid-cols-2">
+        {catalog.map((g) => (
+          <div key={g.group}>
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-spruce/60">{g.group}</h3>
+            <ul className="mt-2 space-y-1.5 text-sm">
+              {g.items.map((i) => (
+                <li key={i.key}>
+                  {i.label}
+                  <span className="block text-xs text-spruce/60">Compared with {i.comparedWith}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </details>
+  );
+}
+
 export default function Insights() {
   const [result, setResult] = useState<InsightsResult | null>(null);
   const [summary, setSummary] = useState<Summary | null>(null);
@@ -209,6 +241,12 @@ export default function Insights() {
         </section>
       )}
 
+      {result && !result.ready && (
+        <div className="mt-6">
+          <WhatWeLookAt />
+        </div>
+      )}
+
       {result && result.ready && (
         <div className="max-w-3xl space-y-10">
           <section aria-labelledby="likely">
@@ -241,6 +279,8 @@ export default function Insights() {
               <p className="mt-4 text-spruce/80">Nothing to explore yet.</p>
             )}
           </section>
+
+          <WhatWeLookAt />
 
           <footer className="border-t border-line pt-4 text-sm text-spruce/65">
             <p>
