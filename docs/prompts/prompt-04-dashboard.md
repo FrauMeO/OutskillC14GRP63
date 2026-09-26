@@ -14,7 +14,7 @@ replace or reword it.
   OlmstedDataPlayground. The only data is one demo account (`msolmsted+demo@gmail.com`)
   and its 59 days of sample `habit_logs` (2026-07-26 to 2026-09-23). Supabase labels
   every project's default branch "PRODUCTION"; that label alone is not a stop signal.
-- Migrations: 0001 to 0003 now, plus 0004 and 0005 from Prompt 3. The live migration
+- Migrations: 0001 to 0003 now, plus 0004 to 0006 from Prompt 3. The live migration
   history does not list 0001 and 0002 (run by hand); the schema itself matches.
 - `habit_logs` holds one row per user per day (`unique (user_id, log_date)`), with
   `exercise_minutes`, `sleep_hours`, `water_liters`, `notes`.
@@ -46,7 +46,7 @@ replace or reword it.
 ## Part 1. Plan the schema (then stop for approval)
 
 1. Read the live schema (`list_tables`, `list_migrations`) and compare it with the files.
-2. Propose one additive migration, `0006_dashboard_metrics.sql`, that keeps one row per
+2. Propose one additive migration, `0007_dashboard_metrics.sql`, that keeps one row per
    day and adds nullable columns to `habit_logs`:
    - Exercise: `steps int`, `stand_hours numeric`, `active_calories int`
    - Sleep: `time_in_bed_hours numeric`, `awake_minutes int`
@@ -132,7 +132,7 @@ Indicator rules:
    functions: daily values, local-date boundaries, ring vs. bar by source, percentage over
    100, null vs. zero, the streak (longer than 7 days, broken, today incomplete), and the
    empty state. Each test file includes a positive control.
-2. Run a rolled-back SQL test for the 0006 constraints (valid row saved as control;
+2. Run a rolled-back SQL test for the 0007 constraints (valid row saved as control;
    negative values and unknown source blocked; RLS still isolates
    users).
 3. With the dev server running, log in as the demo account and compare every card value

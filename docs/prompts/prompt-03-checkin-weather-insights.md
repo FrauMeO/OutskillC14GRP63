@@ -57,8 +57,9 @@ plus BigDataCloud's free client reverse-geocoding endpoint
 - Three 1 to 5 ratings, one tap each, with visible text labels (not colour or face
   alone): Mood (very sad to very happy, 5 faces), Energy (very low to very high), Stress
   (very low to very high). Each can be cleared.
-- Feelings: an optional multi-select of angry, sad, stable, happy and energized, each
-  with a face icon and a text label. Any number can be selected, including none.
+- Feelings: an optional multi-select of six Apple Health State of Mind labels (frustrated,
+  overwhelmed, calm, peaceful, confident, grateful; migration 0005), each with a face and a
+  text label. Any number can be selected, including none.
 
 ### 3A.2 Location
 - Sign-up asks for home city. Geocode it with the Open-Meteo Geocoding API and let the
@@ -178,7 +179,7 @@ Seattle for 2026-08-20 to 2026-08-29), `location_source = 'home'`. Update
 - New table `screenings`: date, instrument (`phq2` or `phq9`), total score, item 9 score
   (phq9 only), and the date the check-in was offered. No free text. RLS on, user can
   select and delete their own rows only. Settings has "Delete my screening history".
-- Migration `0005_screenings.sql` under the same approval rule.
+- Migration `0006_screenings.sql` under the same approval rule (0005 was used for the feelings labels).
 - Tests with fixed fixtures: trigger fires at exactly 7 of 14 and not at 6 (control);
   the 14-day limit; PHQ-2 at 2 vs 3; PHQ-9 total 6 vs 7; item 9 at 1 with a low total.
   RLS test on `screenings`. Run every earlier check. Write `docs/reports/prompt-03c.md`.

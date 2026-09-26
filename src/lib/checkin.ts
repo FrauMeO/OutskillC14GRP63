@@ -22,14 +22,16 @@ export const RATING_SCALES: RatingScale[] = [
   { key: 'stress', label: 'Stress', levels: ['Very low', 'Low', 'Moderate', 'High', 'Very high'] },
 ];
 
-// `value` is what is stored (fixed by migration 0004). `label` is a synonym shown next to the
-// face, chosen so no word repeats a Mood, Energy or Stress level label.
+// `value` is stored and matches an Apple Health State of Mind label (HKStateOfMind.Label), so a
+// future import can map entries one to one (allowed list fixed by migration 0005). No word
+// repeats a Mood, Energy or Stress level label.
 export const FEELINGS = [
-  { value: 'angry', label: 'Irritated', face: '😠' },
-  { value: 'sad', label: 'Down', face: '😢' },
-  { value: 'stable', label: 'Steady', face: '😐' },
-  { value: 'happy', label: 'Cheerful', face: '🙂' },
-  { value: 'energized', label: 'Lively', face: '⚡' },
+  { value: 'frustrated', label: 'Frustrated', face: '😤' },
+  { value: 'overwhelmed', label: 'Overwhelmed', face: '😩' },
+  { value: 'calm', label: 'Calm', face: '🙂' },
+  { value: 'peaceful', label: 'Peaceful', face: '😌' },
+  { value: 'confident', label: 'Confident', face: '😎' },
+  { value: 'grateful', label: 'Grateful', face: '🥰' },
 ] as const;
 
 export type Feeling = (typeof FEELINGS)[number]['value'];

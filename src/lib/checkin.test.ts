@@ -38,15 +38,15 @@ describe('buildLogFields', () => {
       exercise: '30',
       notes: '  walked  ',
       mood: 4,
-      feelings: ['happy', 'stable'],
+      feelings: ['calm', 'grateful'],
     });
-    expect(fields).toMatchObject({ exercise_minutes: 30, notes: 'walked', mood: 4, feelings: ['happy', 'stable'] });
+    expect(fields).toMatchObject({ exercise_minutes: 30, notes: 'walked', mood: 4, feelings: ['calm', 'grateful'] });
     expect(hasAnyValue(fields!)).toBe(true);
   });
 
   it('removes repeated feelings and ignores out-of-range ratings', () => {
-    const { fields } = buildLogFields({ ...EMPTY_FORM, feelings: ['happy', 'happy'], energy: 7 });
-    expect(fields!.feelings).toEqual(['happy']);
+    const { fields } = buildLogFields({ ...EMPTY_FORM, feelings: ['grateful', 'grateful'], energy: 7 });
+    expect(fields!.feelings).toEqual(['grateful']);
     expect(fields!.energy).toBeNull();
   });
 
@@ -69,8 +69,9 @@ describe('labels', () => {
 
 describe('formFromRow', () => {
   it('round-trips a saved row back into the form, keeping 0 as "0"', () => {
-    const form = formFromRow({ exercise_minutes: 0, sleep_hours: 7.5, water_liters: null, notes: null, mood: 3, feelings: ['sad'] });
-    expect(form).toMatchObject({ exercise: '0', sleep: '7.5', water: '', notes: '', mood: 3, feelings: ['sad'] });
+    const form = formFromRow({ exercise_minutes: 0, sleep_hours: 7.5, water_liters: null, notes: null, mood: 3, feelings: ['overwhelmed', 'joyful'] });
+    // 'joyful' is not an allowed feeling, so it is dropped rather than shown.
+    expect(form).toMatchObject({ exercise: '0', sleep: '7.5', water: '', notes: '', mood: 3, feelings: ['overwhelmed'] });
     expect(buildLogFields(form).fields).toMatchObject({ exercise_minutes: 0, sleep_hours: 7.5, water_liters: null });
   });
 });

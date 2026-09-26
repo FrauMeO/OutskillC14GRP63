@@ -101,6 +101,20 @@ Applied to the new project `gzsawayrorlcjmpssalc` through the Supabase connector
 - Rolled-back test: a new probe table inside a transaction that ends in `raise exception` still had RLS switched on, so `ensure_rls` still works.
 - Security advisor: 2 warnings before, 0 after.
 
+## Prompt 3A: 0005_feelings_apple_labels (2026-09-25)
+
+Applied as migration `feelings_apple_labels` after Miah approved the SQL. 0 rows had feelings, so no data changed.
+
+### What changed
+- Replaced `habit_logs_feelings_check`. Allowed feelings are now `frustrated`, `overwhelmed`, `calm`, `peaceful`, `confident`, `grateful`, each an exact Apple Health State of Mind label (`HKStateOfMind.Label`). The no-repeats rule stays.
+- The migration maps any old values forward (angry to frustrated, sad to overwhelmed, stable to calm, happy to peaceful, energized to confident).
+
+### Why (reverses a 0004 decision)
+- 0004 used the five feelings from the older Prompt 3 text (angry, sad, stable, happy, energized). Miah asked for reflective states rather than reactions, matched to Apple's labels so a future Apple Health import maps one to one, with a sixth, positive feeling (grateful). The faces shown in the app (`src/lib/checkin.ts`) are the app's own; Apple defines only the words.
+
+### Verified
+- `supabase/tests/feelings_test_after_0005.sql` (rolled back): all six save together (control); the old word `happy`, an unselected Apple label `joyful`, and a repeat are blocked.
+
 ## Not schema, but touches the data
 
 - `sample-data/seed_habit_logs.sql` inserts 59 days of sample rows for `msolmsted+demo@gmail.com` using `on conflict (user_id, log_date) do update`. It was run on the new project on 2026-09-25 (59 rows).
