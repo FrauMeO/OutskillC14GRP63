@@ -2,7 +2,7 @@
 // TEMPORARY, for the hackathon; see the removal note in logic.ts.
 // Uses Claude through the official Anthropic SDK. Secrets, set in Supabase (never in the app or repo):
 //   ANTHROPIC_API_KEY  (required)
-//   ANTHROPIC_MODEL    (optional, default claude-opus-5)
+//   ANTHROPIC_MODEL    (optional, default claude-opus-5-5)
 // Nothing is stored. Only today's logged values are sent; hard days get a fixed message instead.
 import Anthropic from 'npm:@anthropic-ai/sdk';
 import { createClient } from 'npm:@supabase/supabase-js@2';
@@ -48,16 +48,16 @@ Deno.serve(async (req) => {
 
   const apiKey = Deno.env.get('ANTHROPIC_API_KEY');
   if (!apiKey) return json({ error: 'The reflection service is not set up yet.' }, 503);
-  const model = Deno.env.get('ANTHROPIC_MODEL') ?? 'claude-opus-5';
+  const model = Deno.env.get('ANTHROPIC_MODEL') ?? 'claude-opus-5-5';
 
   const client = new Anthropic({ apiKey, timeout: 25_000, maxRetries: 1 });
   try {
     const response = await client.beta.messages.create({
       model,
-      max_tokens: 2000, // a few sentences of reply plus room for brief adaptive thinking
+      max_tokens: 4000, // a few sentences of reply plus room for thinking (always on; counts toward the limit)
       system: SYSTEM_PROMPT,
       messages: [{ role: 'user', content: userMessage(day as Day) }],
-      output_config: { effort: 'low' }, // short, simple writing task
+      output_config: { effort: 'low' }, // short, simple writing task; keeps thinking brief and replies fast
       // Server-side fallback: if the model declines, the API re-runs the request on a suitable model.
       betas: ['server-side-fallback-2026-07-01'],
       fallbacks: 'default',
