@@ -104,7 +104,13 @@ function OverviewSection({ summary }: { summary: Summary }) {
           <ul className="mt-3 space-y-2">
             {invites.map((i) => (
               <li key={i.key} className="rounded-lg border border-dashed border-line bg-white p-4">
-                {i.text}
+                <p>{i.text}</p>
+                <details className="mt-2 text-sm">
+                  <summary className="cursor-pointer font-semibold text-spruce/80 underline underline-offset-4">
+                    Why am I seeing this?
+                  </summary>
+                  <p className="mt-2 text-spruce/75">{i.why}</p>
+                </details>
               </li>
             ))}
           </ul>

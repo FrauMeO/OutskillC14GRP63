@@ -263,6 +263,11 @@ decision below should be read in that light.
   `profiles.auto_reflection`, off by default). Off: the card says it is written when you ask. On:
   the Dashboard writes a fresh reflection once per changed entry (notes edits do not count), kept
   in memory only, so nothing is saved.
+- **Download my data, and "Why am I seeing this?".** Also from the scan (privacy worry is rising;
+  unexplained suggestions are ignored). Settings → Your data downloads everything the person holds
+  as JSON, or the daily log as a spreadsheet (CSV), built in the browser from their own rows, so
+  nothing is sent anywhere. Each "Something to try" suggestion now opens to show the evidence from
+  the person's own days, how strong it is, and that it is association, not cause.
 - **Today's weather on the Dashboard.** Miah asked to see the weather that Insights compares with:
   "Today in Atlanta: 15–28°C, dry, …", linking to Insights, with Open-Meteo credited.
 - **Name.** The app is now "Build Your Pillars" in the header, the browser tab and CLAUDE.md,

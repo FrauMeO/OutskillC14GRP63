@@ -80,6 +80,18 @@ describe('gentle invitations', () => {
     }
   });
 
+  it('explains why, with the evidence from the person’s own days', () => {
+    const c = comparison('rainy_day', 'mood', { highAvg: 2.5, lowAvg: 3.5, sentence: 'On rainy days (over 2 mm) your mood averaged 2.5, compared with 3.5 on dry days (40 days).' });
+    const [first, second] = invitations([c], weekVsUsual(rows, today));
+    expect(first.why).toBe(
+      'From your own days: On rainy days (over 2 mm) your mood averaged 2.5, compared with 3.5 on dry days (40 days). This is an early hint: it stood out on its own but may change as you log more days. It shows what went together, not what caused what.',
+    );
+    expect(invitations([{ ...c, tier: 'likely' }], [])[0].why).toMatch(/held up after every comparison/);
+    expect(second.why).toBe(
+      'From your own days: Stress. Higher than your usual: 4 this week, usually 2. This compares this week\'s middle value with your own eight weeks before it, never with anyone else.',
+    );
+  });
+
   it('offers nothing when there is nothing in the data (control)', () => {
     expect(invitations([], [])).toEqual([]);
   });

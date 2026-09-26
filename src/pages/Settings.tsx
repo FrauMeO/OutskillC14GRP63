@@ -5,6 +5,8 @@ import { useAuth } from '../context/AuthContext';
 import PageHeader from '../components/PageHeader';
 import CityPicker from '../components/CityPicker';
 import type { HomeCity } from '../lib/location';
+import { exportFileName, logsToCsv, toJson, type ExportData } from '../lib/export';
+import { toISODate } from '../lib/dates';
 import { AI_REFLECTION_ENABLED } from '../features/aiReflection/AiReflectionCard';
 
 export default function Settings() {
@@ -16,6 +18,8 @@ export default function Settings() {
   const [homeStatus, setHomeStatus] = useState<{ kind: 'ok' | 'error'; text: string } | null>(null);
   const [checkinOn, setCheckinOn] = useState(true);
   const [autoOn, setAutoOn] = useState(false);
+  const [downloading, setDownloading] = useState<'json' | 'csv' | null>(null);
+  const [downloadStatus, setDownloadStatus] = useState<{ kind: 'ok' | 'error'; text: string } | null>(null);
   const [autoStatus, setAutoStatus] = useState<{ kind: 'ok' | 'error'; text: string } | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [reflectStatus, setReflectStatus] = useState<{ kind: 'ok' | 'error'; text: string } | null>(null);
@@ -46,6 +50,43 @@ export default function Settings() {
     } else {
       setReflectStatus({ kind: 'ok', text: next ? 'Gentle check-ins are on.' : 'Gentle check-ins are off.' });
     }
+  }
+
+  // Everything the person has logged, fetched as them (RLS), saved as a file on their device.
+  async function download(kind: 'json' | 'csv') {
+    if (!user) return;
+    setDownloading(kind);
+    setDownloadStatus(null);
+    const [profile, logs, goals, conditions, reflections] = await Promise.all([
+      supabase.from('profiles').select('*').eq('id', user.id).maybeSingle(),
+      supabase.from('habit_logs').select('*').order('log_date'),
+      supabase.from('goals').select('*'),
+      supabase.from('daily_conditions').select('*').order('date'),
+      supabase.from('reflections').select('*').order('offered_on'),
+    ]);
+    const failed = profile.error ?? logs.error ?? goals.error ?? conditions.error ?? reflections.error;
+    if (failed) {
+      setDownloading(null);
+      setDownloadStatus({ kind: 'error', text: `Could not gather your data: ${failed.message}` });
+      return;
+    }
+    const data: ExportData = {
+      profile: profile.data,
+      habit_logs: logs.data ?? [],
+      goals: goals.data ?? [],
+      daily_conditions: conditions.data ?? [],
+      reflections: reflections.data ?? [],
+    };
+    const text = kind === 'json' ? toJson(data, user.email ?? null, new Date().toISOString()) : logsToCsv(data.habit_logs);
+    const url = URL.createObjectURL(new Blob([text], { type: kind === 'json' ? 'application/json' : 'text/csv' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = exportFileName(toISODate(new Date()), kind);
+    a.click();
+    URL.revokeObjectURL(url);
+    setDownloading(null);
+    const days = data.habit_logs.length;
+    setDownloadStatus({ kind: 'ok', text: `Downloaded ${days} logged ${days === 1 ? 'day' : 'days'}. The file is yours to keep.` });
   }
 
   async function toggleAuto(next: boolean) {
@@ -219,6 +260,39 @@ export default function Settings() {
         {reflectStatus && (
           <p role={reflectStatus.kind === 'error' ? 'alert' : 'status'} className={`mt-3 text-sm ${reflectStatus.kind === 'error' ? 'text-alert' : 'text-current'}`}>
             {reflectStatus.text}
+          </p>
+        )}
+      </section>
+
+      <section aria-labelledby="your-data" className="mt-6 max-w-md rounded-lg border border-line bg-white p-6">
+        <h2 id="your-data" className="font-display text-xl font-bold">
+          Your data
+        </h2>
+        <p className="mt-1 text-sm text-spruce/70">
+          Everything you have logged belongs to you. Download it any time: your days, notes, goals, the weather for each
+          day, and your settings. Nothing is sent anywhere else; the file is saved straight to this device.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => download('json')}
+            disabled={downloading !== null}
+            className="min-h-11 rounded-md bg-spruce px-4 font-semibold text-mist hover:bg-spruce-soft disabled:opacity-60"
+          >
+            {downloading === 'json' ? 'Gathering…' : 'Download all my data'}
+          </button>
+          <button
+            type="button"
+            onClick={() => download('csv')}
+            disabled={downloading !== null}
+            className="min-h-11 rounded-md border border-spruce px-4 font-semibold hover:bg-mist disabled:opacity-60"
+          >
+            {downloading === 'csv' ? 'Gathering…' : 'Daily log as a spreadsheet'}
+          </button>
+        </div>
+        {downloadStatus && (
+          <p role={downloadStatus.kind === 'error' ? 'alert' : 'status'} className={`mt-3 text-sm ${downloadStatus.kind === 'error' ? 'text-alert' : 'text-current'}`}>
+            {downloadStatus.text}
           </p>
         )}
       </section>
