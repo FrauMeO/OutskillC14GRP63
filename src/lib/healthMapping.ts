@@ -10,6 +10,7 @@
 //    Google Fit is deprecated in 2026 and is not used.
 // null means the platform has no equivalent: the value is logged in the app only.
 import type { Category } from './dashboard';
+import { FEELINGS } from './checkin';
 
 export type Mapping = {
   pillar: Category;
@@ -99,7 +100,11 @@ export const MAPPINGS: Mapping[] = [
   },
   {
     pillar: 'wellbeing', column: 'feelings', label: 'Feelings', unit: 'labels',
-    apple: { type: 'HKStateOfMind', values: ['frustrated', 'overwhelmed', 'calm', 'peaceful', 'confident', 'grateful'], daily: 'labels match one to one (HKStateOfMind.Label)' },
+    apple: {
+      type: 'HKStateOfMind',
+      values: FEELINGS.map((f) => f.apple),
+      daily: 'labels (HKStateOfMind.Label); ten by name, steady -> content, meh -> indifferent, tired -> drained',
+    },
     healthConnect: null,
     googleHealthApi: null,
   },

@@ -208,6 +208,22 @@ decision below should be read in that light.
   and PHQ-9 results; Health Connect has no mood or stress data; the Google Health API (a web API)
   has Moods; Google Fit is deprecated in 2026. Energy and stress are app only everywhere.
 
+### 15. Thirteen feelings (2026-09-26)
+- Bob (Miah's husband) asked for six more feeling words. Miah added a second neutral and swapped
+  Content for Tired. Final 13: pleasant Calm, Peaceful, Confident, Grateful, Hopeful, Proud;
+  neutral Steady, Meh; unpleasant Frustrated, Overwhelmed, Anxious, Lonely, Tired.
+- Apple mapping: ten by name; Steady -> Content (Miah's choice), Meh -> Indifferent (Apple's only
+  flat label; people only ever see "Meh"), Tired -> Drained. Migration 0008.
+- Noted for translation: "Meh" is informal English.
+
+### 16. Email and domain (2026-09-26)
+- Supabase's built-in email sender hit its hourly limit during testing ("email rate limit
+  exceeded"). Before launch, connect a real email provider under Authentication > Emails > SMTP.
+- Free options compared: Resend (3,000/month, official Lovable connector; recommended), Brevo
+  (300/day), Mailjet (6,000/month, 200/day); SendGrid is no longer free.
+- Any provider needs a domain Miah owns, with SPF and DKIM records. Miah plans to put the domain on
+  Vercel (account msolmsted@gmail.com, username fraumeo, Hobby plan; main team "olmsted-portfolio").
+
 ### Working agreements that emerged
 - Claude shows every migration and waits for approval; destructive or tightening changes state
   the affected row count first.

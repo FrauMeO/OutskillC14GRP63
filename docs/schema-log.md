@@ -149,6 +149,14 @@ Applied as migration `reflections` after Miah approved the design, resources and
 - `supabase/tests/reflections_test_after_0007.sql` (rolled back): setting defaults to on; an offer alone and a completed reflection save (controls); a PHQ-9 total without item 9, a score without a date and a total of 28 are blocked; user A sees 2 rows, user B sees 0, deletes 0 and cannot insert as A; A can delete their own.
 - Security advisor: no findings from this migration.
 
+## 0008_more_feelings (2026-09-26)
+
+Applied as migration `more_feelings` after Miah approved. Loosening only: the allowed feelings grow from 6 to 13 (adds hopeful, proud, steady, meh, anxious, lonely, tired). Every saved value stays valid.
+
+- Why: Bob asked for more feeling words; Miah asked for a second neutral (Steady, Meh) and Tired instead of Content.
+- Stored words are the app's own. `src/lib/checkin.ts` maps each to an Apple State of Mind label: ten by name, steady -> content, meh -> indifferent, tired -> drained.
+- Verified: `supabase/tests/feelings_test_after_0008.sql` (rolled back): all 13 save together (control); Apple's `content`, the old `happy` and a repeat are blocked.
+
 ## Not schema, but touches the data
 
 - `sample-data/seed_habit_logs.sql` (built by `scripts/build-demo-seed.mjs` since Prompt 3A) inserts 59 days of sample rows, check-ins, locations and matching `daily_conditions` for `msolmsted+demo@gmail.com` using `on conflict (user_id, log_date) do update`. It was run on the new project on 2026-09-25 (59 rows).

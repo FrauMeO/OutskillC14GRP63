@@ -32,9 +32,24 @@ describe('health mapping', () => {
     expect(importer).not.toContain('HKQuantityTypeIdentifierBodyMass');
   });
 
-  it('feelings match the app list one to one', () => {
-    const feelings = MAPPINGS.find((m) => m.column === 'feelings')!;
-    expect(feelings.apple!.values).toEqual(FEELINGS.map((f) => f.value));
+  it('every feeling maps to a real Apple State of Mind label, and no two share one', () => {
+    // The 38 HKStateOfMind.Label cases (iOS 18 SDK header).
+    const APPLE = ['amazed', 'amused', 'angry', 'anxious', 'ashamed', 'brave', 'calm', 'content', 'disappointed',
+      'discouraged', 'disgusted', 'embarrassed', 'excited', 'frustrated', 'grateful', 'guilty', 'happy', 'hopeless',
+      'irritated', 'jealous', 'joyful', 'lonely', 'passionate', 'peaceful', 'proud', 'relieved', 'sad', 'scared',
+      'stressed', 'surprised', 'worried', 'annoyed', 'confident', 'drained', 'hopeful', 'indifferent', 'overwhelmed', 'satisfied'];
+    expect(APPLE).toHaveLength(38);
+    const labels = FEELINGS.map((f) => f.apple as string);
+    for (const l of labels) expect(APPLE, l).toContain(l);
+    expect(new Set(labels).size).toBe(labels.length);
+    expect(MAPPINGS.find((m) => m.column === 'feelings')!.apple!.values).toEqual(labels);
+    // Control: a word Apple does not have is caught.
+    expect(APPLE).not.toContain('meh');
+  });
+
+  it('has 13 feelings: 6 pleasant, 2 neutral, 5 unpleasant', () => {
+    const count = (t: string) => FEELINGS.filter((f) => f.tone === t).length;
+    expect([FEELINGS.length, count('pleasant'), count('neutral'), count('unpleasant')]).toEqual([13, 6, 2, 5]);
   });
 
   it('marks app-only measures honestly: energy and stress exist nowhere else', () => {
