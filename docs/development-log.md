@@ -159,6 +159,22 @@ decision below should be read in that light.
 - The demo sample never reaches this (its check-ins have gaps), so browser testing needs a
   dedicated test account or fixture.
 
+### 12. Pacing encouragement and celebrating showing up (2026-09-26)
+- Miah: encouragement "can become cumbersome if issued too often"; randomize it so it never
+  appears more than once every 5 entries. Every two weeks, give positive feedback for completing
+  the daily entry. In the tracker, mark every 5 days of completion (not necessarily sequential).
+- Decisions (Miah chose the recommended option each time):
+  - A completed entry is **any saved day**. Editing an old day is not a new entry.
+  - **Encouragement** appears only in the save confirmation, on entries picked from a fixed random
+    sequence per person with gaps of 5 to 8 entries (`src/lib/milestones.ts`). The always-on line
+    under the dashboard streak was removed. Reflection results keep theirs (they are rare).
+  - **Every 14th entry** gets a soft glow that blooms and fades, with "N days of showing up for
+    yourself." and "Thank you for making time for yourself." With reduced motion, a still colour.
+  - **Every 5th completed day** gets a star and the milestone colour (`sun`) in a new month
+    calendar on Log Habits, with spoken labels such as "your 50th completed day".
+- Guard rail: celebrations mark arrivals only. Nothing marks a missed day, resets or says a run
+  was broken; days without an entry are simply blank.
+
 ### Working agreements that emerged
 - Claude shows every migration and waits for approval; destructive or tightening changes state
   the affected row count first.

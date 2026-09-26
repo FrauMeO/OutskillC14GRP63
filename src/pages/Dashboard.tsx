@@ -8,7 +8,6 @@ import ProgressIndicator from '../components/ProgressIndicator';
 import TrendChart, { type TrendMetric } from '../components/TrendChart';
 import { FEELINGS, RATING_SCALES } from '../lib/checkin';
 import type { GoalConfig } from '../lib/goals';
-import { encouragementFor } from '../lib/encouragement';
 import { OFFER_TEXT, checkinState, type DayRow } from '../lib/reflection';
 import {
   CATEGORY_FIELDS,
@@ -105,7 +104,7 @@ function Value({ label, value, unit, decimals = 0 }: { label: string; value: num
   );
 }
 
-function StreakBanner({ streak, todayIso }: { streak: Streak; todayIso: string }) {
+function StreakBanner({ streak }: { streak: Streak }) {
   const missing = streak.todayMissing.map((c) => CATEGORY_LABELS[c]);
   return (
     <section aria-labelledby="streak" className="mb-6 rounded-lg border border-line bg-white p-5">
@@ -118,7 +117,6 @@ function StreakBanner({ streak, todayIso }: { streak: Streak; todayIso: string }
           : `${streak.days > 0 ? 'Counting through yesterday. ' : ''}Still to log today: ${missing.join(', ')}.`}{' '}
         A day counts when Exercise, Sleep, Nutrition and Wellbeing each have at least one entry.
       </p>
-      <p className="mt-2 italic text-spruce/80">{encouragementFor(todayIso)}</p>
       {!streak.todayComplete && (
         <Link to="/habits" className="mt-2 inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
           Log today
@@ -296,7 +294,7 @@ export default function Dashboard() {
           </div>
         </section>
       )}
-      <StreakBanner streak={streak} todayIso={todayIso} />
+      <StreakBanner streak={streak} />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card title="Exercise" accent={COLORS.exercise}>

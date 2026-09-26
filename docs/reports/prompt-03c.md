@@ -26,6 +26,13 @@ Built; pending Miah's review. Wording, resources and rules as approved on 2026-0
   saving a day, under the streak and on results (never in the crisis message).
 - CLAUDE.md Product principles and `docs/development-log.md` record the purpose and every decision.
 
+## Added after review (2026-09-26)
+- Encouragement paced: at random, never more than once every 5 new entries, only after saving.
+- A glow celebration on every 14th entry; a month calendar on Log Habits with a star on every
+  5th logged day. Tests in `src/lib/milestones.test.ts` (gaps of 5 to 8 over 1000 entries for
+  several people, per-person randomness with a control, 13 vs 14, 5th and 10th days with gaps).
+- Browser: the demo calendar shows stars on the 40th, 45th, 50th, 55th and 60th logged days.
+
 ## Assumptions
 1. "More than 10 sequential entries" means 11 or more consecutive calendar days with a mood or
    stress check-in, ending today or yesterday. A missed day or a habits-only day breaks the run.

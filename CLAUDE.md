@@ -92,7 +92,7 @@ Supabase Authentication settings that the chat could not change through the conn
 **How that shows up in the product**
 
 1. **Reflect, don't judge.** Wording invites noticing ("You logged…", "Days with more sunshine went along with…"), never scoring the person ("good day", "bad day", "failed", "on track").
-2. **No streak shaming or pressure.** Streaks and goals count logging, not meeting targets. Missed days are gaps, never zeros or red marks. Nothing guilts a person for a missing day.
+2. **Celebrate arrivals, never mark misses.** Milestones (every 5th logged day, a glow every 14th entry) count days shown up, in any order. Encouragement appears at most once every 5 new entries, at random. **No streak shaming or pressure.** Streaks and goals count logging, not meeting targets. Missed days are gaps, never zeros or red marks. Nothing guilts a person for a missing day.
 3. **Association, never cause.** Insights say what tends to happen together and always give the number of days. No verbs like "causes", "lowers", "raises".
 4. **Personal, not comparative.** Never compare a person with other people, averages or ideal bodies. Goals are theirs to set, change or leave blank.
 5. **Gentle check-ins, not diagnosis.** Offer one only after a real trend: more than 10 consecutive days of check-ins (the most important rule, Miah). Never use the word "screening" or diagnostic language in the interface. Frame check-ins as reflection: "This is encouragement to reflect a little more deeply today. It is not medical advice." Encourage talking with a trusted friend or family member alongside any support line.

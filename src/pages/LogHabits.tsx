@@ -18,7 +18,8 @@ import {
 } from '../lib/checkin';
 import { chooseLocation, cityNameFor, deviceCoordinates, type HomeCity, type LoggedLocation } from '../lib/location';
 import { ensureConditions } from '../lib/conditions';
-import { encouragementFor } from '../lib/encouragement';
+import MonthCalendar from '../components/MonthCalendar';
+import { celebrationText, dayNumbers, encouragementLine, isCelebrationEntry, isEncouragementEntry } from '../lib/milestones';
 
 type Flash = { kind: 'ok' | 'error'; text: string } | null;
 
@@ -105,18 +106,18 @@ export default function LogHabits() {
   const [flash, setFlash] = useState<Flash>(null);
   const [home, setHome] = useState<HomeCity | null>(null);
   const [homeLoaded, setHomeLoaded] = useState(false);
-  const [loggedDates, setLoggedDates] = useState<Set<string>>(new Set());
+  const [allDates, setAllDates] = useState<string[]>([]);
+  const [celebration, setCelebration] = useState<string | null>(null);
 
   const week = lastNDays(7).map(toISODate);
+  const loggedDates = new Set(allDates);
 
+  // Every logged date (dates only), for the 7-day row, the month calendar and entry numbers.
   const loadWeek = useCallback(async () => {
-    const days = lastNDays(7).map(toISODate);
-    const { data } = await supabase
-      .from('habit_logs')
-      .select('log_date')
-      .gte('log_date', days[0])
-      .lte('log_date', days[days.length - 1]);
-    setLoggedDates(new Set((data ?? []).map((r) => r.log_date)));
+    const { data } = await supabase.from('habit_logs').select('log_date').order('log_date');
+    const dates = (data ?? []).map((r) => r.log_date);
+    setAllDates(dates);
+    return dates;
   }, []);
 
   useEffect(() => {
@@ -209,6 +210,8 @@ export default function LogHabits() {
     if (!hasAnyValue(fields) && !isExisting) return setErrors(['Enter at least one value before saving.']);
 
     setSaving(true);
+    setCelebration(null);
+    const wasNew = !isExisting; // only a new day counts as a new entry
     // Device location only describes where you are now, so it is used only when logging today.
     const isToday = date === todayIso;
     let device = null;
@@ -239,7 +242,8 @@ export default function LogHabits() {
 
     setIsExisting(true);
     setExistingLocation(place);
-    await loadWeek();
+    const dates = await loadWeek();
+    const entry = dates.length; // this new day's entry number
 
     let weatherNote = '';
     if (!place) {
@@ -253,7 +257,10 @@ export default function LogHabits() {
       }
     }
     setSaving(false);
-    setFlash({ kind: 'ok', text: `Saved for ${longDate(date)}.${weatherNote} ${encouragementFor(todayIso)}` });
+    // Encouragement at random, never more than once every 5 new entries; a glow every 14th.
+    const kind = wasNew && user && isEncouragementEntry(user.id, entry) ? ` ${encouragementLine(user.id, entry)}` : '';
+    if (wasNew && isCelebrationEntry(entry)) setCelebration(celebrationText(entry));
+    setFlash({ kind: 'ok', text: `Saved for ${longDate(date)}.${weatherNote}${kind}` });
   }
 
   return (
@@ -274,6 +281,16 @@ export default function LogHabits() {
             <CityPicker onPick={saveHome} />
           </div>
         </section>
+      )}
+
+      {celebration && (
+        <div role="status" className="celebrate mb-4 max-w-2xl rounded-lg border-2 px-5 py-4">
+          <p className="font-display text-xl font-bold">
+            <span aria-hidden className="text-sun">★ </span>
+            {celebration}
+          </p>
+          <p className="mt-1 text-spruce/80">Thank you for making time for yourself.</p>
+        </div>
       )}
 
       {flash && (
@@ -457,6 +474,9 @@ export default function LogHabits() {
           })}
         </ul>
         <p className="mt-2 text-sm text-spruce/70">A check mark means that day has an entry. Choose a day to open it.</p>
+        <div className="mt-6">
+          <MonthCalendar dayNumbers={dayNumbers(allDates)} todayIso={todayIso} selected={date} onSelect={setDate} />
+        </div>
       </section>
     </>
   );
