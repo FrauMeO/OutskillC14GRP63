@@ -9,6 +9,8 @@ import Goals from './pages/Goals';
 import Insights from './pages/Insights';
 import Reflect from './pages/Reflect';
 import Settings from './pages/Settings';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 export default function App() {
   return (
@@ -16,7 +18,11 @@ export default function App() {
       <Route element={<PublicOnlyRoute />}>
         <Route path="/login" element={<AuthPage mode="login" />} />
         <Route path="/signup" element={<AuthPage mode="signup" />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Route>
+
+      {/* Open signed in or not: the emailed link signs the person in, then they choose a password. */}
+      <Route path="/reset-password" element={<ResetPassword />} />
 
       <Route element={<ProtectedRoute />}>
         <Route element={<AppLayout />}>
