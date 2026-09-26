@@ -30,6 +30,13 @@ const logs = habits.map((h) => {
     exercise_minutes: num(h.exercise_minutes),
     sleep_hours: num(h.sleep_hours),
     water_liters: num(h.water_liters),
+    steps: num(h.steps),
+    stand_hours: num(h.stand_hours),
+    active_calories: num(h.active_calories),
+    time_in_bed_hours: num(h.time_in_bed_hours),
+    awake_minutes: num(h.awake_minutes),
+    calories_consumed: num(h.calories_consumed),
+    source: 'apple_health',
     mood: c ? num(c.mood) : null,
     energy: c ? num(c.energy) : null,
     stress: c ? num(c.stress) : null,
@@ -69,8 +76,10 @@ do $$ begin
 end $$;
 
 insert into public.habit_logs (user_id, log_date, exercise_minutes, sleep_hours, water_liters, notes,
+  steps, stand_hours, active_calories, time_in_bed_hours, awake_minutes, calories_consumed, source,
   mood, energy, stress, feelings, location_name, latitude, longitude, location_source)
 select u.id, v.log_date::date, v.ex, v.sleep, v.water, 'Imported: sample Apple Health export and sample check-in',
+  v.steps, v.stand, v.active, v.in_bed, v.awake, v.food, 'apple_health',
   v.mood, v.energy, v.stress, v.feelings, v.place, v.lat, v.lon, v.src
 from auth.users u
 cross join (values
@@ -78,17 +87,26 @@ ${logs
   .map(
     (r) =>
       `  ('${r.log_date}', ${q(r.exercise_minutes)}::int, ${q(r.sleep_hours)}::numeric, ${q(r.water_liters)}::numeric, ` +
+      `${q(r.steps)}::int, ${q(r.stand_hours)}::numeric, ${q(r.active_calories)}::int, ${q(r.time_in_bed_hours)}::numeric, ` +
+      `${q(r.awake_minutes)}::int, ${q(r.calories_consumed)}::int, ` +
       `${q(r.mood)}::smallint, ${q(r.energy)}::smallint, ${q(r.stress)}::smallint, ${arr(r.feelings)}, ` +
       `${q(r.location_name)}, ${r.latitude}::numeric, ${r.longitude}::numeric, '${r.location_source}')`,
   )
   .join(',\n')}
-) as v(log_date, ex, sleep, water, mood, energy, stress, feelings, place, lat, lon, src)
+) as v(log_date, ex, sleep, water, steps, stand, active, in_bed, awake, food, mood, energy, stress, feelings, place, lat, lon, src)
 where u.email = '${email}'
 on conflict (user_id, log_date) do update
   set exercise_minutes = excluded.exercise_minutes,
       sleep_hours      = excluded.sleep_hours,
       water_liters     = excluded.water_liters,
       notes            = excluded.notes,
+      steps            = excluded.steps,
+      stand_hours      = excluded.stand_hours,
+      active_calories  = excluded.active_calories,
+      time_in_bed_hours = excluded.time_in_bed_hours,
+      awake_minutes    = excluded.awake_minutes,
+      calories_consumed = excluded.calories_consumed,
+      source           = excluded.source,
       mood             = excluded.mood,
       energy           = excluded.energy,
       stress           = excluded.stress,

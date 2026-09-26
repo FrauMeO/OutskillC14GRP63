@@ -28,6 +28,9 @@ function compare(s) {
     if (!h) { problems.push(`${d}: not a sample day`); continue; }
     const expect = {
       exercise_minutes: num(h.exercise_minutes), sleep_hours: num(h.sleep_hours), water_liters: num(h.water_liters),
+      steps: num(h.steps), stand_hours: num(h.stand_hours), active_calories: num(h.active_calories),
+      time_in_bed_hours: num(h.time_in_bed_hours), awake_minutes: num(h.awake_minutes), calories_consumed: num(h.calories_consumed),
+      source: 'apple_health',
       mood: c ? num(c.mood) : null, energy: c ? num(c.energy) : null, stress: c ? num(c.stress) : null,
       feelings: c && c.feelings ? c.feelings : null,
       location_name: w.location_name, latitude: w.latitude, longitude: w.longitude,

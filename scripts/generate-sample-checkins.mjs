@@ -34,11 +34,16 @@ const pick = (list, n) => {
 };
 
 const conditions = JSON.parse(readFileSync(new URL('conditions.json', dir), 'utf8'));
-const [, ...lines] = readFileSync(new URL('habit_logs.csv', dir), 'utf8').trim().split('\n');
-const days = lines.map((l) => {
-  const [date, , sleep] = l.split(',');
-  return { date, sleep: sleep === '' ? null : Number(sleep) };
-});
+const [header, ...lines] = readFileSync(new URL('habit_logs.csv', dir), 'utf8').trim().split('\n');
+const cols = header.split(',');
+const col = (row, name) => row[cols.indexOf(name)];
+// Check-ins are drawn only for days with exercise, sleep or water data (the original 59 sample
+// days). Days that only gained steps or stand hours in Prompt 4 (2026-09-14) get no check-in, so
+// adding them never shifts the random draws, and the check-ins stay exactly as validated in 3B.
+const days = lines
+  .map((l) => l.split(','))
+  .filter((r) => ['exercise_minutes', 'sleep_hours', 'water_liters'].some((f) => col(r, f) !== ''))
+  .map((r) => ({ date: col(r, 'log_date'), sleep: col(r, 'sleep_hours') === '' ? null : Number(col(r, 'sleep_hours')) }));
 
 const rows = [];
 for (const { date, sleep } of days) {

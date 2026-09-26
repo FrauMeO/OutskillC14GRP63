@@ -8,7 +8,11 @@
 //  - Some nights a second source (iPhone) disagrees with the Watch: one source wins, as in Apple Health
 //  - Exercise minutes arrive in small chunks from the Watch
 //  - Water logged some days and not others (missing = null, not 0)
-//  - Irrelevant types (steps from two devices, heart rate) that the importer must ignore
+//  - Steps from two devices for the same hours (Watch and iPhone): count one source, not both
+//  - Stand hours, active energy (Watch) and dietary energy (a food app, not every day)
+//  - Heart rate, which the importer must ignore
+// New fields added in Prompt 4 use a second random sequence (rand2), so every value that existed
+// before (exercise, sleep, water, steps) is unchanged.
 import { mkdirSync, writeFileSync } from 'node:fs';
 
 const SEED = 20260924;
@@ -19,6 +23,9 @@ const OUT = new URL('../sample-data/', import.meta.url);
 
 let s = SEED;
 const rand = () => { s |= 0; s = (s + 0x6d2b79f5) | 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+let s2 = SEED + 4;
+const rand2 = () => { s2 |= 0; s2 = (s2 + 0x6d2b79f5) | 0; let t = Math.imul(s2 ^ (s2 >>> 15), 1 | s2); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+const int2 = (a, b) => Math.floor(a + rand2() * (b - a + 1));
 const between = (a, b) => a + rand() * (b - a);
 const int = (a, b) => Math.floor(between(a, b + 1));
 
@@ -32,6 +39,7 @@ const MIN = 60_000;
 const WATCH = 'sourceName="Demo’s Apple Watch" sourceVersion="11.0" device="&lt;&lt;HKDevice: 0x0&gt;, name:Apple Watch, manufacturer:Apple Inc., model:Watch, hardware:Watch7,1, software:11.0&gt;"';
 const PHONE = 'sourceName="Demo’s iPhone" sourceVersion="19.0" device="&lt;&lt;HKDevice: 0x0&gt;, name:iPhone, manufacturer:Apple Inc., model:iPhone, hardware:iPhone17,1, software:19.0&gt;"';
 const WATERAPP = 'sourceName="WaterMinder" sourceVersion="5.2"';
+const FOODAPP = 'sourceName="MyFitnessPal" sourceVersion="24.1"';
 
 const records = [];
 const rec = (type, src, unit, start, end, value, off, tz) => {
@@ -40,8 +48,9 @@ const rec = (type, src, unit, start, end, value, off, tz) => {
   records.push(tz ? `${line}>\n  <MetadataEntry key="HKTimeZone" value="${tz}"/>\n </Record>` : `${line}/>`);
 };
 
-const expected = {}; // date -> { exercise_minutes, sleep_hours, water_liters }
-const touch = (d) => (expected[d] ??= { exercise_minutes: null, sleep_hours: null, water_liters: null });
+const FIELDS = ['exercise_minutes', 'sleep_hours', 'water_liters', 'steps', 'stand_hours', 'active_calories', 'time_in_bed_hours', 'awake_minutes', 'calories_consumed'];
+const expected = {}; // date -> one value per field, null when not logged
+const touch = (d) => (expected[d] ??= Object.fromEntries(FIELDS.map((f) => [f, null])));
 
 for (let i = 0; i < DAYS; i++) {
   const inSeattle = i >= TRIP.startIdx && i <= TRIP.endIdx;
@@ -55,7 +64,7 @@ for (let i = 0; i < DAYS; i++) {
   if (rand() < 0.9) {
     let t = base - 1440 * MIN + (22 * 60 + int(10, 150)) * MIN; // bedtime 22:10 to 00:30
     const inBedStart = t;
-    let asleep = 0;
+    let asleep = 0, awake = 0;
     const target = between(weekend ? 6.5 : 5.5, weekend ? 9 : 8) * 60;
     const stages = ['Core', 'Deep', 'Core', 'REM', 'Awake'];
     let k = 0;
@@ -63,7 +72,7 @@ for (let i = 0; i < DAYS; i++) {
       const st = stages[k++ % stages.length];
       const len = st === 'Awake' ? int(2, 12) : Math.min(int(15, 60), Math.ceil(target - asleep));
       rec('HKCategoryTypeIdentifierSleepAnalysis', WATCH, '', t, t + len * MIN, `HKCategoryValueSleepAnalysisAsleep${st === 'Awake' ? '' : st}`.replace('AsleepAwake', 'Awake').replace(/Asleep$/, 'Awake'), off);
-      if (st !== 'Awake') asleep += len;
+      if (st !== 'Awake') asleep += len; else awake += len;
       t += len * MIN;
     }
     rec('HKCategoryTypeIdentifierSleepAnalysis', PHONE, '', inBedStart - 10 * MIN, t + 8 * MIN, 'HKCategoryValueSleepAnalysisInBed', off);
@@ -71,6 +80,8 @@ for (let i = 0; i < DAYS; i++) {
     // Apple Health uses one source per night (Watch by default), so this must not change the total.
     if (i % 9 === 4) rec('HKCategoryTypeIdentifierSleepAnalysis', PHONE, '', inBedStart + 30 * MIN, inBedStart + 150 * MIN, 'HKCategoryValueSleepAnalysisAsleepUnspecified', off);
     touch(day).sleep_hours = Math.round((asleep / 60) * 100) / 100;
+    touch(day).awake_minutes = awake;
+    touch(day).time_in_bed_hours = Math.round(((t + 8 * MIN - (inBedStart - 10 * MIN)) / 3_600_000) * 100) / 100;
   }
 
   // ---- Exercise (Apple Exercise Time, in chunks) ----
@@ -90,12 +101,42 @@ for (let i = 0; i < DAYS; i++) {
     touch(day).water_liters = Math.round(ml) / 1000;
   }
 
-  // ---- Noise the importer must ignore ----
+  // ---- Steps from both devices (the Watch counts; the iPhone overlaps it) and heart rate ----
+  let watchSteps = 0;
   for (let h = 8; h <= 20; h += 4) {
     const t = base + h * 60 * MIN; const n = int(200, 2500);
+    const w = n + int(-50, 50);
     rec('HKQuantityTypeIdentifierStepCount', PHONE, 'count', t, t + 55 * MIN, n, off);
-    rec('HKQuantityTypeIdentifierStepCount', WATCH, 'count', t, t + 55 * MIN, n + int(-50, 50), off);
+    rec('HKQuantityTypeIdentifierStepCount', WATCH, 'count', t, t + 55 * MIN, w, off);
     rec('HKQuantityTypeIdentifierHeartRate', WATCH, 'count/min', t, t, int(58, 110), off);
+    watchSteps += w;
+  }
+  touch(day).steps = watchSteps;
+
+  // ---- Prompt 4 fields (rand2 only) ----
+  // Stand hours: one record per waking hour, Stood or Idle.
+  let stood = 0;
+  for (let h = 7; h <= 21; h++) {
+    const t = base + h * 60 * MIN;
+    const up = rand2() < (weekend ? 0.55 : 0.7);
+    rec('HKCategoryTypeIdentifierAppleStandHour', WATCH, '', t, t + 60 * MIN, up ? 'HKCategoryValueAppleStandHourStood' : 'HKCategoryValueAppleStandHourIdle', off);
+    if (up) stood++;
+  }
+  touch(day).stand_hours = stood;
+  // Active energy: hourly chunks from the Watch, more on exercise days.
+  let kcal = 0;
+  for (let h = 7; h <= 21; h++) {
+    const t = base + h * 60 * MIN;
+    const v = int2(8, 30) + (ex > 0 && h === 18 ? int2(120, 320) : 0);
+    rec('HKQuantityTypeIdentifierActiveEnergyBurned', WATCH, 'kcal', t, t + 60 * MIN, v, off);
+    kcal += v;
+  }
+  touch(day).active_calories = kcal;
+  // Food: logged on about 60% of days, three or four entries.
+  if (rand2() < 0.6) {
+    let food = 0;
+    for (let n = int2(3, 4); n > 0; n--) { const v = int2(250, 850); const t = base + int2(7 * 60, 21 * 60) * MIN; rec('HKQuantityTypeIdentifierDietaryEnergyConsumed', FOODAPP, 'kcal', t, t, v, off); food += v; }
+    touch(day).calories_consumed = food;
   }
 }
 

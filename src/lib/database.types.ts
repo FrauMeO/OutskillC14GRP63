@@ -1,4 +1,4 @@
-// Generated from the live database (project gzsawayrorlcjmpssalc) after migration 0004,
+// Generated from the live database (project gzsawayrorlcjmpssalc) after migration 0006,
 // with the Supabase connector's generate_typescript_types. Regenerate after every schema change:
 //   npx supabase gen types typescript --project-id gzsawayrorlcjmpssalc > src/lib/database.types.ts
 // then re-add the aliases at the bottom.
@@ -128,6 +128,13 @@ export type Database = {
       }
       habit_logs: {
         Row: {
+          active_calories: number | null
+          awake_minutes: number | null
+          calories_consumed: number | null
+          source: string
+          stand_hours: number | null
+          steps: number | null
+          time_in_bed_hours: number | null
           created_at: string
           energy: number | null
           exercise_minutes: number | null
@@ -146,6 +153,13 @@ export type Database = {
           water_liters: number | null
         }
         Insert: {
+          active_calories?: number | null
+          awake_minutes?: number | null
+          calories_consumed?: number | null
+          source?: string
+          stand_hours?: number | null
+          steps?: number | null
+          time_in_bed_hours?: number | null
           created_at?: string
           energy?: number | null
           exercise_minutes?: number | null
@@ -164,6 +178,13 @@ export type Database = {
           water_liters?: number | null
         }
         Update: {
+          active_calories?: number | null
+          awake_minutes?: number | null
+          calories_consumed?: number | null
+          source?: string
+          stand_hours?: number | null
+          steps?: number | null
+          time_in_bed_hours?: number | null
           created_at?: string
           energy?: number | null
           exercise_minutes?: number | null
