@@ -38,6 +38,7 @@ export type Feeling = (typeof FEELINGS)[number]['value'];
 
 export type LogFormValues = {
   exercise: string;
+  steps: string;
   sleep: string;
   water: string;
   notes: string;
@@ -49,6 +50,7 @@ export type LogFormValues = {
 
 export type LogFields = {
   exercise_minutes: number | null;
+  steps: number | null;
   sleep_hours: number | null;
   water_liters: number | null;
   notes: string | null;
@@ -60,6 +62,7 @@ export type LogFields = {
 
 export const EMPTY_FORM: LogFormValues = {
   exercise: '',
+  steps: '',
   sleep: '',
   water: '',
   notes: '',
@@ -73,6 +76,7 @@ export const NOTES_MAX = 500;
 
 const NUMBER_FIELDS = {
   exercise: { label: 'Exercise', unit: 'minutes', min: 0, max: 1440, whole: true },
+  steps: { label: 'Steps', unit: 'steps', min: 0, max: 200000, whole: true },
   sleep: { label: 'Sleep', unit: 'hours', min: 0, max: 24, whole: false },
   water: { label: 'Water', unit: 'liters', min: 0, max: 20, whole: false },
 } as const;
@@ -116,6 +120,7 @@ export function buildLogFields(values: LogFormValues): { fields: LogFields | nul
   return {
     fields: {
       exercise_minutes: parsed.exercise,
+      steps: parsed.steps,
       sleep_hours: parsed.sleep,
       water_liters: parsed.water,
       notes: notes === '' ? null : notes,
@@ -137,6 +142,7 @@ export function formFromRow(
   const text = (n: number | null | undefined) => (n === null || n === undefined ? '' : String(n));
   return {
     exercise: text(row.exercise_minutes),
+    steps: text(row.steps),
     sleep: text(row.sleep_hours),
     water: text(row.water_liters),
     notes: row.notes ?? '',

@@ -221,6 +221,8 @@ export default function LogHabits() {
       {
         log_date: date,
         ...fields,
+        // Entered or changed by hand, so the dashboard shows bars rather than Apple Health rings.
+        source: 'manual',
         location_name: place?.name ?? null,
         latitude: place?.latitude ?? null,
         longitude: place?.longitude ?? null,
@@ -340,7 +342,7 @@ export default function LogHabits() {
           <h2 id="habits" className="font-display text-xl font-bold">
             Habits
           </h2>
-          <div className="mt-4 grid gap-4 sm:grid-cols-3">
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <label className="block text-sm font-medium">
               Exercise (minutes)
               <input
@@ -352,6 +354,19 @@ export default function LogHabits() {
                 step={1}
                 value={form.exercise}
                 onChange={(e) => set('exercise', e.target.value)}
+              />
+            </label>
+            <label className="block text-sm font-medium">
+              Steps
+              <input
+                className={`${input} mt-1.5`}
+                type="number"
+                inputMode="numeric"
+                min={0}
+                max={200000}
+                step={1}
+                value={form.steps}
+                onChange={(e) => set('steps', e.target.value)}
               />
             </label>
             <label className="block text-sm font-medium">
