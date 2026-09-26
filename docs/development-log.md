@@ -246,6 +246,13 @@ decision below should be read in that light.
   The top now shows the last four weeks (days logged per pillar), this week against the person's
   own usual (medians, previous eight weeks), and up to two gentle invitations drawn from their own
   patterns. Invitations say "if you like" and never "should" or "because".
+- **Weekly coach (Michael's AI coach, reworked).** Michael wrote a coach (new table, new function,
+  a card). Checked against the schema: `select("*")` would have sent location columns, its CORS
+  headers would block the browser call, and it saved AI text. Claude first proposed a reflection
+  without goals; Miah pushed back: "there is a way to view a coach differently than a judge". So:
+  "Coach me on my week" on the existing card, with the person's own goals, where a goal not
+  reached is information, never failure, and one small next step is offered as an invitation.
+  Same function and safeguards; calories-eaten goals are never sent; nothing saved.
 - **Today's weather on the Dashboard.** Miah asked to see the weather that Insights compares with:
   "Today in Atlanta: 15–28°C, dry, …", linking to Insights, with Open-Meteo credited.
 - **Name.** The app is now "Build Your Pillars" in the header, the browser tab and CLAUDE.md,
