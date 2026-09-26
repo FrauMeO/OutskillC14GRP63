@@ -43,8 +43,10 @@ Deno.serve(async (req) => {
   if (error) return json({ error: 'Could not read your entry.' }, 500);
   if (!day) return json({ error: 'There is no entry for that day yet.' }, 404);
 
-  if (isHardDay(day as Day)) console.log('daily-reflection: hard day, fixed message');
-  if (isHardDay(day as Day)) return json({ text: HARD_DAY_MESSAGE, source: 'fixed' });
+  if (isHardDay(day as Day)) {
+    console.log('daily-reflection: hard day, fixed message');
+    return json({ text: HARD_DAY_MESSAGE, source: 'fixed' });
+  }
   if (describeDay(day as Day).length === 0) return json({ text: FALLBACK_MESSAGE, source: 'fixed' });
 
   // The secret was saved in the dashboard as Anthropic_API_Key; accept either spelling.
