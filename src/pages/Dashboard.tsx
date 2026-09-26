@@ -11,6 +11,7 @@ import type { GoalConfig } from '../lib/goals';
 import { OFFER_TEXT, checkinState, type DayRow } from '../lib/reflection';
 import { PILLARS, PILLAR_ORDER } from '../lib/pillars';
 import AiReflectionCard from '../features/aiReflection/AiReflectionCard';
+import TodayWeather from '../components/TodayWeather';
 import {
   CATEGORY_FIELDS,
   CATEGORY_LABELS,
@@ -298,6 +299,7 @@ export default function Dashboard() {
         </section>
       )}
       <StreakBanner streak={streak} />
+      {user && <TodayWeather userId={user.id} todayIso={todayIso} />}
       {/* TEMPORARY (hackathon): AI reflection on today. Remove with src/features/aiReflection. */}
       <AiReflectionCard date={todayIso} hasEntry={Boolean(today)} />
 
