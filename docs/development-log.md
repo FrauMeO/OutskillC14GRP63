@@ -257,6 +257,12 @@ decision below should be read in that light.
   (a third quit one because it made them feel worse; broken streaks make people give up). A day
   counts when anything is logged, any 4 logged days in the last 7 make a full week, a week in
   progress never breaks the run, and nothing names missed days or a lost streak.
+- **Reflection on demand or automatic: the person chooses.** Team feedback: success criterion 1.3
+  says the AI summary updates after each log, but the reflection was written on demand. Miah chose
+  a Settings switch, "Write my daily reflection automatically after I log" (migration 0009,
+  `profiles.auto_reflection`, off by default). Off: the card says it is written when you ask. On:
+  the Dashboard writes a fresh reflection once per changed entry (notes edits do not count), kept
+  in memory only, so nothing is saved.
 - **Today's weather on the Dashboard.** Miah asked to see the weather that Insights compares with:
   "Today in Atlanta: 15–28°C, dry, …", linking to Insights, with Open-Meteo credited.
 - **Name.** The app is now "Build Your Pillars" in the header, the browser tab and CLAUDE.md,

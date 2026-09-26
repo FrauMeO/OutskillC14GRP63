@@ -147,6 +147,7 @@ function Skeleton() {
 export default function Dashboard() {
   const { user } = useAuth();
   const [name, setName] = useState<string | null>(null);
+  const [autoReflection, setAutoReflection] = useState(false);
   const [rows, setRows] = useState<Row[]>([]);
   const [streakRows, setStreakRows] = useState<Row[]>([]);
   const [goals, setGoals] = useState<{ goal_type: string; target_value: unknown }[]>([]);
@@ -164,7 +165,7 @@ export default function Dashboard() {
     const streakFields = ['log_date', ...Object.values(CATEGORY_FIELDS).flat()].join(', ');
     // RLS limits every query to the signed-in user's rows; no user_id filter is needed.
     const [profileRes, logsRes, streakRes, goalsRes] = await Promise.all([
-      supabase.from('profiles').select('full_name').eq('id', user.id).maybeSingle(),
+      supabase.from('profiles').select('full_name, auto_reflection').eq('id', user.id).maybeSingle(),
       supabase.from('habit_logs').select('*').gte('log_date', addDays(todayIso, -6)).lte('log_date', todayIso),
       // Separate query for the weekly rhythm: only dates and the category columns, up to 365 days.
       supabase.from('habit_logs').select(streakFields).gte('log_date', addDays(todayIso, -364)).lte('log_date', todayIso),
@@ -175,6 +176,7 @@ export default function Dashboard() {
       setError(firstError.message);
     } else {
       setName(profileRes.data?.full_name ?? null);
+      setAutoReflection(profileRes.data?.auto_reflection ?? false);
       setRows((logsRes.data ?? []) as unknown as Row[]);
       setStreakRows((streakRes.data ?? []) as unknown as Row[]);
       setGoals(goalsRes.data ?? []);
@@ -302,7 +304,7 @@ export default function Dashboard() {
       <RhythmBanner rhythm={rhythm} />
       {user && <TodayWeather userId={user.id} todayIso={todayIso} />}
       {/* TEMPORARY (hackathon): AI reflection on today. Remove with src/features/aiReflection. */}
-      <AiReflectionCard date={todayIso} hasEntry={Boolean(today)} />
+      <AiReflectionCard date={todayIso} today={today ?? null} auto={autoReflection} />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card title={PILLARS.nutrition.name} subtitle={PILLARS.nutrition.subtitle} accent={COLORS.nutrition}>

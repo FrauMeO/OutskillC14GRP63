@@ -1,6 +1,7 @@
 // Daily AI reflection: TEMPORARY, for the hackathon (Miah, 2026-09-26). Remove after judging:
 // delete supabase/functions/daily-reflection, src/features/aiReflection, the VITE_AI_REFLECTION
-// setting, and the two lines that render it in src/pages/Dashboard.tsx.
+// setting, the two lines that render it in src/pages/Dashboard.tsx, the "Daily reflection" section
+// in src/pages/Settings.tsx, and (with a new migration) the profiles.auto_reflection column (0009).
 //
 // Pure logic, shared by the Edge Function and the unit tests (no Deno or browser APIs here).
 // Rules come from CLAUDE.md, Product principles: reflect, don't judge; association, not cause;

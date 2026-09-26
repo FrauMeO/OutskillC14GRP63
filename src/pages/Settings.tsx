@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import PageHeader from '../components/PageHeader';
 import CityPicker from '../components/CityPicker';
 import type { HomeCity } from '../lib/location';
+import { AI_REFLECTION_ENABLED } from '../features/aiReflection/AiReflectionCard';
 
 export default function Settings() {
   const { user, signOut } = useAuth();
@@ -14,6 +15,8 @@ export default function Settings() {
   const [homeCity, setHomeCity] = useState<string | null>(null);
   const [homeStatus, setHomeStatus] = useState<{ kind: 'ok' | 'error'; text: string } | null>(null);
   const [checkinOn, setCheckinOn] = useState(true);
+  const [autoOn, setAutoOn] = useState(false);
+  const [autoStatus, setAutoStatus] = useState<{ kind: 'ok' | 'error'; text: string } | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [reflectStatus, setReflectStatus] = useState<{ kind: 'ok' | 'error'; text: string } | null>(null);
 
@@ -21,13 +24,14 @@ export default function Settings() {
     if (!user) return;
     supabase
       .from('profiles')
-      .select('full_name, home_city, gentle_checkin_enabled')
+      .select('full_name, home_city, gentle_checkin_enabled, auto_reflection')
       .eq('id', user.id)
       .maybeSingle()
       .then(({ data }) => {
         setFullName(data?.full_name ?? '');
         setHomeCity(data?.home_city ?? null);
         setCheckinOn(data?.gentle_checkin_enabled ?? true);
+        setAutoOn(data?.auto_reflection ?? false);
       });
   }, [user]);
 
@@ -41,6 +45,22 @@ export default function Settings() {
       setReflectStatus({ kind: 'error', text: error.message });
     } else {
       setReflectStatus({ kind: 'ok', text: next ? 'Gentle check-ins are on.' : 'Gentle check-ins are off.' });
+    }
+  }
+
+  async function toggleAuto(next: boolean) {
+    if (!user) return;
+    setAutoStatus(null);
+    setAutoOn(next);
+    const { error } = await supabase.from('profiles').update({ auto_reflection: next }).eq('id', user.id);
+    if (error) {
+      setAutoOn(!next);
+      setAutoStatus({ kind: 'error', text: error.message });
+    } else {
+      setAutoStatus({
+        kind: 'ok',
+        text: next ? 'Your daily reflection will be written after each log.' : 'Your daily reflection is written when you ask for it.',
+      });
     }
   }
 
@@ -134,6 +154,32 @@ export default function Settings() {
           </p>
         )}
       </section>
+
+      {AI_REFLECTION_ENABLED && (
+        <section aria-labelledby="ai-settings" className="mt-6 max-w-md rounded-lg border border-line bg-white p-6">
+          <h2 id="ai-settings" className="font-display text-xl font-bold">
+            Daily reflection
+          </h2>
+          <p className="mt-1 text-sm text-spruce/70">
+            Choose when the few gentle sentences about your day are written. Either way, only today’s numbers, ratings and
+            feelings are sent to Claude (Anthropic), never your name, email, location or notes, and nothing is saved.
+          </p>
+          <label className="mt-4 flex min-h-11 items-center gap-3">
+            <input type="checkbox" className="h-5 w-5" checked={autoOn} onChange={(e) => toggleAuto(e.target.checked)} />
+            <span className="font-medium">Write my daily reflection automatically after I log</span>
+          </label>
+          <p className="mt-1 text-sm text-spruce/70">
+            {autoOn
+              ? 'On: each time you log or change today, a fresh reflection is waiting on your Dashboard.'
+              : 'Off: the reflection is written only when you ask for it on the Dashboard.'}
+          </p>
+          {autoStatus && (
+            <p role={autoStatus.kind === 'error' ? 'alert' : 'status'} className={`mt-3 text-sm ${autoStatus.kind === 'error' ? 'text-alert' : 'text-current'}`}>
+              {autoStatus.text}
+            </p>
+          )}
+        </section>
+      )}
 
       <section aria-labelledby="reflection" className="mt-6 max-w-md rounded-lg border border-line bg-white p-6">
         <h2 id="reflection" className="font-display text-xl font-bold">

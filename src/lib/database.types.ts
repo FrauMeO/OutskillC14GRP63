@@ -206,6 +206,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          auto_reflection: boolean
           gentle_checkin_enabled: boolean
           created_at: string
           full_name: string | null
@@ -216,6 +217,7 @@ export type Database = {
           id: string
         }
         Insert: {
+          auto_reflection?: boolean
           gentle_checkin_enabled?: boolean
           created_at?: string
           full_name?: string | null
@@ -226,6 +228,7 @@ export type Database = {
           id: string
         }
         Update: {
+          auto_reflection?: boolean
           gentle_checkin_enabled?: boolean
           created_at?: string
           full_name?: string | null
