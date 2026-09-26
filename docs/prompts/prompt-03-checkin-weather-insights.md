@@ -162,7 +162,11 @@ Seattle for 2026-08-20 to 2026-08-29), `location_source = 'home'`. Update
 
 ---
 
-## Stage 3C. Gentle check-in and screening
+## Stage 3C. Gentle check-in and reflection
+
+> Updated 2026-09-26: the final wording, country resources, thresholds and naming for this stage
+> are in `docs/development-log.md` (section 9) and override anything below that differs. In
+> the interface, never say "screening"; the table is `reflections`, migration `0007`.
 
 - Setting on the Settings page, on by default, stored in `profiles`.
 - Trigger: among the last 14 logged days, at least 7 have mood 1 or 2, or stress 4 or 5.

@@ -137,6 +137,26 @@ Applied as migration `dashboard_metrics` after Miah approved the plan. Numbered 
 - `supabase/tests/dashboard_test_after_0006.sql` (rolled back): valid row saved (control) with default source `manual`; negative steps, 2000 awake minutes and an unknown source blocked; the old exercise goal and all four new goal types save; a 50-step goal, an unknown type and a duplicate type are blocked; another user sees 0 of these rows.
 - Reseeded demo data matches the verifier's day counts on every field (steps, stand and active calories 60; time in bed and awake 47; calories eaten 43; exercise 53, sleep 47, water 48).
 
+## Prompt 3C: 0007_reflections (2026-09-26)
+
+Applied as migration `reflections` after Miah approved the design, resources and wording. Replaces the never-applied draft `0006_gentle_checkin_screenings.sql` (branch `prompt-03c-gentle-checkin`), renumbered after Prompt 4 and renamed because the product never frames this as screening.
+
+### What changed
+- `profiles.gentle_checkin_enabled` (boolean, not null, default true).
+- New table `reflections`: one row per offer (`offered_on`), with `taken_on`, `phq2_score` (0 to 6), `phq9_score` (0 to 27) and `phq9_item9` (0 to 3). PHQ-9 total and item 9 are saved together or not at all; any score needs `taken_on`. No free text. RLS: each user selects, inserts, updates and deletes only their own rows.
+
+### Verified
+- `supabase/tests/reflections_test_after_0007.sql` (rolled back): setting defaults to on; an offer alone and a completed reflection save (controls); a PHQ-9 total without item 9, a score without a date and a total of 28 are blocked; user A sees 2 rows, user B sees 0, deletes 0 and cannot insert as A; A can delete their own.
+- Security advisor: no findings from this migration.
+
+## 0008_more_feelings (2026-09-26)
+
+Applied as migration `more_feelings` after Miah approved. Loosening only: the allowed feelings grow from 6 to 13 (adds hopeful, proud, steady, meh, anxious, lonely, tired). Every saved value stays valid.
+
+- Why: Bob asked for more feeling words; Miah asked for a second neutral (Steady, Meh) and Tired instead of Content.
+- Stored words are the app's own. `src/lib/checkin.ts` maps each to an Apple State of Mind label: ten by name, steady -> content, meh -> indifferent, tired -> drained.
+- Verified: `supabase/tests/feelings_test_after_0008.sql` (rolled back): all 13 save together (control); Apple's `content`, the old `happy` and a repeat are blocked.
+
 ## Not schema, but touches the data
 
 - `sample-data/seed_habit_logs.sql` (built by `scripts/build-demo-seed.mjs` since Prompt 3A) inserts 59 days of sample rows, check-ins, locations and matching `daily_conditions` for `msolmsted+demo@gmail.com` using `on conflict (user_id, log_date) do update`. It was run on the new project on 2026-09-25 (59 rows).

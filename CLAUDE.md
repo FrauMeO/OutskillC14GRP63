@@ -2,7 +2,7 @@
 
 ## Summary
 
-Personal Health Manager is a web app where a signed-in user tracks three daily habits (exercise minutes, sleep hours, and water liters), sets one target per habit, and sees the last seven days measured against those targets. Prompts 1 and 2 were built in a Claude chat project: email and password auth with protected routes, a sidebar layout, a Goals page with create, edit, delete, and replace, a simple seven-day dashboard, and a Settings page for the display name. The team also built a synthetic Apple Health export with an importer and verifier so each build step can be tested with realistic data. The Log Habits page is still a placeholder. Prompt 3 was never sent to the build chat; its text lives in the team's Google Doc "Personal Health Manager Prompt" and is copied into docs/handover.md. Work continues here in Claude Code from Prompt 3 or Prompt 4 onward; read docs/handover.md first.
+Personal Health Manager is a web app for gentle, reflective self-tracking (see **Product principles** below). A signed-in user logs a day (exercise, steps, sleep, water, notes, Mood/Energy/Stress from 1 to 5, and feelings that match Apple Health's State of Mind labels), with the day's location and real weather attached. The dashboard shows today against the user's own goals, 7-day trends and a logging streak; the Insights page finds associations between outside conditions and the person's habits and check-ins. Prompts 1 and 2 were built in a Claude chat; Prompts 3A, 3B and 4 were built in Claude Code (see docs/development-log.md and docs/reports/). The gentle check-in (3C) is in progress.
 
 ## Tech stack
 
@@ -50,7 +50,10 @@ Personal Health Manager is a web app where a signed-in user tracks three daily h
 ├── sample-data/                  generated export.xml, expected.json, habit_logs.csv,
 │                                 seed_habit_logs.sql
 └── docs/
-    ├── handover.md               prompts, decisions, tests, bugs, unfinished work
+    ├── handover.md               the original handover from the Claude chat
+    ├── development-log.md        decisions and reasons, session by session
+    ├── prompts/                  revised prompt texts (Prompt 3, Prompt 4)
+    ├── reports/                  one report per build stage
     └── schema-log.md             schema changes per prompt
 ```
 
@@ -79,6 +82,25 @@ Supabase Authentication settings that the chat could not change through the conn
 - Messages to the user are plain sentences, for example "Sleep goal saved."
 - Schema changes go in a new numbered file in `supabase/migrations/`. Never edit a migration that has already been applied. Update `src/lib/database.types.ts` and `docs/schema-log.md` in the same change.
 - Testing uses positive controls: before trusting a pass or an empty result, show that the same check fails or finds something on a known case. SQL tests run inside one transaction that ends in `raise exception` so nothing is left behind.
+
+## Product principles: gentle awareness and reflection
+
+> Adopted by Miah on 2026-09-26. Every prompt and every change must follow these. Change them only with her approval.
+
+**Purpose.** This app is an alternative to self-judgment. It is meant as a counter to the social-media-driven fixation on narrow ideals of health, wellness and beauty. It helps people notice their own patterns with curiosity, not grade themselves against someone else's standard.
+
+**How that shows up in the product**
+
+1. **Reflect, don't judge.** Wording invites noticing ("You logged…", "Days with more sunshine went along with…"), never scoring the person ("good day", "bad day", "failed", "on track").
+2. **Celebrate arrivals, never mark misses.** Milestones (every 5th logged day, a glow every 14th entry) count days shown up, in any order. Encouragement appears at most once every 5 new entries, at random. **No streak shaming or pressure.** Streaks and goals count logging, not meeting targets. Missed days are gaps, never zeros or red marks. Nothing guilts a person for a missing day.
+3. **Association, never cause.** Insights say what tends to happen together and always give the number of days. No verbs like "causes", "lowers", "raises".
+4. **Personal, not comparative.** Never compare a person with other people, averages or ideal bodies. Goals are theirs to set, change or leave blank.
+5. **Gentle check-ins, not diagnosis.** Offer one only after a real trend: more than 10 consecutive days of check-ins (the most important rule, Miah). Never use the word "screening" or diagnostic language in the interface. Frame check-ins as reflection: "This is encouragement to reflect a little more deeply today. It is not medical advice." Encourage talking with a trusted friend or family member alongside any support line.
+6. **Words that travel.** The app launches in the US, Canada, India, the UAE and Germany. Prefer plain words that translate well (for example "harder" rather than "heavier"). Resources follow the person's home country, with findahelpline.com as the fallback.
+7. **Encourage, kindly.** The voice is patient and warm, in Miah's words: "Change is hard, be gentle with yourself." "Growth takes work and time (and can be painful at times), but you are worth it." "Your future self is grateful for the self-care you are putting in today." Shared lines live in `src/lib/encouragement.ts`. Crisis messages stay direct and are never softened by encouragement.
+8. **Privacy and control.** Store the minimum (scores and dates, never free-text answers to sensitive questions), keep everything under RLS, and let people turn features off and delete their history.
+
+The full history of how these came about is in `docs/development-log.md`.
 
 ## Schema evolution policy
 

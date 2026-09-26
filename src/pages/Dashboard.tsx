@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
@@ -8,6 +8,8 @@ import ProgressIndicator from '../components/ProgressIndicator';
 import TrendChart, { type TrendMetric } from '../components/TrendChart';
 import { FEELINGS, RATING_SCALES } from '../lib/checkin';
 import type { GoalConfig } from '../lib/goals';
+import { OFFER_TEXT, checkinState, type DayRow } from '../lib/reflection';
+import { PILLARS, PILLAR_ORDER } from '../lib/pillars';
 import {
   CATEGORY_FIELDS,
   CATEGORY_LABELS,
@@ -35,11 +37,12 @@ const COLORS = {
 
 const fmtNumber = (n: number, decimals = 0) => n.toLocaleString(undefined, { maximumFractionDigits: decimals, minimumFractionDigits: 0 });
 
-function Card({ title, accent, children }: { title: string; accent: string; children: ReactNode }) {
+function Card({ title, subtitle, accent, children }: { title: string; subtitle?: string; accent: string; children: ReactNode }) {
   return (
     <section aria-label={title} className="relative overflow-hidden rounded-lg border border-line bg-white p-5 pl-6">
       <span className="absolute inset-y-0 left-0 w-1.5" style={{ background: accent }} aria-hidden />
       <h2 className="font-display text-xl font-bold">{title}</h2>
+      {subtitle && <p className="text-sm text-spruce/65">{subtitle}</p>}
       <div className="mt-3 space-y-4">{children}</div>
     </section>
   );
@@ -114,7 +117,7 @@ function StreakBanner({ streak }: { streak: Streak }) {
         {streak.todayComplete
           ? 'Today is fully logged. Nice work.'
           : `${streak.days > 0 ? 'Counting through yesterday. ' : ''}Still to log today: ${missing.join(', ')}.`}{' '}
-        A day counts when Exercise, Sleep, Nutrition and Wellbeing each have at least one entry.
+        A day counts when {PILLAR_ORDER.map((k) => PILLARS[k].name).join(', ').replace(/, ([^,]*)$/, ' and $1')} each have at least one entry.
       </p>
       {!streak.todayComplete && (
         <Link to="/habits" className="mt-2 inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
@@ -146,6 +149,8 @@ export default function Dashboard() {
   const [goals, setGoals] = useState<{ goal_type: string; target_value: unknown }[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [checkinOffer, setCheckinOffer] = useState<string | null>(null); // reflections row id
+  const offerChecked = useRef(false);
 
   const todayIso = toISODate(new Date());
 
@@ -173,6 +178,28 @@ export default function Dashboard() {
     }
     setLoading(false);
   }, [user, todayIso]);
+
+  // Gentle check-in: decided by the rules in src/lib/reflection.ts (more than 10 sequential days of
+  // check-ins, 7 of the last 14 harder, not offered in 14 days, setting on). Each offer is saved,
+  // so the 14-day limit counts it whether or not the person reflects.
+  useEffect(() => {
+    if (!user || loading || offerChecked.current || streakRows.length === 0) return;
+    offerChecked.current = true;
+    (async () => {
+      const [profile, offers] = await Promise.all([
+        supabase.from('profiles').select('gentle_checkin_enabled').eq('id', user.id).maybeSingle(),
+        supabase.from('reflections').select('id, offered_on, taken_on').order('offered_on', { ascending: false }).limit(5),
+      ]);
+      if (profile.error || offers.error) return; // never block the dashboard on this
+      const days: DayRow[] = streakRows.map((r) => ({ log_date: r.log_date, mood: num(r, 'mood'), stress: num(r, 'stress') }));
+      const state = checkinState({ enabled: profile.data?.gentle_checkin_enabled ?? true, days, offers: offers.data ?? [], todayIso });
+      if (!state.show) return;
+      const existing = (offers.data ?? []).find((o) => o.offered_on === todayIso && !o.taken_on);
+      if (existing) return setCheckinOffer(existing.id);
+      const { data } = await supabase.from('reflections').insert({ offered_on: todayIso }).select('id').single();
+      if (data) setCheckinOffer(data.id);
+    })();
+  }, [user, loading, streakRows, todayIso]);
 
   useEffect(() => {
     load();
@@ -250,24 +277,29 @@ export default function Dashboard() {
   return (
     <>
       {header}
+      {checkinOffer && (
+        <section aria-labelledby="gentle-checkin" className="mb-6 rounded-lg border border-bloom/40 bg-bloom/5 p-5">
+          <h2 id="gentle-checkin" className="font-display text-xl font-bold">
+            A gentle check-in
+          </h2>
+          <p className="mt-1">{OFFER_TEXT}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Link
+              to={`/reflect?offer=${checkinOffer}`}
+              className="inline-flex min-h-11 items-center rounded-md bg-spruce px-5 font-semibold text-mist hover:bg-spruce-soft"
+            >
+              Take a moment to reflect
+            </Link>
+            <button type="button" onClick={() => setCheckinOffer(null)} className="min-h-11 rounded-md px-4 font-semibold hover:bg-white">
+              Not now
+            </button>
+          </div>
+        </section>
+      )}
       <StreakBanner streak={streak} />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card title="Exercise" accent={COLORS.exercise}>
-          {goalsIn('exercise').map((cfg) => (
-            <GoalMetric key={cfg.value} cfg={cfg} row={today} goal={goalOf(cfg)} color={COLORS.exercise} />
-          ))}
-        </Card>
-
-        <Card title="Sleep" accent={COLORS.sleep}>
-          {goalsIn('sleep').map((cfg) => (
-            <GoalMetric key={cfg.value} cfg={cfg} row={today} goal={goalOf(cfg)} color={COLORS.sleep} />
-          ))}
-          <Value label="Time in bed" value={num(today, 'time_in_bed_hours')} unit="h" decimals={1} />
-          <Value label="Awake in bed" value={num(today, 'awake_minutes')} unit="min" />
-        </Card>
-
-        <Card title="Nutrition" accent={COLORS.nutrition}>
+        <Card title={PILLARS.nutrition.name} subtitle={PILLARS.nutrition.subtitle} accent={COLORS.nutrition}>
           {goalsIn('nutrition').map((cfg) => (
             <GoalMetric
               key={cfg.value}
@@ -280,7 +312,21 @@ export default function Dashboard() {
           <Value label="Net calories (eaten minus active)" value={net} unit="kcal" />
         </Card>
 
-        <Card title="Wellbeing" accent={COLORS.wellbeing}>
+        <Card title={PILLARS.sleep.name} subtitle={PILLARS.sleep.subtitle} accent={COLORS.sleep}>
+          {goalsIn('sleep').map((cfg) => (
+            <GoalMetric key={cfg.value} cfg={cfg} row={today} goal={goalOf(cfg)} color={COLORS.sleep} />
+          ))}
+          <Value label="Time in bed" value={num(today, 'time_in_bed_hours')} unit="h" decimals={1} />
+          <Value label="Awake in bed" value={num(today, 'awake_minutes')} unit="min" />
+        </Card>
+
+        <Card title={PILLARS.exercise.name} subtitle={PILLARS.exercise.subtitle} accent={COLORS.exercise}>
+          {goalsIn('exercise').map((cfg) => (
+            <GoalMetric key={cfg.value} cfg={cfg} row={today} goal={goalOf(cfg)} color={COLORS.exercise} />
+          ))}
+        </Card>
+
+        <Card title={PILLARS.wellbeing.name} subtitle={PILLARS.wellbeing.subtitle} accent={COLORS.wellbeing}>
           {mood === null ? (
             <p className="text-sm text-spruce/60">Mood not logged today.</p>
           ) : (
@@ -332,14 +378,8 @@ export default function Dashboard() {
 
       <h2 className="mt-10 font-display text-2xl font-bold">Last 7 days</h2>
       <div className="mt-4 grid gap-4 md:grid-cols-2">
-        <TrendChart title="Exercise" color={COLORS.exercise} metrics={goalsIn('exercise').map(trend)} />
         <TrendChart
-          title="Sleep"
-          color={COLORS.sleep}
-          metrics={[...goalsIn('sleep').map(trend), plain('time_in_bed_hours', 'Time in bed', 'h', 1), plain('awake_minutes', 'Awake in bed', 'min')]}
-        />
-        <TrendChart
-          title="Nutrition"
+          title={PILLARS.nutrition.name}
           color={COLORS.nutrition}
           metrics={[
             ...goalsIn('nutrition').map(trend),
@@ -347,7 +387,13 @@ export default function Dashboard() {
           ]}
         />
         <TrendChart
-          title="Wellbeing"
+          title={PILLARS.sleep.name}
+          color={COLORS.sleep}
+          metrics={[...goalsIn('sleep').map(trend), plain('time_in_bed_hours', 'Time in bed', 'h', 1), plain('awake_minutes', 'Awake in bed', 'min')]}
+        />
+        <TrendChart title={PILLARS.exercise.name} color={COLORS.exercise} metrics={goalsIn('exercise').map(trend)} />
+        <TrendChart
+          title={PILLARS.wellbeing.name}
           color={COLORS.wellbeing}
           metrics={RATING_SCALES.map((s) => plain(s.key, s.label, '', 0, [1, 5]))}
         />

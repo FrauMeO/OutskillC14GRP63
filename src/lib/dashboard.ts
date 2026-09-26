@@ -1,6 +1,7 @@
 // Dashboard calculations. Pure: the page fetches rows and passes them in, so every rule here
 // is unit tested (dashboard.test.ts).
 import { GOAL_TYPES, type GoalConfig, type GoalType } from './goals';
+import { PILLARS } from './pillars';
 
 // ---------- Progress ----------
 
@@ -60,11 +61,12 @@ export const CATEGORY_FIELDS: Record<Category, string[]> = {
   wellbeing: ['mood', 'energy', 'stress'],
 };
 
+// Names people see come from the pillars (src/lib/pillars.ts).
 export const CATEGORY_LABELS: Record<Category, string> = {
-  exercise: 'Exercise',
-  sleep: 'Sleep',
-  nutrition: 'Nutrition',
-  wellbeing: 'Wellbeing',
+  exercise: PILLARS.exercise.name,
+  sleep: PILLARS.sleep.name,
+  nutrition: PILLARS.nutrition.name,
+  wellbeing: PILLARS.wellbeing.name,
 };
 
 const CATEGORIES = Object.keys(CATEGORY_FIELDS) as Category[];

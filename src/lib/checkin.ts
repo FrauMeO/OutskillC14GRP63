@@ -22,16 +22,25 @@ export const RATING_SCALES: RatingScale[] = [
   { key: 'stress', label: 'Stress', levels: ['Very low', 'Low', 'Moderate', 'High', 'Very high'] },
 ];
 
-// `value` is stored and matches an Apple Health State of Mind label (HKStateOfMind.Label), so a
-// future import can map entries one to one (allowed list fixed by migration 0005). No word
-// repeats a Mood, Energy or Stress level label.
+// Thirteen feelings (Miah and Bob, 2026-09-26): 6 pleasant, 2 neutral, 5 unpleasant. `value` is
+// what is stored (allowed list fixed by migration 0008). `apple` is the Apple Health State of Mind
+// label it maps to (HKStateOfMind.Label). Ten match by name; Steady -> Content, Meh -> Indifferent
+// and Tired -> Drained are translated, and people only ever see the app's own word.
+// No word repeats a Mood, Energy or Stress level label.
 export const FEELINGS = [
-  { value: 'frustrated', label: 'Frustrated', face: '😤' },
-  { value: 'overwhelmed', label: 'Overwhelmed', face: '😩' },
-  { value: 'calm', label: 'Calm', face: '🙂' },
-  { value: 'peaceful', label: 'Peaceful', face: '😌' },
-  { value: 'confident', label: 'Confident', face: '😎' },
-  { value: 'grateful', label: 'Grateful', face: '🥰' },
+  { value: 'calm', label: 'Calm', face: '🙂', tone: 'pleasant', apple: 'calm' },
+  { value: 'peaceful', label: 'Peaceful', face: '😌', tone: 'pleasant', apple: 'peaceful' },
+  { value: 'confident', label: 'Confident', face: '😎', tone: 'pleasant', apple: 'confident' },
+  { value: 'grateful', label: 'Grateful', face: '🥰', tone: 'pleasant', apple: 'grateful' },
+  { value: 'hopeful', label: 'Hopeful', face: '🤗', tone: 'pleasant', apple: 'hopeful' },
+  { value: 'proud', label: 'Proud', face: '😊', tone: 'pleasant', apple: 'proud' },
+  { value: 'steady', label: 'Steady', face: '😐', tone: 'neutral', apple: 'content' },
+  { value: 'meh', label: 'Meh', face: '😑', tone: 'neutral', apple: 'indifferent' },
+  { value: 'frustrated', label: 'Frustrated', face: '😤', tone: 'unpleasant', apple: 'frustrated' },
+  { value: 'overwhelmed', label: 'Overwhelmed', face: '😩', tone: 'unpleasant', apple: 'overwhelmed' },
+  { value: 'anxious', label: 'Anxious', face: '😰', tone: 'unpleasant', apple: 'anxious' },
+  { value: 'lonely', label: 'Lonely', face: '😔', tone: 'unpleasant', apple: 'lonely' },
+  { value: 'tired', label: 'Tired', face: '🥱', tone: 'unpleasant', apple: 'drained' },
 ] as const;
 
 export type Feeling = (typeof FEELINGS)[number]['value'];

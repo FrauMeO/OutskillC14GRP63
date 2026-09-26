@@ -11,6 +11,7 @@
   --color-dusk: #5b5a8c;
   --color-sprout: #4f6f2a; /* nutrition */
   --color-bloom: #8a4a6e; /* wellbeing */
+  --color-sun: #946200; /* milestones: every 5th completed day, celebrations */
   --color-alert: #a63d32;
   --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Public Sans", ui-sans-serif, system-ui, sans-serif;
@@ -31,3 +32,18 @@ body {
     animation: none !important;
   }
 }
+
+/* Every-14th-entry celebration: a soft glow that blooms and fades. */
+@keyframes celebrate-glow {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-sun) 0%, transparent); background-color: white; }
+  35% { box-shadow: 0 0 0 14px color-mix(in srgb, var(--color-sun) 22%, transparent); background-color: color-mix(in srgb, var(--color-sun) 12%, white); }
+  100% { box-shadow: 0 0 0 28px color-mix(in srgb, var(--color-sun) 0%, transparent); background-color: color-mix(in srgb, var(--color-sun) 8%, white); }
+}
+
+.celebrate {
+  background-color: color-mix(in srgb, var(--color-sun) 8%, white);
+  border-color: var(--color-sun);
+  animation: celebrate-glow 2.4s ease-out 1;
+}
+
+/* With reduced motion, the global rule above stops the animation; the still colour remains. */

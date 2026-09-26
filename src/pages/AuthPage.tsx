@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import CityPicker from '../components/CityPicker';
+import { PILLARS, PILLAR_ORDER, PILLAR_PS, PILLAR_TAGLINE } from '../lib/pillars';
 import type { HomeCity } from '../lib/location';
 
 type Mode = 'login' | 'signup';
@@ -75,15 +76,14 @@ export default function AuthPage({ mode }: { mode: Mode }) {
     <div className="grid min-h-screen md:grid-cols-[1fr_1.1fr]">
       <section className="hidden flex-col justify-end bg-spruce p-12 text-mist md:flex">
         <p className="font-display text-6xl font-bold leading-[0.95] tracking-tight">
-          Sleep.
-          <br />
-          Water.
-          <br />
-          Movement.
+          {PILLAR_ORDER.map((key) => (
+            <span key={key} className="block">
+              {PILLARS[key].name}.
+            </span>
+          ))}
         </p>
-        <p className="mt-6 max-w-sm text-lg text-mist/75">
-          Log the three daily habits that shape how you feel, and see your week at a glance.
-        </p>
+        <p className="mt-6 max-w-sm text-lg text-mist/85">{PILLAR_TAGLINE}</p>
+        <p className="mt-2 max-w-sm italic text-mist/70">{PILLAR_PS}</p>
       </section>
 
       <section className="flex items-center justify-center px-6 py-12">
