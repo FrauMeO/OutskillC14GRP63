@@ -17,6 +17,11 @@ Done, pending Miah's browser check (stage checkpoint). No schema changes in this
 - Moon: not Likely for any measure (negative control).
 - False-positive check: mood shuffled across days 200 times with a fixed seed; 1 of 200 runs (0.5%) produced a Likely mood pattern (limit 10%). Control: unshuffled data does produce one.
 
+## Live check (demo account, 60 days including Miah's own entry for 2026-09-25)
+- Likely: 1, the same rain and mood pattern (56 days).
+- Worth exploring: 9. The extra real entry shifted some sleep results, and moon with sleep now appears as an early hint. That is allowed (the rule forbids the moon only as Likely) and shows why that tier is labelled as hints.
+- Sentences were reworded after the first look (for example "more high temperature" became "warmer highs", and sleep, exercise and water now print their units).
+
 ## Assumptions
 1. Continuous sentences compare the top and bottom thirds of days by that factor, so every sentence can give two averages and a day count.
 2. Yes/no groups need at least 5 days each to be Likely (added; the prompt did not set a group minimum). Comparisons need at least 10 paired days to run at all.

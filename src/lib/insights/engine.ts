@@ -26,20 +26,22 @@ export type InsightDay = {
   conditions: Record<string, number | null> | null;
 };
 
-type Measure = { key: MeasureKey; label: string; decimals: number };
+// label: noun in sentences; unit: printed after averages; up/down: words for higher and lower.
+type Measure = { key: MeasureKey; label: string; decimals: number; unit: string; up: string; down: string };
 
 export const MEASURES: Measure[] = [
-  { key: 'mood', label: 'mood', decimals: 1 },
-  { key: 'energy', label: 'energy', decimals: 1 },
-  { key: 'stress', label: 'stress', decimals: 1 },
-  { key: 'sleep_hours', label: 'sleep (hours)', decimals: 1 },
-  { key: 'exercise_minutes', label: 'exercise (minutes)', decimals: 0 },
-  { key: 'water_liters', label: 'water (liters)', decimals: 1 },
+  { key: 'mood', label: 'mood', decimals: 1, unit: '', up: 'higher mood', down: 'lower mood' },
+  { key: 'energy', label: 'energy', decimals: 1, unit: '', up: 'higher energy', down: 'lower energy' },
+  { key: 'stress', label: 'stress', decimals: 1, unit: '', up: 'higher stress', down: 'lower stress' },
+  { key: 'sleep_hours', label: 'sleep', decimals: 1, unit: ' hours', up: 'more sleep', down: 'less sleep' },
+  { key: 'exercise_minutes', label: 'exercise', decimals: 0, unit: ' minutes', up: 'more exercise', down: 'less exercise' },
+  { key: 'water_liters', label: 'water', decimals: 1, unit: ' liters', up: 'more water', down: 'less water' },
 ];
 
 export type FactorGroup = 'Rain and humidity' | 'Temperature' | 'Sun and daylight' | 'Air' | 'Pressure' | 'Moon';
 
-type ContinuousFactor = { kind: 'continuous'; key: string; group: FactorGroup; noun: string };
+// more: 'Days with ___'; most/least: 'the third of days with ___'.
+type ContinuousFactor = { kind: 'continuous'; key: string; group: FactorGroup; more: string; most: string; least: string };
 type BinaryFactor = {
   kind: 'binary';
   key: string;
@@ -53,24 +55,24 @@ export type Factor = ContinuousFactor | BinaryFactor;
 
 export const FACTORS: Factor[] = [
   { kind: 'binary', key: 'rainy_day', group: 'Rain and humidity', source: 'rain_mm', test: (v) => v > 2, yes: 'rainy days (over 2 mm)', no: 'dry days' },
-  { kind: 'continuous', key: 'rain_mm', group: 'Rain and humidity', noun: 'rain' },
-  { kind: 'continuous', key: 'precipitation_mm', group: 'Rain and humidity', noun: 'precipitation' },
+  { kind: 'continuous', key: 'rain_mm', group: 'Rain and humidity', more: 'more rain', most: 'the most rain', least: 'the least rain' },
+  { kind: 'continuous', key: 'precipitation_mm', group: 'Rain and humidity', more: 'more precipitation', most: 'the most precipitation', least: 'the least precipitation' },
   { kind: 'binary', key: 'snow_day', group: 'Rain and humidity', source: 'snowfall_cm', test: (v) => v > 0, yes: 'snowy days', no: 'days without snow' },
-  { kind: 'continuous', key: 'snowfall_cm', group: 'Rain and humidity', noun: 'snowfall' },
-  { kind: 'continuous', key: 'humidity_mean_pct', group: 'Rain and humidity', noun: 'humidity' },
-  { kind: 'continuous', key: 'temp_min_c', group: 'Temperature', noun: 'low temperature' },
-  { kind: 'continuous', key: 'temp_max_c', group: 'Temperature', noun: 'high temperature' },
-  { kind: 'continuous', key: 'apparent_temp_max_c', group: 'Temperature', noun: 'heat index (feels-like high)' },
-  { kind: 'continuous', key: 'uv_index_max', group: 'Sun and daylight', noun: 'UV index' },
+  { kind: 'continuous', key: 'snowfall_cm', group: 'Rain and humidity', more: 'more snowfall', most: 'the most snowfall', least: 'the least snowfall' },
+  { kind: 'continuous', key: 'humidity_mean_pct', group: 'Rain and humidity', more: 'higher humidity', most: 'the highest humidity', least: 'the lowest humidity' },
+  { kind: 'continuous', key: 'temp_min_c', group: 'Temperature', more: 'warmer lows', most: 'the warmest lows', least: 'the coolest lows' },
+  { kind: 'continuous', key: 'temp_max_c', group: 'Temperature', more: 'warmer highs', most: 'the warmest highs', least: 'the coolest highs' },
+  { kind: 'continuous', key: 'apparent_temp_max_c', group: 'Temperature', more: 'a higher heat index', most: 'the highest heat index', least: 'the lowest heat index' },
+  { kind: 'continuous', key: 'uv_index_max', group: 'Sun and daylight', more: 'a higher UV index', most: 'the highest UV index', least: 'the lowest UV index' },
   { kind: 'binary', key: 'high_uv', group: 'Sun and daylight', source: 'uv_index_max', test: (v) => v >= 6, yes: 'high-UV days (6 or more)', no: 'lower-UV days' },
-  { kind: 'continuous', key: 'daylight_hours', group: 'Sun and daylight', noun: 'daylight' },
-  { kind: 'continuous', key: 'sunshine_hours', group: 'Sun and daylight', noun: 'sunshine' },
-  { kind: 'continuous', key: 'us_aqi_max', group: 'Air', noun: 'air quality index (higher is worse)' },
+  { kind: 'continuous', key: 'daylight_hours', group: 'Sun and daylight', more: 'more daylight', most: 'the most daylight', least: 'the least daylight' },
+  { kind: 'continuous', key: 'sunshine_hours', group: 'Sun and daylight', more: 'more sunshine', most: 'the most sunshine', least: 'the least sunshine' },
+  { kind: 'continuous', key: 'us_aqi_max', group: 'Air', more: 'a higher air quality index (worse air)', most: 'the worst air', least: 'the cleanest air' },
   { kind: 'binary', key: 'poor_air', group: 'Air', source: 'us_aqi_max', test: (v) => v > 100, yes: 'poor-air days (AQI over 100)', no: 'cleaner-air days' },
-  { kind: 'continuous', key: 'pm2_5_mean', group: 'Air', noun: 'fine particles (PM2.5, smoke)' },
-  { kind: 'continuous', key: 'pollen_max', group: 'Air', noun: 'pollen' },
-  { kind: 'continuous', key: 'pressure_mean_hpa', group: 'Pressure', noun: 'air pressure' },
-  { kind: 'continuous', key: 'moon_illumination', group: 'Moon', noun: 'moonlight (moon fullness)' },
+  { kind: 'continuous', key: 'pm2_5_mean', group: 'Air', more: 'more fine particles (PM2.5, smoke)', most: 'the most fine particles', least: 'the fewest fine particles' },
+  { kind: 'continuous', key: 'pollen_max', group: 'Air', more: 'more pollen', most: 'the most pollen', least: 'the least pollen' },
+  { kind: 'continuous', key: 'pressure_mean_hpa', group: 'Pressure', more: 'higher air pressure', most: 'the highest air pressure', least: 'the lowest air pressure' },
+  { kind: 'continuous', key: 'moon_illumination', group: 'Moon', more: 'a fuller moon', most: 'the fullest moon', least: 'the least moonlight' },
 ];
 
 export type Tier = 'likely' | 'explore' | 'none';
@@ -110,12 +112,12 @@ function factorValue(factor: Factor, c: Record<string, number | null> | null): n
 }
 
 export function describe(c: Omit<Comparison, 'sentence' | 'tier' | 'pAdjusted'>): string {
-  const d = c.measure.decimals;
+  const { decimals: d, unit, label } = c.measure;
   if (c.factor.kind === 'binary') {
-    return `On ${c.factor.yes} your ${c.measure.label} averaged ${fmt(c.highAvg, d)}, compared with ${fmt(c.lowAvg, d)} on ${c.factor.no} (${c.n} days).`;
+    return `On ${c.factor.yes} your ${label} averaged ${fmt(c.highAvg, d)}${unit}, compared with ${fmt(c.lowAvg, d)}${unit} on ${c.factor.no} (${c.n} days).`;
   }
-  const direction = c.effect >= 0 ? 'higher' : 'lower';
-  return `Days with more ${c.factor.noun} went along with ${direction} ${c.measure.label}: it averaged ${fmt(c.highAvg, d)} on the third of days with the most ${c.factor.noun}, compared with ${fmt(c.lowAvg, d)} on the third with the least (${c.n} days).`;
+  const direction = c.effect >= 0 ? c.measure.up : c.measure.down;
+  return `Days with ${c.factor.more} went along with ${direction}: your ${label} averaged ${fmt(c.highAvg, d)}${unit} on the third of days with ${c.factor.most}, compared with ${fmt(c.lowAvg, d)}${unit} on the third with ${c.factor.least} (${c.n} days).`;
 }
 
 export function runInsights(days: InsightDay[]): InsightsResult {
