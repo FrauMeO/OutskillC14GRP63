@@ -9,13 +9,19 @@
     "preview": "vite preview",
     "sample:generate": "node scripts/generate-sample-export.mjs",
     "sample:import": "node scripts/import-apple-health.mjs",
-    "test:import": "npm run -s sample:generate && npm run -s sample:import && node scripts/verify-import.mjs"
+    "test:import": "npm run -s sample:generate && npm run -s sample:import && node scripts/verify-import.mjs && npm run -s sample:checkins && npm run -s sample:seed && node scripts/verify-seed.mjs",
+    "test": "vitest run",
+    "sample:checkins": "node scripts/generate-sample-checkins.mjs",
+    "sample:conditions": "node scripts/fetch-sample-conditions.mjs",
+    "sample:seed": "node scripts/build-demo-seed.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^7.6.0"
+    "react-is": "^19.3.0",
+    "react-router-dom": "^7.6.0",
+    "recharts": "^3.10.1"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.0",
@@ -24,6 +30,7 @@
     "@vitejs/plugin-react": "^4.5.0",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.8.0",
-    "vite": "^6.3.0"
+    "vite": "^6.3.0",
+    "vitest": "^3.2.7"
   }
 }

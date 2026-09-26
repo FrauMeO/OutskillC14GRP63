@@ -63,9 +63,27 @@ No new tables or columns. Changes to `public.goals`:
 - Fixed type keys match the dashboard and `src/lib/goals.ts`.
 - Ranges match the Goals form's validation, so the rules hold even if a request bypasses the UI.
 
-## Prompt 3: no schema changes
+## Prompt 3A: 0004_checkin_location_conditions (2026-09-25)
 
-Prompt 3 has not been built, so no migration exists for it yet. The existing `habit_logs` table already supports one row per user per day with upsert. The Prompt 3 text (see docs/handover.md) also asks for steps, multiple feelings, weather, and biometrics, which will need new columns or tables in a future migration.
+Applied to `gzsawayrorlcjmpssalc` through the Supabase connector as migration `checkin_location_conditions`, after Miah approved the SQL. Additive only; no rows changed (59 habit_logs rows and 1 profile gained empty columns).
+
+### What changed
+- `habit_logs`: `mood`, `energy`, `stress` (smallint, 1 to 5, nullable); `feelings` (text[], only angry, sad, stable, happy, energized, no repeats); `location_name`, `latitude`, `longitude` (numeric(4,1), about 11 km); `location_source` (`device` or `home`).
+- `profiles`: `home_city`, `home_country_code` (two capital letters), `home_latitude`, `home_longitude`.
+- New table `daily_conditions`: one row per user per date (`unique (user_id, date)`) with weather, air quality, pollen, moon and `is_final`. RLS with select, insert, update and delete limited to the owner; `user_id` defaults to `auth.uid()`.
+- New helper `public.array_has_no_duplicates(text[])` (immutable, empty search_path), because check constraints cannot use subqueries.
+- `handle_new_user` replaced: it also copies home city fields from sign-up metadata, rounds coordinates to 0.1, and leaves them null when they are missing or invalid, so bad metadata cannot block a sign-up.
+
+### Why
+- Prompt 3 (revised text in `docs/prompts/prompt-03-checkin-weather-insights.md`) adds a daily check-in, per-day location, and cached outside conditions for the Insights page.
+- Location sits on each `habit_logs` row because weather must match where the person was that day.
+- The revised prompt planned to backfill the 59 sample rows with Philadelphia and Seattle inside the migration. That was moved to the sample-data seed instead, because a migration applies to every user and should not write one account's sample data.
+
+### Verified
+- `supabase/tests/checkin_test_after_0004.sql` (rolled back): home city saved and rounded (Philadelphia/US/40.0/-75.2); invalid metadata still creates the profile with null home fields; a valid check-in row saves (control); mood 6, an unknown feeling, a repeated feeling and an unknown location source are blocked; user A sees their own conditions row (control) while user B sees 0, updates 0 and cannot insert as A, and sees 0 of A's check-ins.
+- Row counts unchanged afterwards (1 user, 59 logs, 0 conditions).
+- `database.types.ts` regenerated from the live database; `npm run build` passes.
+- Security advisor: no findings from this migration. It now reports one Auth setting, "Leaked password protection disabled", which is a dashboard setting, not schema.
 
 ## Project move: 0003_revoke_rls_auto_enable_execute (2026-09-25)
 
@@ -83,6 +101,42 @@ Applied to the new project `gzsawayrorlcjmpssalc` through the Supabase connector
 - Rolled-back test: a new probe table inside a transaction that ends in `raise exception` still had RLS switched on, so `ensure_rls` still works.
 - Security advisor: 2 warnings before, 0 after.
 
+## Prompt 3A: 0005_feelings_apple_labels (2026-09-25)
+
+Applied as migration `feelings_apple_labels` after Miah approved the SQL. 0 rows had feelings, so no data changed.
+
+### What changed
+- Replaced `habit_logs_feelings_check`. Allowed feelings are now `frustrated`, `overwhelmed`, `calm`, `peaceful`, `confident`, `grateful`, each an exact Apple Health State of Mind label (`HKStateOfMind.Label`). The no-repeats rule stays.
+- The migration maps any old values forward (angry to frustrated, sad to overwhelmed, stable to calm, happy to peaceful, energized to confident).
+
+### Why (reverses a 0004 decision)
+- 0004 used the five feelings from the older Prompt 3 text (angry, sad, stable, happy, energized). Miah asked for reflective states rather than reactions, matched to Apple's labels so a future Apple Health import maps one to one, with a sixth, positive feeling (grateful). The faces shown in the app (`src/lib/checkin.ts`) are the app's own; Apple defines only the words.
+
+### Verified
+- `supabase/tests/feelings_test_after_0005.sql` (rolled back): all six save together (control); the old word `happy`, an unselected Apple label `joyful`, and a repeat are blocked.
+
+## Prompt 4: 0006_dashboard_metrics (2026-09-25)
+
+Applied as migration `dashboard_metrics` after Miah approved the plan. Numbered 0006 because Prompt 3C is paused; its draft migration (`0006_gentle_checkin_screenings.sql` on branch `prompt-03c-gentle-checkin`, never applied) must be renumbered to 0007 before it is applied. Data snapshot taken first: `sample-data/snapshots/2026-09-25-demo/`.
+
+### What changed
+- `habit_logs`: `steps`, `stand_hours`, `active_calories`, `time_in_bed_hours`, `awake_minutes`, `calories_consumed` (nullable, range checks) and `source` (`apple_health` or `manual`, not null, default `manual`). One row per user per day is unchanged.
+- `goals`: `goals_goal_type_check` and `goals_target_range_check` replaced with wider versions adding `steps` (100 to 100000), `stand_hours` (1 to 24), `active_calories` (10 to 5000) and `calories_consumed` (500 to 10000). Loosening only; 0 goal rows existed. `goals_one_per_type` unchanged.
+
+### Why
+- The Prompt 4 dashboard cards and charts need these metrics, and `source` decides ring (Apple Health) vs bar (manual).
+- Existing sample rows were set to `source = 'apple_health'` by the reseed, not by the migration (same reason as 3A: a migration applies to every user).
+
+### Earlier code changed because of this
+- `src/lib/goals.ts`: seven goal types with a category and the habit_logs field each compares with; the Goals page lists them automatically.
+- Log Habits: a Steps field; saving from the form sets `source = 'manual'`.
+- Sample pipeline: generator (stand, active energy, food on a second random sequence, so older values are unchanged), importer (six new fields; steps counted from one device), verifier (nine fields, second control), seed builder and seed verifier.
+- `generate-sample-checkins.mjs`: check-ins are drawn only for days with exercise, sleep or water data, so adding 2026-09-14 (steps only) did not shift the 3B-validated check-ins.
+
+### Verified
+- `supabase/tests/dashboard_test_after_0006.sql` (rolled back): valid row saved (control) with default source `manual`; negative steps, 2000 awake minutes and an unknown source blocked; the old exercise goal and all four new goal types save; a 50-step goal, an unknown type and a duplicate type are blocked; another user sees 0 of these rows.
+- Reseeded demo data matches the verifier's day counts on every field (steps, stand and active calories 60; time in bed and awake 47; calories eaten 43; exercise 53, sleep 47, water 48).
+
 ## Not schema, but touches the data
 
-- `sample-data/seed_habit_logs.sql` inserts 59 days of sample rows for `msolmsted+demo@gmail.com` using `on conflict (user_id, log_date) do update`. It was run on the new project on 2026-09-25 (59 rows).
+- `sample-data/seed_habit_logs.sql` (built by `scripts/build-demo-seed.mjs` since Prompt 3A) inserts 59 days of sample rows, check-ins, locations and matching `daily_conditions` for `msolmsted+demo@gmail.com` using `on conflict (user_id, log_date) do update`. It was run on the new project on 2026-09-25 (59 rows).

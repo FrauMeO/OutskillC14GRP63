@@ -6,6 +6,7 @@ import AuthPage from './pages/AuthPage';
 import Dashboard from './pages/Dashboard';
 import LogHabits from './pages/LogHabits';
 import Goals from './pages/Goals';
+import Insights from './pages/Insights';
 import Settings from './pages/Settings';
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/habits" element={<LogHabits />} />
           <Route path="/goals" element={<Goals />} />
+          <Route path="/insights" element={<Insights />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
       </Route>
