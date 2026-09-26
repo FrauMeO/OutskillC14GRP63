@@ -242,6 +242,12 @@ decision below should be read in that light.
 - **Sign-up.** Teammates hit "email rate limit exceeded" (Supabase's built-in sender allows about
   two emails an hour). With Miah's go-ahead, email confirmation was turned off for the hackathon.
   Turn it back on once a real email sender (Resend) is set up.
+- **Insights overview (Michael's feedback).** A first-time user saw a mostly empty Insights page.
+  The top now shows the last four weeks (days logged per pillar), this week against the person's
+  own usual (medians, previous eight weeks), and up to two gentle invitations drawn from their own
+  patterns. Invitations say "if you like" and never "should" or "because".
+- **Today's weather on the Dashboard.** Miah asked to see the weather that Insights compares with:
+  "Today in Atlanta: 15–28°C, dry, …", linking to Insights, with Open-Meteo credited.
 - **Name.** The app is now "Build Your Pillars" in the header, the browser tab and CLAUDE.md,
   matching buildyourpillars.com. Historical documents keep the old name.
 
