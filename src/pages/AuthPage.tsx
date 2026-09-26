@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import CityPicker from '../components/CityPicker';
 import AuthShell from '../components/AuthShell';
+import { authProblem, type AuthProblem } from '../lib/authErrors';
 import type { HomeCity } from '../lib/location';
 
 type Mode = 'login' | 'signup';
@@ -24,7 +25,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
   const [home, setHome] = useState<(HomeCity & { label: string }) | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<AuthProblem | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -37,7 +38,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
     if (mode === 'login') {
       const { error: err } = await supabase.auth.signInWithPassword({ email, password });
       setSubmitting(false);
-      if (err) return setError(err.message);
+      if (err) return setError(authProblem(err, 'login'));
       navigate(from, { replace: true });
       return;
     }
@@ -60,7 +61,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
       },
     });
     setSubmitting(false);
-    if (err) return setError(err.message);
+    if (err) return setError(authProblem(err, 'signup'));
 
     // With email confirmation on (the Supabase default), no session is returned yet.
     if (!data.session) {
@@ -144,9 +145,28 @@ export default function AuthPage({ mode }: { mode: Mode }) {
         )}
 
         {error && (
-          <p role="alert" className="rounded-md bg-alert/10 px-3 py-2 text-sm text-alert">
-            {error}
-          </p>
+          <div role="alert" className="rounded-md bg-alert/10 px-3 py-2 text-sm text-alert">
+            <p>{error.text}</p>
+            {error.actions.length > 0 && (
+              <p className="mt-1.5 flex flex-wrap gap-x-4 font-semibold">
+                {error.actions.includes('login') && (
+                  <Link to="/login" className="underline underline-offset-4">
+                    Log in
+                  </Link>
+                )}
+                {error.actions.includes('reset') && (
+                  <Link to="/forgot-password" state={{ email }} className="underline underline-offset-4">
+                    Reset your password
+                  </Link>
+                )}
+                {error.actions.includes('signup') && mode === 'login' && (
+                  <Link to="/signup" className="underline underline-offset-4">
+                    New here? Create an account
+                  </Link>
+                )}
+              </p>
+            )}
+          </div>
         )}
         {notice && (
           <p role="status" className="rounded-md bg-current/10 px-3 py-2 text-sm text-current">
