@@ -1,0 +1,4066 @@
+{
+  "Philadelphia": [
+    {
+      "date": "2026-08-30",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 38,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-08-31",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 15,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-01",
+      "mood": 4,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 6.2,
+      "exercise_minutes": 1,
+      "water_liters": 2.5
+    },
+    {
+      "date": "2026-09-02",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7,
+      "exercise_minutes": 55,
+      "water_liters": 1.2
+    },
+    {
+      "date": "2026-09-03",
+      "mood": 2,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.5,
+      "exercise_minutes": 39,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-04",
+      "mood": 4,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 51,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-05",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 8,
+      "exercise_minutes": 47,
+      "water_liters": 3
+    },
+    {
+      "date": "2026-09-06",
+      "mood": 5,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 53,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-07",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 8.1,
+      "exercise_minutes": 4,
+      "water_liters": 1.2
+    },
+    {
+      "date": "2026-09-08",
+      "mood": 3,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 8.1,
+      "exercise_minutes": 41,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-09",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 34,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-10",
+      "mood": 2,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 8,
+      "exercise_minutes": 46,
+      "water_liters": 3
+    },
+    {
+      "date": "2026-09-11",
+      "mood": 3,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 6.2,
+      "exercise_minutes": 11,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-12",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7,
+      "exercise_minutes": 50,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-13",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 21,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-14",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 36,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-15",
+      "mood": 4,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 39,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-16",
+      "mood": 2,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 43,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-17",
+      "mood": 3,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 28,
+      "water_liters": 2.5
+    },
+    {
+      "date": "2026-09-18",
+      "mood": 5,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 5,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-19",
+      "mood": 3,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 6.9,
+      "exercise_minutes": 53,
+      "water_liters": 1.2
+    },
+    {
+      "date": "2026-09-20",
+      "mood": 2,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.9,
+      "exercise_minutes": 2,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-21",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 33,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-22",
+      "mood": 2,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 53,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-23",
+      "mood": 4,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 8,
+      "exercise_minutes": 1,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-24",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 54,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-25",
+      "mood": 2,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 3,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-26",
+      "mood": 3,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 57,
+      "water_liters": 2.6
+    }
+  ],
+  "Atlanta": [
+    {
+      "date": "2026-08-30",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 22,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-08-31",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 11,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-01",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 60,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-02",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 5,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-03",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 7,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-04",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 39,
+      "water_liters": 2.5
+    },
+    {
+      "date": "2026-09-05",
+      "mood": 3,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 7.5,
+      "exercise_minutes": 24,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-06",
+      "mood": 3,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 7.5,
+      "exercise_minutes": 33,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-07",
+      "mood": 2,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 16,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-08",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7,
+      "exercise_minutes": 56,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-09",
+      "mood": 3,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 0,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-10",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7,
+      "exercise_minutes": 21,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-11",
+      "mood": 4,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 12,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-12",
+      "mood": 2,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 47,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-13",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 13,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-14",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 10,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-15",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 23,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-16",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 32,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-17",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 2,
+      "water_liters": 1.9
+    },
+    {
+      "date": "2026-09-18",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 42,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-19",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 41,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-20",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 8,
+      "exercise_minutes": 8,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-21",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 50,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-22",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 43,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-23",
+      "mood": 2,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 15,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-24",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 59,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-25",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 47,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-26",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 6.9,
+      "exercise_minutes": 26,
+      "water_liters": 2.4
+    }
+  ],
+  "Toronto": [
+    {
+      "date": "2026-08-30",
+      "mood": 2,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 54,
+      "water_liters": 1.9
+    },
+    {
+      "date": "2026-08-31",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 6.9,
+      "exercise_minutes": 33,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-01",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 17,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-02",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.7,
+      "exercise_minutes": 1,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-03",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.7,
+      "exercise_minutes": 41,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-04",
+      "mood": 4,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 8.1,
+      "exercise_minutes": 59,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-05",
+      "mood": 3,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 6.9,
+      "exercise_minutes": 15,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-06",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 8.2,
+      "exercise_minutes": 45,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-07",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 7,
+      "exercise_minutes": 25,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-08",
+      "mood": 3,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 59,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-09",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 8,
+      "exercise_minutes": 54,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-10",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.3,
+      "exercise_minutes": 2,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-11",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 8.2,
+      "exercise_minutes": 54,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-12",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 37,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-13",
+      "mood": 5,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 38,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-14",
+      "mood": 3,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 16,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-15",
+      "mood": 2,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 33,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-16",
+      "mood": 2,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 7,
+      "exercise_minutes": 8,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-17",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 8.2,
+      "exercise_minutes": 60,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-18",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 46,
+      "water_liters": 3
+    },
+    {
+      "date": "2026-09-19",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 11,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-20",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 8,
+      "water_liters": 3
+    },
+    {
+      "date": "2026-09-21",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 8.2,
+      "exercise_minutes": 39,
+      "water_liters": 3
+    },
+    {
+      "date": "2026-09-22",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 59,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-23",
+      "mood": 2,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 42,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-24",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 17,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-25",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 23,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-26",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 8.1,
+      "exercise_minutes": 16,
+      "water_liters": 2.8
+    }
+  ],
+  "Honolulu": [
+    {
+      "date": "2026-08-30",
+      "mood": 3,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 6.5,
+      "exercise_minutes": 20,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-08-31",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 8.2,
+      "exercise_minutes": 18,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-01",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 56,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-02",
+      "mood": 2,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 37,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-03",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 8.4,
+      "exercise_minutes": 35,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-04",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 28,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-05",
+      "mood": 3,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 6.9,
+      "exercise_minutes": 42,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-06",
+      "mood": 2,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 16,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-07",
+      "mood": 3,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 7.5,
+      "exercise_minutes": 48,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-08",
+      "mood": 2,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 8,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-09",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 8,
+      "exercise_minutes": 55,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-10",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 34,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-11",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 56,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-12",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 55,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-13",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 22,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-14",
+      "mood": 4,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 4,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-15",
+      "mood": 2,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 47,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-16",
+      "mood": 2,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 47,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-17",
+      "mood": 2,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 2,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-18",
+      "mood": 4,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 6.7,
+      "exercise_minutes": 50,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-19",
+      "mood": 3,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 40,
+      "water_liters": 1.2
+    },
+    {
+      "date": "2026-09-20",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 41,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-21",
+      "mood": 3,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 29,
+      "water_liters": 2.5
+    },
+    {
+      "date": "2026-09-22",
+      "mood": 4,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 27,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-23",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 59,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-24",
+      "mood": 2,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 25,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-25",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 4,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-26",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 16,
+      "water_liters": 1.6
+    }
+  ],
+  "Sao Paulo": [
+    {
+      "date": "2026-08-30",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 29,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-08-31",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 53,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-01",
+      "mood": 2,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 18,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-02",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7,
+      "exercise_minutes": 29,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-03",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7,
+      "exercise_minutes": 21,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-04",
+      "mood": 3,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 22,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-05",
+      "mood": 2,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 40,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-06",
+      "mood": 4,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 6.5,
+      "exercise_minutes": 4,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-07",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 14,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-08",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 6,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-09",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 49,
+      "water_liters": 1.9
+    },
+    {
+      "date": "2026-09-10",
+      "mood": 3,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 19,
+      "water_liters": 1.9
+    },
+    {
+      "date": "2026-09-11",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 6.7,
+      "exercise_minutes": 58,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-12",
+      "mood": 2,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 34,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-13",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 47,
+      "water_liters": 2.5
+    },
+    {
+      "date": "2026-09-14",
+      "mood": 3,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 8.1,
+      "exercise_minutes": 35,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-15",
+      "mood": 3,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 35,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-16",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 8.1,
+      "exercise_minutes": 4,
+      "water_liters": 3
+    },
+    {
+      "date": "2026-09-17",
+      "mood": 2,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 8.2,
+      "exercise_minutes": 25,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-18",
+      "mood": 3,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 6.5,
+      "exercise_minutes": 27,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-19",
+      "mood": 4,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 28,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-20",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 53,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-21",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 15,
+      "water_liters": 1.2
+    },
+    {
+      "date": "2026-09-22",
+      "mood": 3,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 7.5,
+      "exercise_minutes": 14,
+      "water_liters": 1.2
+    },
+    {
+      "date": "2026-09-23",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 30,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-24",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 35,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-25",
+      "mood": 2,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.7,
+      "exercise_minutes": 10,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-26",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7,
+      "exercise_minutes": 49,
+      "water_liters": 2.7
+    }
+  ],
+  "London": [
+    {
+      "date": "2026-08-30",
+      "mood": 3,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 1,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-08-31",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 47,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-01",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 34,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-02",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 6.9,
+      "exercise_minutes": 13,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-03",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7,
+      "exercise_minutes": 2,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-04",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.2,
+      "exercise_minutes": 46,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-05",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 10,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-06",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 36,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-07",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 53,
+      "water_liters": 2.5
+    },
+    {
+      "date": "2026-09-08",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 6.5,
+      "exercise_minutes": 26,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-09",
+      "mood": 3,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 8.4,
+      "exercise_minutes": 19,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-10",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 31,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-11",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 31,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-12",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 8.1,
+      "exercise_minutes": 4,
+      "water_liters": 2.5
+    },
+    {
+      "date": "2026-09-13",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 8.1,
+      "exercise_minutes": 6,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-14",
+      "mood": 3,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 6.2,
+      "exercise_minutes": 1,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-15",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 6.9,
+      "exercise_minutes": 18,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-16",
+      "mood": 3,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 19,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-17",
+      "mood": 2,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 8.1,
+      "exercise_minutes": 29,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-18",
+      "mood": 2,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 6.9,
+      "exercise_minutes": 10,
+      "water_liters": 2.5
+    },
+    {
+      "date": "2026-09-19",
+      "mood": 2,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 8,
+      "exercise_minutes": 9,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-20",
+      "mood": 5,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 12,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-21",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 46,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-22",
+      "mood": 2,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 6,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-23",
+      "mood": 3,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 1,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-24",
+      "mood": 4,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 41,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-25",
+      "mood": 2,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7,
+      "exercise_minutes": 27,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-26",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 50,
+      "water_liters": 1.7
+    }
+  ],
+  "Berlin": [
+    {
+      "date": "2026-08-30",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.5,
+      "exercise_minutes": 29,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-08-31",
+      "mood": 2,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 45,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-01",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.7,
+      "exercise_minutes": 59,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-02",
+      "mood": 4,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 48,
+      "water_liters": 1.9
+    },
+    {
+      "date": "2026-09-03",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 47,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-04",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 51,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-05",
+      "mood": 4,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 8.2,
+      "exercise_minutes": 37,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-06",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 20,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-07",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7,
+      "exercise_minutes": 40,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-08",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 6.5,
+      "exercise_minutes": 4,
+      "water_liters": 1.9
+    },
+    {
+      "date": "2026-09-09",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 44,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-10",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 29,
+      "water_liters": 1.2
+    },
+    {
+      "date": "2026-09-11",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 6.5,
+      "exercise_minutes": 47,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-12",
+      "mood": 2,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 6.9,
+      "exercise_minutes": 7,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-13",
+      "mood": 2,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 8.4,
+      "exercise_minutes": 28,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-14",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 13,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-15",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 36,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-16",
+      "mood": 2,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 28,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-17",
+      "mood": 3,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 44,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-18",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 6.3,
+      "exercise_minutes": 13,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-19",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 6.2,
+      "exercise_minutes": 38,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-20",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 60,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-21",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 58,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-22",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 49,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-23",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 27,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-24",
+      "mood": 2,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 48,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-25",
+      "mood": 4,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 44,
+      "water_liters": 1.2
+    },
+    {
+      "date": "2026-09-26",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 6.3,
+      "exercise_minutes": 11,
+      "water_liters": 1.3
+    }
+  ],
+  "Reykjavik": [
+    {
+      "date": "2026-08-30",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 29,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-08-31",
+      "mood": 3,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 6.5,
+      "exercise_minutes": 10,
+      "water_liters": 3
+    },
+    {
+      "date": "2026-09-01",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 6.3,
+      "exercise_minutes": 28,
+      "water_liters": 3
+    },
+    {
+      "date": "2026-09-02",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 16,
+      "water_liters": 2.5
+    },
+    {
+      "date": "2026-09-03",
+      "mood": 2,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.9,
+      "exercise_minutes": 28,
+      "water_liters": 1.9
+    },
+    {
+      "date": "2026-09-04",
+      "mood": 4,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 45,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-05",
+      "mood": 2,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 8.4,
+      "exercise_minutes": 47,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-06",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7,
+      "exercise_minutes": 24,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-07",
+      "mood": 2,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 12,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-08",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7,
+      "exercise_minutes": 30,
+      "water_liters": 1.9
+    },
+    {
+      "date": "2026-09-09",
+      "mood": 2,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 29,
+      "water_liters": 2.5
+    },
+    {
+      "date": "2026-09-10",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 47,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-11",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.7,
+      "exercise_minutes": 47,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-12",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 6.7,
+      "exercise_minutes": 8,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-13",
+      "mood": 2,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 39,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-14",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 20,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-15",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 1,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-16",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 6.7,
+      "exercise_minutes": 5,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-17",
+      "mood": 2,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 40,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-18",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.9,
+      "exercise_minutes": 44,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-19",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 8,
+      "exercise_minutes": 45,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-20",
+      "mood": 5,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 5,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-21",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 38,
+      "water_liters": 2.5
+    },
+    {
+      "date": "2026-09-22",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 8.2,
+      "exercise_minutes": 44,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-23",
+      "mood": 3,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 56,
+      "water_liters": 3
+    },
+    {
+      "date": "2026-09-24",
+      "mood": 3,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 8,
+      "exercise_minutes": 52,
+      "water_liters": 1.2
+    },
+    {
+      "date": "2026-09-25",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.5,
+      "exercise_minutes": 39,
+      "water_liters": 2.5
+    },
+    {
+      "date": "2026-09-26",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 49,
+      "water_liters": 3
+    }
+  ],
+  "Nairobi": [
+    {
+      "date": "2026-08-30",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 8.2,
+      "exercise_minutes": 18,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-08-31",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.5,
+      "exercise_minutes": 12,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-01",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 8.4,
+      "exercise_minutes": 49,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-02",
+      "mood": 5,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 2,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-03",
+      "mood": 2,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 9,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-04",
+      "mood": 3,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 7,
+      "exercise_minutes": 27,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-05",
+      "mood": 3,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 28,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-06",
+      "mood": 2,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 6,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-07",
+      "mood": 4,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 55,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-08",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.7,
+      "exercise_minutes": 38,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-09",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 37,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-10",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 25,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-11",
+      "mood": 2,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 46,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-12",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.5,
+      "exercise_minutes": 30,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-13",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 7,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-14",
+      "mood": 4,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 7.5,
+      "exercise_minutes": 45,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-15",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 3,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-16",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 8.1,
+      "exercise_minutes": 49,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-17",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 0,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-18",
+      "mood": 2,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 46,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-19",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 8,
+      "exercise_minutes": 58,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-20",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 2,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-21",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 13,
+      "water_liters": 2.5
+    },
+    {
+      "date": "2026-09-22",
+      "mood": 3,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 21,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-23",
+      "mood": 2,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 40,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-24",
+      "mood": 3,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 47,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-25",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.7,
+      "exercise_minutes": 28,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-26",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.5,
+      "exercise_minutes": 49,
+      "water_liters": 2.6
+    }
+  ],
+  "Sohar": [
+    {
+      "date": "2026-08-30",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 8.2,
+      "exercise_minutes": 28,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-08-31",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.9,
+      "exercise_minutes": 48,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-01",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 6.3,
+      "exercise_minutes": 26,
+      "water_liters": 1.9
+    },
+    {
+      "date": "2026-09-02",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 52,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-03",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 14,
+      "water_liters": 2.5
+    },
+    {
+      "date": "2026-09-04",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 25,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-05",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 56,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-06",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 28,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-07",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 31,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-08",
+      "mood": 3,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 8.1,
+      "exercise_minutes": 37,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-09",
+      "mood": 5,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 32,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-10",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 44,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-11",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 39,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-12",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 8,
+      "exercise_minutes": 14,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-13",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 31,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-14",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 8.2,
+      "exercise_minutes": 0,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-15",
+      "mood": 4,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 34,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-16",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 11,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-17",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 6.3,
+      "exercise_minutes": 43,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-18",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 22,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-19",
+      "mood": 5,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 6.5,
+      "exercise_minutes": 12,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-20",
+      "mood": 3,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 9,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-21",
+      "mood": 2,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 42,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-22",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 47,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-23",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 54,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-24",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 39,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-25",
+      "mood": 2,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.5,
+      "exercise_minutes": 53,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-26",
+      "mood": 5,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 41,
+      "water_liters": 1.8
+    }
+  ],
+  "Dubai": [
+    {
+      "date": "2026-08-30",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 2,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-08-31",
+      "mood": 4,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 8.1,
+      "exercise_minutes": 43,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-01",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 42,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-02",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 12,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-03",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 8.2,
+      "exercise_minutes": 6,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-04",
+      "mood": 3,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 22,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-05",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 5,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-06",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.5,
+      "exercise_minutes": 44,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-07",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 15,
+      "water_liters": 1.9
+    },
+    {
+      "date": "2026-09-08",
+      "mood": 2,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 46,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-09",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 6.3,
+      "exercise_minutes": 35,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-10",
+      "mood": 5,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 6.9,
+      "exercise_minutes": 6,
+      "water_liters": 1.2
+    },
+    {
+      "date": "2026-09-11",
+      "mood": 3,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 6.5,
+      "exercise_minutes": 29,
+      "water_liters": 1.9
+    },
+    {
+      "date": "2026-09-12",
+      "mood": 3,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 26,
+      "water_liters": 1.9
+    },
+    {
+      "date": "2026-09-13",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.5,
+      "exercise_minutes": 57,
+      "water_liters": 1.2
+    },
+    {
+      "date": "2026-09-14",
+      "mood": 4,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 28,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-15",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7,
+      "exercise_minutes": 45,
+      "water_liters": 3
+    },
+    {
+      "date": "2026-09-16",
+      "mood": 2,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 27,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-17",
+      "mood": 3,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 8.4,
+      "exercise_minutes": 42,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-18",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 58,
+      "water_liters": 1.9
+    },
+    {
+      "date": "2026-09-19",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 47,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-20",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 8.2,
+      "exercise_minutes": 19,
+      "water_liters": 2.5
+    },
+    {
+      "date": "2026-09-21",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 15,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-22",
+      "mood": 5,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 29,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-23",
+      "mood": 2,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 9,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-24",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 23,
+      "water_liters": 3
+    },
+    {
+      "date": "2026-09-25",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 8.4,
+      "exercise_minutes": 10,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-26",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 8.2,
+      "exercise_minutes": 12,
+      "water_liters": 2.1
+    }
+  ],
+  "Delhi": [
+    {
+      "date": "2026-08-31",
+      "mood": 2,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 15,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-01",
+      "mood": 2,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 26,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-02",
+      "mood": 2,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.9,
+      "exercise_minutes": 52,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-03",
+      "mood": 4,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 8,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-04",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 8.4,
+      "exercise_minutes": 13,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-05",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 40,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-06",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 11,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-07",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 35,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-08",
+      "mood": 3,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 8.4,
+      "exercise_minutes": 38,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-09",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 6.2,
+      "exercise_minutes": 21,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-10",
+      "mood": 3,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 48,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-11",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 15,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-12",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 6.2,
+      "exercise_minutes": 56,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-13",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.5,
+      "exercise_minutes": 1,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-14",
+      "mood": 5,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 57,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-15",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 16,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-16",
+      "mood": 5,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 6.5,
+      "exercise_minutes": 40,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-17",
+      "mood": 4,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 16,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-18",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 48,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-19",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 28,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-20",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 31,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-21",
+      "mood": 3,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 6.3,
+      "exercise_minutes": 45,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-22",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 8,
+      "exercise_minutes": 42,
+      "water_liters": 3
+    },
+    {
+      "date": "2026-09-23",
+      "mood": 5,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 26,
+      "water_liters": 1.9
+    },
+    {
+      "date": "2026-09-24",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 57,
+      "water_liters": 1.2
+    },
+    {
+      "date": "2026-09-25",
+      "mood": 3,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 34,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-26",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 57,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-27",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.9,
+      "exercise_minutes": 47,
+      "water_liters": 1.4
+    }
+  ],
+  "Mumbai": [
+    {
+      "date": "2026-08-31",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 26,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-01",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.5,
+      "exercise_minutes": 41,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-02",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 13,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-03",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 38,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-04",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 3,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-05",
+      "mood": 2,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7,
+      "exercise_minutes": 20,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-06",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 8,
+      "exercise_minutes": 28,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-07",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 8.2,
+      "exercise_minutes": 33,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-08",
+      "mood": 2,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 8.1,
+      "exercise_minutes": 17,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-09",
+      "mood": 2,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.5,
+      "exercise_minutes": 31,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-10",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.5,
+      "exercise_minutes": 30,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-11",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 51,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-12",
+      "mood": 2,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 22,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-13",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 42,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-14",
+      "mood": 3,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 7,
+      "exercise_minutes": 49,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-15",
+      "mood": 2,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 25,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-16",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 39,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-17",
+      "mood": 3,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 3,
+      "water_liters": 2
+    },
+    {
+      "date": "2026-09-18",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 8,
+      "exercise_minutes": 49,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-19",
+      "mood": 2,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.5,
+      "exercise_minutes": 29,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-20",
+      "mood": 3,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 43,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-21",
+      "mood": 2,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 60,
+      "water_liters": 2.5
+    },
+    {
+      "date": "2026-09-22",
+      "mood": 4,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 32,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-23",
+      "mood": 2,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 32,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-24",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 8.2,
+      "exercise_minutes": 58,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-25",
+      "mood": 4,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 60,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-26",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 6.3,
+      "exercise_minutes": 44,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-27",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.2,
+      "exercise_minutes": 21,
+      "water_liters": 2.4
+    }
+  ],
+  "Tokyo": [
+    {
+      "date": "2026-08-31",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 20,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-01",
+      "mood": 2,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 16,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-02",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 8.2,
+      "exercise_minutes": 36,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-03",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 45,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-04",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.5,
+      "exercise_minutes": 25,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-05",
+      "mood": 2,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 42,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-06",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 56,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-07",
+      "mood": 2,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 6.9,
+      "exercise_minutes": 11,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-08",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 6.7,
+      "exercise_minutes": 14,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-09",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.3,
+      "exercise_minutes": 42,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-10",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7,
+      "exercise_minutes": 56,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-11",
+      "mood": 2,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 60,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-12",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 8,
+      "exercise_minutes": 37,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-13",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.5,
+      "exercise_minutes": 39,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-14",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 7,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-15",
+      "mood": 4,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 8.1,
+      "exercise_minutes": 38,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-16",
+      "mood": 3,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 36,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-17",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 6.2,
+      "exercise_minutes": 3,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-18",
+      "mood": 3,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 8,
+      "exercise_minutes": 59,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-19",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 34,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-20",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 11,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-21",
+      "mood": 3,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 5,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-22",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 8,
+      "water_liters": 2.5
+    },
+    {
+      "date": "2026-09-23",
+      "mood": 2,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 4,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-24",
+      "mood": 3,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 34,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-25",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 4,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-26",
+      "mood": 2,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 1,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-27",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.2,
+      "exercise_minutes": 49,
+      "water_liters": 2.6
+    }
+  ],
+  "Sydney": [
+    {
+      "date": "2026-08-31",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.5,
+      "exercise_minutes": 17,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-01",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 21,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-02",
+      "mood": 3,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 13,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-03",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 7,
+      "exercise_minutes": 1,
+      "water_liters": 1.9
+    },
+    {
+      "date": "2026-09-04",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 10,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-05",
+      "mood": 2,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.3,
+      "exercise_minutes": 45,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-06",
+      "mood": 4,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 6.3,
+      "exercise_minutes": 10,
+      "water_liters": 1.2
+    },
+    {
+      "date": "2026-09-07",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 46,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-08",
+      "mood": 3,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 30,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-09",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.5,
+      "exercise_minutes": 25,
+      "water_liters": 1.2
+    },
+    {
+      "date": "2026-09-10",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 31,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-11",
+      "mood": 2,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 47,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-12",
+      "mood": 2,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 25,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-13",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 58,
+      "water_liters": 1.2
+    },
+    {
+      "date": "2026-09-14",
+      "mood": 2,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.4,
+      "exercise_minutes": 17,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-15",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 15,
+      "water_liters": 1.2
+    },
+    {
+      "date": "2026-09-16",
+      "mood": 4,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 27,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-17",
+      "mood": 3,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 43,
+      "water_liters": 1.9
+    },
+    {
+      "date": "2026-09-18",
+      "mood": 4,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 8.4,
+      "exercise_minutes": 13,
+      "water_liters": 1.9
+    },
+    {
+      "date": "2026-09-19",
+      "mood": 3,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 56,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-20",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 16,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-21",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 8,
+      "exercise_minutes": 52,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-22",
+      "mood": 2,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 7.3,
+      "exercise_minutes": 29,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-23",
+      "mood": 3,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 6.5,
+      "exercise_minutes": 2,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-24",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 6.3,
+      "exercise_minutes": 49,
+      "water_liters": 3
+    },
+    {
+      "date": "2026-09-25",
+      "mood": 3,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 7,
+      "exercise_minutes": 38,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-26",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 6.6,
+      "exercise_minutes": 38,
+      "water_liters": 2.6
+    },
+    {
+      "date": "2026-09-27",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 8.1,
+      "exercise_minutes": 2,
+      "water_liters": 3
+    }
+  ],
+  "Auckland": [
+    {
+      "date": "2026-08-31",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 8.1,
+      "exercise_minutes": 30,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-01",
+      "mood": 4,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.5,
+      "exercise_minutes": 27,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-02",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 46,
+      "water_liters": 1.2
+    },
+    {
+      "date": "2026-09-03",
+      "mood": 3,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7.7,
+      "exercise_minutes": 46,
+      "water_liters": 2.7
+    },
+    {
+      "date": "2026-09-04",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 32,
+      "water_liters": 1.2
+    },
+    {
+      "date": "2026-09-05",
+      "mood": 4,
+      "energy": 4,
+      "stress": 4,
+      "sleep_hours": 6.3,
+      "exercise_minutes": 39,
+      "water_liters": 1.9
+    },
+    {
+      "date": "2026-09-06",
+      "mood": 3,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 51,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-07",
+      "mood": 2,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 56,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-08",
+      "mood": 4,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 7.9,
+      "exercise_minutes": 34,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-09",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 8.4,
+      "exercise_minutes": 15,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-10",
+      "mood": 3,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 44,
+      "water_liters": 2.4
+    },
+    {
+      "date": "2026-09-11",
+      "mood": 4,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 7,
+      "exercise_minutes": 13,
+      "water_liters": 2.1
+    },
+    {
+      "date": "2026-09-12",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 8.2,
+      "exercise_minutes": 28,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-13",
+      "mood": 5,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 6.3,
+      "exercise_minutes": 4,
+      "water_liters": 2.8
+    },
+    {
+      "date": "2026-09-14",
+      "mood": 2,
+      "energy": 2,
+      "stress": 4,
+      "sleep_hours": 8,
+      "exercise_minutes": 8,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-15",
+      "mood": 2,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 6,
+      "water_liters": 1.6
+    },
+    {
+      "date": "2026-09-16",
+      "mood": 4,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 14,
+      "water_liters": 2.2
+    },
+    {
+      "date": "2026-09-17",
+      "mood": 2,
+      "energy": 3,
+      "stress": 3,
+      "sleep_hours": 8.1,
+      "exercise_minutes": 1,
+      "water_liters": 1.3
+    },
+    {
+      "date": "2026-09-18",
+      "mood": 2,
+      "energy": 3,
+      "stress": 2,
+      "sleep_hours": 6.4,
+      "exercise_minutes": 6,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-19",
+      "mood": 4,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 7.8,
+      "exercise_minutes": 52,
+      "water_liters": 1.5
+    },
+    {
+      "date": "2026-09-20",
+      "mood": 4,
+      "energy": 2,
+      "stress": 3,
+      "sleep_hours": 6.7,
+      "exercise_minutes": 24,
+      "water_liters": 1.8
+    },
+    {
+      "date": "2026-09-21",
+      "mood": 4,
+      "energy": 3,
+      "stress": 4,
+      "sleep_hours": 7.6,
+      "exercise_minutes": 15,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-22",
+      "mood": 3,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 6.8,
+      "exercise_minutes": 8,
+      "water_liters": 1.4
+    },
+    {
+      "date": "2026-09-23",
+      "mood": 3,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 6.3,
+      "exercise_minutes": 4,
+      "water_liters": 2.9
+    },
+    {
+      "date": "2026-09-24",
+      "mood": 4,
+      "energy": 4,
+      "stress": 3,
+      "sleep_hours": 7.2,
+      "exercise_minutes": 26,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-25",
+      "mood": 2,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 7.1,
+      "exercise_minutes": 45,
+      "water_liters": 2.3
+    },
+    {
+      "date": "2026-09-26",
+      "mood": 2,
+      "energy": 2,
+      "stress": 2,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 31,
+      "water_liters": 1.7
+    },
+    {
+      "date": "2026-09-27",
+      "mood": 3,
+      "energy": 4,
+      "stress": 2,
+      "sleep_hours": 8.3,
+      "exercise_minutes": 53,
+      "water_liters": 2.3
+    }
+  ]
+}

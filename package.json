@@ -13,7 +13,8 @@
     "test": "vitest run",
     "sample:checkins": "node scripts/generate-sample-checkins.mjs",
     "sample:conditions": "node scripts/fetch-sample-conditions.mjs",
-    "sample:seed": "node scripts/build-demo-seed.mjs"
+    "sample:seed": "node scripts/build-demo-seed.mjs",
+    "check:cities": "vite-node scripts/check-cities.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.0",

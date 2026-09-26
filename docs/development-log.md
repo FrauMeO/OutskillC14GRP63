@@ -268,6 +268,13 @@ decision below should be read in that light.
   as JSON, or the daily log as a spreadsheet (CSV), built in the browser from their own rows, so
   nothing is sent anywhere. Each "Something to try" suggestion now opens to show the evidence from
   the person's own days, how strong it is, and that it is association, not cause.
+- **City check (16 cities).** `npm run check:cities` runs the app's own city search, weather,
+  Dashboard weather line and Insights for 16 cities (both hemispheres, the date line, desert,
+  equator at altitude, Europe for pollen, poor air). No accounts, nothing written to Supabase.
+  First run: 16 of 16 OK; each city's own today is used (Delhi to Auckland were already on the
+  27th); pollen only in Europe. Made-up check-ins had one planted pattern (rain lowers mood),
+  found in Honolulu and Auckland; Atlanta showed one chance finding (rain and stress), within the
+  10% false-discovery rate the engine is set to.
 - **Today's weather on the Dashboard.** Miah asked to see the weather that Insights compares with:
   "Today in Atlanta: 15–28°C, dry, …", linking to Insights, with Open-Meteo credited.
 - **Name.** The app is now "Build Your Pillars" in the header, the browser tab and CLAUDE.md,
