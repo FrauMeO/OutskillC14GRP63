@@ -2,7 +2,7 @@
 
 How each measure in the app corresponds to Apple Health and to Google. The code version, checked by
 tests, is `src/lib/healthMapping.ts`. "App only" means the platform has no equivalent, so the value
-is logged in Personal Health Manager itself.
+is logged in Build Your Pillars itself.
 
 Platforms (checked 2026-09-26):
 - **Apple Health** (HealthKit, iPhone and Apple Watch). On the phone only; this app reads it from

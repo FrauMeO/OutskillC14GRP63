@@ -1,8 +1,8 @@
-# CLAUDE.md: Personal Health Manager (Outskill C14 Grp63)
+# CLAUDE.md: Build Your Pillars (Outskill C14 Grp63)
 
 ## Summary
 
-Personal Health Manager is a web app for gentle, reflective self-tracking (see **Product principles** below). A signed-in user logs a day (exercise, steps, sleep, water, notes, Mood/Energy/Stress from 1 to 5, and feelings that match Apple Health's State of Mind labels), with the day's location and real weather attached. The dashboard shows today against the user's own goals, 7-day trends and a logging streak; the Insights page finds associations between outside conditions and the person's habits and check-ins. Prompts 1 and 2 were built in a Claude chat; Prompts 3A, 3B and 4 were built in Claude Code (see docs/development-log.md and docs/reports/). The gentle check-in (3C) is in progress.
+Build Your Pillars (formerly Personal Health Manager) is a web app for gentle, reflective self-tracking (see **Product principles** below). A signed-in user logs a day (exercise, steps, sleep, water, notes, Mood/Energy/Stress from 1 to 5, and feelings that match Apple Health's State of Mind labels), with the day's location and real weather attached. The dashboard shows today against the user's own goals, 7-day trends and a logging streak; the Insights page finds associations between outside conditions and the person's habits and check-ins. Prompts 1 and 2 were built in a Claude chat; Prompts 3A, 3B and 4 were built in Claude Code (see docs/development-log.md and docs/reports/). The gentle check-in (3C) is in progress.
 
 ## Tech stack
 

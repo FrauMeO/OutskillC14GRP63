@@ -229,6 +229,22 @@ decision below should be read in that light.
   Vercel project, the domain, Supabase redirect URLs and Resend. Suggested: also claim
   @buildyourpillars handles and buildyourpillars.app.
 
+### 17. Hackathon: AI reflection, sign-up, and the name (2026-09-26)
+- **AI daily reflection (temporary).** The hackathon asked for natural-language feedback. Miah
+  chose Claude over OpenAI ("I feel like the info is more secure"), then Opus 5.5. An opt-in
+  "Reflect on today" card calls the `daily-reflection` Edge Function, which sends only today's
+  numbers, ratings and feelings. Hard days get a fixed message and never reach AI; replies that
+  judge, diagnose or talk diet are filtered. Removal steps are at the top of
+  `supabase/functions/daily-reflection/logic.ts`.
+- **Getting the key working.** The first saved secret was named `Anthropic_API_Key` and held an
+  invalid key; the second key was valid but not scoped to a workspace, so each request now sends
+  the workspace ID. Verified live: a reply from `claude-opus-5-5` on the Demo account.
+- **Sign-up.** Teammates hit "email rate limit exceeded" (Supabase's built-in sender allows about
+  two emails an hour). With Miah's go-ahead, email confirmation was turned off for the hackathon.
+  Turn it back on once a real email sender (Resend) is set up.
+- **Name.** The app is now "Build Your Pillars" in the header, the browser tab and CLAUDE.md,
+  matching buildyourpillars.com. Historical documents keep the old name.
+
 ### Working agreements that emerged
 - Claude shows every migration and waits for approval; destructive or tightening changes state
   the affected row count first.
@@ -244,3 +260,4 @@ decision below should be read in that light.
 - The old branch `prompt-03c-gentle-checkin` holds the superseded draft; 3C continues on
   `prompt-03c-reflection`.
 - Future: translations for the launch countries (the interface is English only).
+- After judging: remove the AI reflection; turn email confirmation back on with Resend.

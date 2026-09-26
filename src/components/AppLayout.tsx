@@ -17,8 +17,8 @@ export default function AppLayout() {
       <aside className="flex flex-col bg-spruce text-mist md:sticky md:top-0 md:h-screen">
         <div className="px-6 pt-6 pb-4 md:pb-10">
           <p className="font-display text-2xl font-bold leading-tight tracking-tight">
-            Health
-            <br className="hidden md:block" /> Manager
+            Build Your
+            <br className="hidden md:block" /> Pillars
           </p>
         </div>
 
