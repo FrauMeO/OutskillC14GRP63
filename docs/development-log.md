@@ -268,6 +268,17 @@ decision below should be read in that light.
   as JSON, or the daily log as a spreadsheet (CSV), built in the browser from their own rows, so
   nothing is sent anywhere. Each "Something to try" suggestion now opens to show the evidence from
   the person's own days, how strong it is, and that it is association, not cause.
+- **Fifteen more weather factors, for mood and energy.** Miah asked for at least 12 more links
+  between weather and mood or energy. All fifteen are worked out from weather already stored (no
+  migration, and they apply to everyone's past days): warm-ups and cool-downs from the day before,
+  sudden cool-downs and warm-ups (5°C), pressure rising or falling and drops of 5 hPa, the day
+  after rain, the third rainy day in a row, days lengthening or shortening over a week, the
+  day-to-night swing, hot days (30°C+), cold days (5°C or less), days that felt hotter than the
+  thermometer, grey days (under 2 h sun), the sunny share of daylight, and muggy days. Compared
+  with mood and energy only, to keep the multiple-testing correction gentle. Guards still pass:
+  the planted rain pattern is found, the moon never is, and shuffled data raises a false Likely
+  pattern in at most 10% of runs. New positive control: a planted "sudden cool-downs lower mood"
+  pattern is found; random energy is not. City check: 16 of 16 OK, no new false alarms.
 - **City check (16 cities).** `npm run check:cities` runs the app's own city search, weather,
   Dashboard weather line and Insights for 16 cities (both hemispheres, the date line, desert,
   equator at altitude, Europe for pollen, poor air). No accounts, nothing written to Supabase.

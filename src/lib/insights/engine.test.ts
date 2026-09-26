@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { FDR, MIN_LOGGED_DAYS, runInsights, type InsightDay, type MeasureKey } from './engine';
+import { FACTORS, FDR, MIN_LOGGED_DAYS, runInsights, type InsightDay, type MeasureKey } from './engine';
 
 // The demo seed rows: 59 sample days with real weather and the planted rain-and-mood pattern.
 type SeedRows = {
@@ -95,3 +95,61 @@ describe('false-positive check', () => {
     expect(runInsights(sampleDays()).likely.some((c) => c.measure.key === 'mood')).toBe(true);
   });
 });
+
+describe('fifteen more weather factors, for mood and energy', () => {
+  const DERIVED_KEYS = [
+    'temp_change', 'cool_snap', 'heat_jump', 'pressure_change', 'pressure_drop', 'after_rain', 'rain_run', 'daylight_trend',
+    'temp_swing', 'hot_day', 'cold_day', 'feels_hotter', 'grey_day', 'sun_share', 'muggy',
+  ];
+  const iso = (i: number) => new Date(Date.UTC(2026, 7, 1 + i, 12)).toISOString().slice(0, 10);
+
+  it('adds all fifteen, and compares them with mood and energy only', () => {
+    const added = FACTORS.filter((f) => DERIVED_KEYS.includes(f.key));
+    expect(added.map((f) => f.key).sort()).toEqual([...DERIVED_KEYS].sort());
+    for (const f of added) expect(f.measures).toEqual(['mood', 'energy']);
+    const tested = runInsights(sampleDays()).all.filter((c) => DERIVED_KEYS.includes(c.factor.key));
+    expect(tested.length).toBeGreaterThan(20);
+    expect(new Set(tested.map((c) => c.measure.key))).toEqual(new Set(['mood', 'energy']));
+  });
+
+  it('finds a planted pattern: sudden cool-downs go with lower mood (control: energy, left random, does not)', () => {
+    const rand = shufflerRandom(11);
+    const days: InsightDay[] = Array.from({ length: 36 }, (_, i) => {
+      const snap = i % 4 === 3; // every fourth day is 8°C cooler than the day before
+      return {
+        date: iso(i),
+        measures: { mood: snap ? 2 + Math.round(rand()) : 4 + Math.round(rand()), energy: 1 + Math.floor(rand() * 5) },
+        conditions: { temp_max_c: snap ? 14 : 22 + rand(), temp_min_c: 10, pressure_mean_hpa: 1013, rain_mm: 0 },
+      };
+    });
+    const r = runInsights(days);
+    const mood = r.all.find((c) => c.factor.key === 'cool_snap' && c.measure.key === 'mood')!;
+    expect(mood.tier).toBe('likely');
+    expect(mood.sentence).toMatch(/^On sudden cool-downs \(5°C or more below the day before\) your mood averaged/);
+    expect(r.likely.some((c) => c.factor.key === 'cool_snap' && c.measure.key === 'energy')).toBe(false);
+  });
+
+  it('only compares with yesterday when yesterday was logged (control: daily logging does)', () => {
+    const make = (step: number): InsightDay[] =>
+      Array.from({ length: 30 }, (_, i) => ({
+        date: iso(i * step),
+        measures: { mood: 1 + (i % 5), energy: 1 + ((i * 3) % 5) },
+        conditions: { temp_max_c: 15 + (i % 7) * 2, temp_min_c: 8, pressure_mean_hpa: 1005 + (i % 6) * 3, rain_mm: i % 3 ? 0 : 5 },
+      }));
+    const everyOtherDay = runInsights(make(2)).all.map((c) => c.factor.key);
+    expect(everyOtherDay).not.toContain('temp_change');
+    expect(everyOtherDay).not.toContain('after_rain');
+    expect(everyOtherDay).toContain('temp_swing'); // needs only the day itself
+    expect(runInsights(make(1)).all.map((c) => c.factor.key)).toContain('temp_change');
+  });
+});
+
+function shufflerRandom(seedValue: number) {
+  let s = seedValue;
+  return () => {
+    s |= 0; s = (s + 0x6d2b79f5) | 0;
+    let t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}

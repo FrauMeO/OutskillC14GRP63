@@ -10,7 +10,7 @@ Demo account home.
 - local today 2026-09-26
 - today: 14–19°C, rainy (14 mm), 12 hours of daylight, air quality 36 (good), full moon
 - 28 days, air quality 36 to 132, pollen on 0 days
-- Insights: 90 comparisons, 0 likely, 0 early hints
+- Insights: 112 comparisons, 0 likely, 2 early hints
 
 ## Atlanta: OK
 
@@ -20,7 +20,7 @@ Team member.
 - local today 2026-09-26
 - today: 15–28°C, dry, 12 hours of daylight, air quality 76 (moderate), full moon
 - 28 days, air quality 36 to 145, pollen on 0 days
-- Insights: 90 comparisons, 2 likely, 5 early hints (likely: rain_mm and stress; precipitation_mm and stress)
+- Insights: 106 comparisons, 2 likely, 7 early hints (likely: rain_mm and stress; precipitation_mm and stress)
 
 ## Toronto: OK
 
@@ -30,7 +30,7 @@ Canada, crisis line country.
 - local today 2026-09-26
 - today: 10–24°C, dry, 12 hours of daylight, air quality 35 (good), full moon
 - 28 days, air quality 32 to 84, pollen on 0 days
-- Insights: 78 comparisons, 0 likely, 3 early hints
+- Insights: 94 comparisons, 0 likely, 3 early hints
 
 ## Honolulu: OK
 
@@ -40,7 +40,7 @@ UTC-10, far behind.
 - local today 2026-09-26
 - today: 25–29°C, rainy (3 mm), 12 hours of daylight, air quality 53 (moderate), full moon
 - 28 days, air quality 26 to 56, pollen on 0 days
-- Insights: 84 comparisons, 2 likely, 7 early hints (likely: precipitation_mm and mood; rain_mm and mood)
+- Insights: 102 comparisons, 2 likely, 7 early hints (likely: precipitation_mm and mood; rain_mm and mood)
 
 ## Sao Paulo: OK
 
@@ -50,7 +50,7 @@ Southern hemisphere, accent-free search.
 - local today 2026-09-26
 - today: 16–31°C, dry, 12 hours of daylight, air quality 191 (unhealthy), full moon
 - 28 days, air quality 31 to 200, pollen on 0 days
-- Insights: 96 comparisons, 0 likely, 3 early hints
+- Insights: 118 comparisons, 0 likely, 4 early hints
 
 ## London: OK
 
@@ -60,7 +60,7 @@ Europe, pollen.
 - local today 2026-09-26
 - today: 13–22°C, dry, 12 hours of daylight, air quality 56 (moderate), pollen low, full moon
 - 28 days, air quality 26 to 62, pollen on 28 days
-- Insights: 84 comparisons, 0 likely, 3 early hints
+- Insights: 98 comparisons, 0 likely, 3 early hints
 
 ## Berlin: OK
 
@@ -70,7 +70,7 @@ Team member, pollen.
 - local today 2026-09-26
 - today: 6–22°C, dry, 12 hours of daylight, air quality 52 (moderate), pollen low, full moon
 - 28 days, air quality 30 to 53, pollen on 28 days
-- Insights: 90 comparisons, 0 likely, 7 early hints
+- Insights: 108 comparisons, 0 likely, 8 early hints
 
 ## Reykjavik: OK
 
@@ -80,7 +80,7 @@ Far north, fast-changing daylight.
 - local today 2026-09-26
 - today: 3–9°C, dry, 12 hours of daylight, air quality 29 (good), pollen low, full moon
 - 28 days, air quality 26 to 33, pollen on 28 days
-- Insights: 90 comparisons, 0 likely, 7 early hints
+- Insights: 108 comparisons, 0 likely, 8 early hints
 
 ## Nairobi: OK
 
@@ -90,7 +90,7 @@ Equator, 1,700 m altitude.
 - local today 2026-09-26
 - today: 15–29°C, dry, 12 hours of daylight, air quality 53 (moderate), full moon
 - 28 days, air quality 36 to 134, pollen on 0 days
-- Insights: 90 comparisons, 0 likely, 4 early hints
+- Insights: 102 comparisons, 0 likely, 4 early hints
 
 ## Sohar: OK
 
@@ -100,7 +100,7 @@ Team member, desert heat.
 - local today 2026-09-26
 - today: 28–37°C, dry, 12 hours of daylight, air quality 149 (unhealthy for sensitive groups), full moon
 - 28 days, air quality 90 to 150, pollen on 0 days
-- Insights: 72 comparisons, 0 likely, 2 early hints
+- Insights: 84 comparisons, 0 likely, 2 early hints
 
 ## Dubai: OK
 
@@ -110,7 +110,7 @@ UAE, crisis line country.
 - local today 2026-09-26
 - today: 27–38°C, dry, 12 hours of daylight, air quality 162 (unhealthy), full moon
 - 28 days, air quality 143 to 172, pollen on 0 days
-- Insights: 66 comparisons, 0 likely, 7 early hints
+- Insights: 78 comparisons, 0 likely, 8 early hints
 
 ## Delhi: OK
 
@@ -120,7 +120,7 @@ Poor air, India crisis line.
 - local today 2026-09-27
 - today: 22–30°C, a little rain, 12 hours of daylight, air quality 195 (unhealthy), full moon
 - 28 days, air quality 109 to 332, pollen on 0 days
-- Insights: 90 comparisons, 0 likely, 4 early hints
+- Insights: 106 comparisons, 0 likely, 4 early hints
 
 ## Mumbai: OK
 
@@ -130,7 +130,7 @@ Monsoon rain.
 - local today 2026-09-27
 - today: 25–31°C, a little rain, 12 hours of daylight, air quality 66 (moderate), full moon
 - 28 days, air quality 53 to 185, pollen on 0 days
-- Insights: 90 comparisons, 0 likely, 8 early hints
+- Insights: 106 comparisons, 0 likely, 9 early hints
 
 ## Tokyo: OK
 
@@ -140,7 +140,7 @@ UTC+9, ahead of the team.
 - local today 2026-09-27
 - today: 18–23°C, rainy (2 mm), 12 hours of daylight, air quality 76 (moderate), full moon
 - 28 days, air quality 58 to 134, pollen on 0 days
-- Insights: 96 comparisons, 0 likely, 2 early hints
+- Insights: 124 comparisons, 0 likely, 2 early hints
 
 ## Sydney: OK
 
@@ -150,7 +150,7 @@ Southern hemisphere spring.
 - local today 2026-09-27
 - today: 15–17°C, rainy (3 mm), 12 hours of daylight, air quality 55 (moderate), full moon
 - 28 days, air quality 50 to 87, pollen on 0 days
-- Insights: 90 comparisons, 0 likely, 7 early hints
+- Insights: 108 comparisons, 0 likely, 7 early hints
 
 ## Auckland: OK
 
@@ -160,4 +160,4 @@ Across the date line.
 - local today 2026-09-27
 - today: 11–18°C, rainy (5 mm), 12 hours of daylight, air quality 49 (good), full moon
 - 28 days, air quality 26 to 68, pollen on 0 days
-- Insights: 90 comparisons, 1 likely, 11 early hints (likely: precipitation_mm and mood)
+- Insights: 104 comparisons, 1 likely, 12 early hints (likely: precipitation_mm and mood)
