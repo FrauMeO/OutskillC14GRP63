@@ -12,6 +12,7 @@ import {
   buildLogFields,
   formFromRow,
   hasAnyValue,
+  isDirty,
   type Feeling,
   type LogFormValues,
   type RatingScale,
@@ -19,6 +20,7 @@ import {
 import { chooseLocation, cityNameFor, deviceCoordinates, type HomeCity, type LoggedLocation } from '../lib/location';
 import { ensureConditions } from '../lib/conditions';
 import MonthCalendar from '../components/MonthCalendar';
+import { setUnsaved } from '../lib/unsaved';
 import { celebrationText, dayNumbers, encouragementLine, isCelebrationEntry, isEncouragementEntry } from '../lib/milestones';
 
 type Flash = { kind: 'ok' | 'error'; text: string } | null;
@@ -98,6 +100,9 @@ export default function LogHabits() {
 
   const [date, setDate] = useState(todayIso);
   const [form, setForm] = useState<LogFormValues>({ ...EMPTY_FORM });
+  // What was loaded or last saved for this day, so unsaved changes are never dropped silently.
+  const [baseline, setBaseline] = useState<LogFormValues>({ ...EMPTY_FORM });
+  const [pendingDate, setPendingDate] = useState<string | null>(null);
   const [existingLocation, setExistingLocation] = useState<LoggedLocation | null>(null);
   const [isExisting, setIsExisting] = useState(false);
   const [loadingDay, setLoadingDay] = useState(true);
@@ -108,6 +113,27 @@ export default function LogHabits() {
   const [homeLoaded, setHomeLoaded] = useState(false);
   const [allDates, setAllDates] = useState<string[]>([]);
   const [celebration, setCelebration] = useState<string | null>(null);
+
+  const dirty = !loadingDay && isDirty(form, baseline);
+
+  // Switching days: never drop unsaved changes without asking.
+  function requestDate(next: string) {
+    if (next === date || saving) return;
+    if (dirty) setPendingDate(next);
+    else setDate(next);
+  }
+
+  // Closing or reloading the tab, or leaving through the menu, with unsaved changes asks first, too.
+  useEffect(() => {
+    setUnsaved(dirty);
+    if (!dirty) return;
+    const warn = (e: BeforeUnloadEvent) => e.preventDefault();
+    window.addEventListener('beforeunload', warn);
+    return () => {
+      window.removeEventListener('beforeunload', warn);
+      setUnsaved(false);
+    };
+  }, [dirty]);
 
   const week = lastNDays(7).map(toISODate);
   const loggedDates = new Set(allDates);
@@ -154,7 +180,9 @@ export default function LogHabits() {
       .then(({ data, error }) => {
         if (cancelled) return;
         if (error) setFlash({ kind: 'error', text: `Could not load ${longDate(date)}: ${error.message}` });
-        setForm(formFromRow(data));
+        const loadedForm = formFromRow(data);
+        setForm(loadedForm);
+        setBaseline(loadedForm);
         setIsExisting(Boolean(data));
         setExistingLocation(
           data && data.latitude !== null && data.longitude !== null
@@ -202,12 +230,24 @@ export default function LogHabits() {
 
   async function handleSave(e: FormEvent) {
     e.preventDefault();
+    await saveEntry();
+  }
+
+  // Saves the open day. Returns true when it was saved.
+  async function saveEntry(): Promise<boolean> {
     setFlash(null);
-    const { fields, errors: problems } = buildLogFields(form);
+    const saved = form; // the values being saved, even if the form changes while saving
+    const { fields, errors: problems } = buildLogFields(saved);
     setErrors(problems);
-    if (!fields) return;
-    if (date > todayIso) return setErrors(['You can only log today or an earlier day.']);
-    if (!hasAnyValue(fields) && !isExisting) return setErrors(['Enter at least one value before saving.']);
+    if (!fields) return false;
+    if (date > todayIso) {
+      setErrors(['You can only log today or an earlier day.']);
+      return false;
+    }
+    if (!hasAnyValue(fields) && !isExisting) {
+      setErrors(['Enter at least one value before saving.']);
+      return false;
+    }
 
     setSaving(true);
     setCelebration(null);
@@ -237,9 +277,10 @@ export default function LogHabits() {
     if (error) {
       setSaving(false);
       setFlash({ kind: 'error', text: `Could not save: ${error.message}` });
-      return;
+      return false;
     }
 
+    setBaseline(saved);
     setIsExisting(true);
     setExistingLocation(place);
     const dates = await loadWeek();
@@ -261,6 +302,13 @@ export default function LogHabits() {
     const kind = wasNew && user && isEncouragementEntry(user.id, entry) ? ` ${encouragementLine(user.id, entry)}` : '';
     if (wasNew && isCelebrationEntry(entry)) setCelebration(celebrationText(entry));
     setFlash({ kind: 'ok', text: `Saved for ${longDate(date)}.${weatherNote}${kind}` });
+    return true;
+  }
+
+  async function saveThenSwitch() {
+    const next = pendingDate;
+    setPendingDate(null);
+    if (next && (await saveEntry())) setDate(next);
   }
 
   return (
@@ -304,7 +352,37 @@ export default function LogHabits() {
         </p>
       )}
 
-      <form onSubmit={handleSave} className="max-w-2xl space-y-6" aria-busy={loadingDay}>
+      {pendingDate && (
+        <div role="alertdialog" aria-labelledby="unsaved-title" className="mb-6 max-w-2xl rounded-lg border-2 border-sun bg-white p-5">
+          <p id="unsaved-title" className="font-semibold">
+            You have unsaved changes for {longDate(date)}.
+          </p>
+          <p className="mt-1 text-sm text-spruce/75">Save them before opening {longDate(pendingDate)}, or they will be lost.</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button type="button" onClick={saveThenSwitch} className={primaryBtn}>
+              Save, then open {longDate(pendingDate)}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                const next = pendingDate;
+                setPendingDate(null);
+                setDate(next);
+              }}
+              className="min-h-11 rounded-md border border-line px-4 text-sm font-semibold hover:bg-mist"
+            >
+              Discard changes
+            </button>
+            <button type="button" onClick={() => setPendingDate(null)} className="min-h-11 rounded-md px-4 text-sm font-semibold hover:bg-mist">
+              Keep editing
+            </button>
+          </div>
+        </div>
+      )}
+
+      <form onSubmit={handleSave} className="max-w-2xl" aria-busy={loadingDay || saving}>
+        {/* Locked while a day loads or saves, so a quick click can never be overwritten. */}
+        <fieldset disabled={loadingDay || saving} className="min-w-0 space-y-6">
         <section className="rounded-lg border border-line bg-white p-5 md:p-6">
           <label className="block text-sm font-medium">
             Date
@@ -313,7 +391,7 @@ export default function LogHabits() {
               className={`${input} mt-1.5 max-w-xs`}
               value={date}
               max={todayIso}
-              onChange={(e) => e.target.value && setDate(e.target.value)}
+              onChange={(e) => e.target.value && requestDate(e.target.value)}
             />
           </label>
           <p className="mt-2 text-sm text-spruce/70" role="status">
@@ -438,10 +516,12 @@ export default function LogHabits() {
           <button type="submit" disabled={saving || loadingDay} className={primaryBtn}>
             {saving ? 'Saving…' : isExisting ? 'Save changes' : 'Save entry'}
           </button>
+          {dirty && !saving && <p className="text-sm font-medium text-sun">Unsaved changes</p>}
           {date === todayIso && (
             <p className="text-sm text-spruce/70">Your browser may ask to share your location for the weather. Saying no is fine.</p>
           )}
         </div>
+        </fieldset>
       </form>
 
       <section aria-labelledby="last-week" className="mt-10 max-w-2xl">
@@ -456,7 +536,7 @@ export default function LogHabits() {
               <li key={d}>
                 <button
                   type="button"
-                  onClick={() => setDate(d)}
+                  onClick={() => requestDate(d)}
                   aria-current={d === date ? 'date' : undefined}
                   aria-label={`${longDate(d)}: ${logged ? 'logged' : 'not logged'}`}
                   className={`flex min-h-11 w-full flex-col items-center rounded-md border bg-white px-1 py-2 text-xs hover:bg-mist ${
@@ -475,7 +555,7 @@ export default function LogHabits() {
         </ul>
         <p className="mt-2 text-sm text-spruce/70">A check mark means that day has an entry. Choose a day to open it.</p>
         <div className="mt-6">
-          <MonthCalendar dayNumbers={dayNumbers(allDates)} todayIso={todayIso} selected={date} onSelect={setDate} />
+          <MonthCalendar dayNumbers={dayNumbers(allDates)} todayIso={todayIso} selected={date} onSelect={requestDate} />
         </div>
       </section>
     </>

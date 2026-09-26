@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
+import { confirmLeave } from '../lib/unsaved';
 import { useAuth } from '../context/AuthContext';
 
 const NAV = [
@@ -27,6 +28,9 @@ export default function AppLayout() {
             <NavLink
               key={item.to}
               to={item.to}
+              onClick={(e) => {
+                if (!confirmLeave()) e.preventDefault();
+              }}
               className={({ isActive }) =>
                 [
                   'whitespace-nowrap rounded-md px-3 py-2 text-[15px] transition-colors',
@@ -47,7 +51,7 @@ export default function AppLayout() {
           </p>
           <button
             type="button"
-            onClick={signOut}
+            onClick={() => confirmLeave() && signOut()}
             className="mt-2 text-sm font-semibold text-mist underline-offset-4 hover:underline"
           >
             Log out

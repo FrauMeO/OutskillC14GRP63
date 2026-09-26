@@ -268,6 +268,12 @@ decision below should be read in that light.
   as JSON, or the daily log as a spreadsheet (CSV), built in the browser from their own rows, so
   nothing is sent anywhere. Each "Something to try" suggestion now opens to show the evidence from
   the person's own days, how strong it is, and that it is association, not cause.
+- **Bug: switching days could drop Balance values silently (Michael).** Two causes: picking
+  another day with unsaved changes replaced the form without asking, and the form stayed editable
+  while a day loaded, so a quick click could be overwritten when the load arrived. Fix: the form
+  is locked while a day loads or saves; switching days, leaving through the menu, logging out or
+  closing the tab with unsaved changes asks first ("Save, then open", "Discard changes", "Keep
+  editing"); an "Unsaved changes" note shows beside Save. `isDirty` is tested with controls.
 - **Fifteen more weather factors, for mood and energy.** Miah asked for at least 12 more links
   between weather and mood or energy. All fifteen are worked out from weather already stored (no
   migration, and they apply to everyone's past days): warm-ups and cool-downs from the day before,
