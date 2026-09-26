@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { EMPTY_FORM, FEELINGS, RATING_SCALES, buildLogFields, formFromRow, hasAnyValue, parseOptionalNumber } from './checkin';
+import { EMPTY_FORM, FEELINGS, RATING_SCALES, buildLogFields, formFromRow, hasAnyValue, isDirty, parseOptionalNumber } from './checkin';
 
 describe('parseOptionalNumber', () => {
   it('treats blank as not logged (null)', () => {
@@ -73,5 +73,25 @@ describe('formFromRow', () => {
     // 'joyful' is not an allowed feeling, so it is dropped rather than shown.
     expect(form).toMatchObject({ exercise: '0', sleep: '7.5', water: '', notes: '', mood: 3, feelings: ['overwhelmed'] });
     expect(buildLogFields(form).fields).toMatchObject({ exercise_minutes: 0, sleep_hours: 7.5, water_liters: null });
+  });
+});
+
+describe('unsaved changes', () => {
+  const loaded = formFromRow({ mood: 4, energy: 3, stress: 2, sleep_hours: 7, feelings: ['calm', 'grateful'] });
+
+  it('notices a changed rating, number, feeling or note', () => {
+    expect(isDirty({ ...loaded, mood: 2 }, loaded)).toBe(true);
+    expect(isDirty({ ...loaded, stress: null }, loaded)).toBe(true);
+    expect(isDirty({ ...loaded, sleep: '6.5' }, loaded)).toBe(true);
+    expect(isDirty({ ...loaded, feelings: ['calm'] }, loaded)).toBe(true);
+    expect(isDirty({ ...loaded, notes: 'walked' }, loaded)).toBe(true);
+    expect(isDirty({ ...EMPTY_FORM, energy: 3 }, { ...EMPTY_FORM })).toBe(true);
+  });
+
+  it('control: an untouched form, reordered feelings or extra spaces are not changes', () => {
+    expect(isDirty(loaded, loaded)).toBe(false);
+    expect(isDirty({ ...loaded, feelings: ['grateful', 'calm'] }, loaded)).toBe(false);
+    expect(isDirty({ ...loaded, sleep: ' 7 ' }, loaded)).toBe(false);
+    expect(isDirty({ ...EMPTY_FORM }, { ...EMPTY_FORM })).toBe(false);
   });
 });

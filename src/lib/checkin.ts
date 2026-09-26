@@ -165,3 +165,19 @@ export function formFromRow(
 export function hasAnyValue(fields: LogFields): boolean {
   return Object.values(fields).some((v) => v !== null);
 }
+
+// Unsaved changes (Michael, 2026-09-26: switching days quickly dropped Balance values without a
+// warning). True when the form differs from what was loaded or last saved for this day.
+export function isDirty(form: LogFormValues, baseline: LogFormValues): boolean {
+  const same = (a: LogFormValues, b: LogFormValues) =>
+    a.exercise.trim() === b.exercise.trim() &&
+    a.steps.trim() === b.steps.trim() &&
+    a.sleep.trim() === b.sleep.trim() &&
+    a.water.trim() === b.water.trim() &&
+    a.notes.trim() === b.notes.trim() &&
+    a.mood === b.mood &&
+    a.energy === b.energy &&
+    a.stress === b.stress &&
+    [...a.feelings].sort().join() === [...b.feelings].sort().join();
+  return !same(form, baseline);
+}
