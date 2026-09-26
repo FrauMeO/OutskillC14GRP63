@@ -15,7 +15,8 @@
 //    date with the same 6 pm rule and the same one-source-per-night rule as sleep.
 //  - steps: the Watch and the iPhone both count the same walking, so they are never added
 //    together. The Watch total wins when it has steps that day, otherwise the larger source.
-//  - stand_hours = number of AppleStandHour records marked Stood, by local start date.
+//  - stand_hours = number of distinct hours marked Stood, by local start date. Two devices (or a
+//    re-synced watch) can record the same hour twice; each hour counts once, so a day is at most 24.
 //  - active_calories / calories_consumed = sum of ActiveEnergyBurned / DietaryEnergyConsumed
 //    (kcal; kJ converted), rounded to whole kcal.
 //  - A habit with no records that day is null (not logged), which is different from 0.
@@ -88,7 +89,8 @@ for await (const line of rl) {
     }
     case 'HKCategoryTypeIdentifierAppleStandHour': {
       const d = day(parseTs(a.startDate).local);
-      d.stood = (d.stood ?? 0) + (a.value === 'HKCategoryValueAppleStandHourStood' ? 1 : 0);
+      d.stood ??= 0; // an hour was recorded, so the day has a value (0 if none were Stood)
+      if (a.value === 'HKCategoryValueAppleStandHourStood') (d.stoodHours ??= new Set()).add(a.startDate.slice(0, 13));
       counts.used++;
       break;
     }
@@ -143,7 +145,7 @@ const rows = [...days.keys()].sort().map((date) => {
     sleep_hours: d.sleep.length ? Math.round((nightMinutes(d.sleep) / 60) * 100) / 100 : null,
     water_liters: d.waterMl === null ? null : Math.round(d.waterMl) / 1000,
     steps: daySteps(d.steps),
-    stand_hours: d.stood,
+    stand_hours: d.stoodHours ? d.stoodHours.size : d.stood,
     active_calories: d.active === null ? null : Math.round(d.active),
     time_in_bed_hours: d.inBed.length ? Math.round((nightMinutes(d.inBed) / 60) * 100) / 100 : null,
     awake_minutes: d.awake.length ? Math.round(nightMinutes(d.awake)) : null,
