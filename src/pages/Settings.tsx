@@ -148,7 +148,12 @@ export default function Settings() {
 
       <section className="max-w-md rounded-lg border border-line bg-white p-6">
         <h2 className="font-display text-xl font-bold">Profile</h2>
-        <p className="mt-1 text-sm text-spruce/70">Signed in as {user?.email}</p>
+        <p className="mt-1 text-sm text-spruce/70">
+          Signed in as {user?.email} ·{' '}
+          <Link to="/reset-password" className="font-semibold underline underline-offset-4">
+            Change password
+          </Link>
+        </p>
 
         <form onSubmit={handleSave} className="mt-6 space-y-4">
           <label className="block text-sm font-medium">

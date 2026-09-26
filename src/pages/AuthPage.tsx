@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import CityPicker from '../components/CityPicker';
-import { PILLARS, PILLAR_ORDER, PILLAR_PS, PILLAR_TAGLINE } from '../lib/pillars';
+import AuthShell from '../components/AuthShell';
 import type { HomeCity } from '../lib/location';
 
 type Mode = 'login' | 'signup';
@@ -73,124 +73,113 @@ export default function AuthPage({ mode }: { mode: Mode }) {
   const copy = COPY[mode];
 
   return (
-    <div className="grid min-h-screen md:grid-cols-[1fr_1.1fr]">
-      <section className="hidden flex-col justify-end bg-spruce p-12 text-mist md:flex">
-        <p className="font-display text-6xl font-bold leading-[0.95] tracking-tight">
-          {PILLAR_ORDER.map((key) => (
-            <span key={key} className="block">
-              {PILLARS[key].name}.
-            </span>
+    <AuthShell title={copy.title}>
+      <form onSubmit={handleSubmit} className="mt-8 space-y-5" noValidate={false}>
+        {mode === 'signup' && (
+          <label className="block text-sm font-medium">
+            Full name
+            <input
+              className={inputClass}
+              type="text"
+              autoComplete="name"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+            />
+          </label>
+        )}
+
+        {mode === 'signup' &&
+          (home ? (
+            <div className="text-sm">
+              <span className="font-medium">Home city</span>
+              <p className="mt-1.5 flex items-center justify-between rounded-md border border-line bg-white px-3 py-2.5">
+                {home.label}
+                <button type="button" className="text-spruce/70 underline underline-offset-4" onClick={() => setHome(null)}>
+                  Change
+                </button>
+              </p>
+            </div>
+          ) : (
+            <div>
+              <CityPicker label="Home city (optional)" onPick={setHome} />
+              <span className="mt-1.5 block text-xs text-spruce/60">
+                Used for local weather on days you do not share your location. You can add it later in Settings.
+              </span>
+            </div>
           ))}
-        </p>
-        <p className="mt-6 max-w-sm text-lg text-mist/85">{PILLAR_TAGLINE}</p>
-        <p className="mt-2 max-w-sm italic text-mist/70">{PILLAR_PS}</p>
-      </section>
 
-      <section className="flex items-center justify-center px-6 py-12">
-        <div className="w-full max-w-sm">
-          <h1 className="font-display text-3xl font-bold tracking-tight">{copy.title}</h1>
+        <label className="block text-sm font-medium">
+          Email
+          <input
+            className={inputClass}
+            type="email"
+            autoComplete="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </label>
 
-          <form onSubmit={handleSubmit} className="mt-8 space-y-5" noValidate={false}>
-            {mode === 'signup' && (
-              <label className="block text-sm font-medium">
-                Full name
-                <input
-                  className={inputClass}
-                  type="text"
-                  autoComplete="name"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                />
-              </label>
-            )}
-
-            {mode === 'signup' &&
-              (home ? (
-                <div className="text-sm">
-                  <span className="font-medium">Home city</span>
-                  <p className="mt-1.5 flex items-center justify-between rounded-md border border-line bg-white px-3 py-2.5">
-                    {home.label}
-                    <button type="button" className="text-spruce/70 underline underline-offset-4" onClick={() => setHome(null)}>
-                      Change
-                    </button>
-                  </p>
-                </div>
-              ) : (
-                <div>
-                  <CityPicker label="Home city (optional)" onPick={setHome} />
-                  <span className="mt-1.5 block text-xs text-spruce/60">
-                    Used for local weather on days you do not share your location. You can add it later in Settings.
-                  </span>
-                </div>
-              ))}
-
-            <label className="block text-sm font-medium">
-              Email
-              <input
-                className={inputClass}
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </label>
-
-            <label className="block text-sm font-medium">
-              Password
-              <input
-                className={inputClass}
-                type="password"
-                autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-                minLength={6}
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              {mode === 'signup' && (
-                <span className="mt-1.5 block text-xs text-spruce/60">At least 6 characters.</span>
-              )}
-            </label>
-
-            {error && (
-              <p role="alert" className="rounded-md bg-alert/10 px-3 py-2 text-sm text-alert">
-                {error}
-              </p>
-            )}
-            {notice && (
-              <p role="status" className="rounded-md bg-current/10 px-3 py-2 text-sm text-current">
-                {notice}
-              </p>
-            )}
-
-            <button
-              type="submit"
-              disabled={submitting}
-              className="w-full rounded-md bg-spruce px-4 py-2.5 font-semibold text-mist transition-colors hover:bg-spruce-soft disabled:opacity-60"
-            >
-              {submitting ? copy.busy : copy.action}
-            </button>
-          </form>
-
-          <p className="mt-6 text-sm text-spruce/75">
-            {mode === 'login' ? (
-              <>
-                New here?{' '}
-                <Link to="/signup" className="font-semibold text-spruce underline underline-offset-4">
-                  Create an account
-                </Link>
-              </>
-            ) : (
-              <>
-                Already have an account?{' '}
-                <Link to="/login" className="font-semibold text-spruce underline underline-offset-4">
-                  Log in
-                </Link>
-              </>
-            )}
+        <label className="block text-sm font-medium">
+          Password
+          <input
+            className={inputClass}
+            type="password"
+            autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+            minLength={6}
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {mode === 'signup' && (
+            <span className="mt-1.5 block text-xs text-spruce/60">At least 6 characters.</span>
+          )}
+        </label>
+        {mode === 'login' && (
+          <p className="-mt-2 text-sm">
+            <Link to="/forgot-password" state={{ email }} className="font-semibold text-spruce underline underline-offset-4">
+              Forgot password?
+            </Link>
           </p>
-        </div>
-      </section>
-    </div>
+        )}
+
+        {error && (
+          <p role="alert" className="rounded-md bg-alert/10 px-3 py-2 text-sm text-alert">
+            {error}
+          </p>
+        )}
+        {notice && (
+          <p role="status" className="rounded-md bg-current/10 px-3 py-2 text-sm text-current">
+            {notice}
+          </p>
+        )}
+
+        <button
+          type="submit"
+          disabled={submitting}
+          className="w-full rounded-md bg-spruce px-4 py-2.5 font-semibold text-mist transition-colors hover:bg-spruce-soft disabled:opacity-60"
+        >
+          {submitting ? copy.busy : copy.action}
+        </button>
+      </form>
+
+      <p className="mt-6 text-sm text-spruce/75">
+        {mode === 'login' ? (
+          <>
+            New here?{' '}
+            <Link to="/signup" className="font-semibold text-spruce underline underline-offset-4">
+              Create an account
+            </Link>
+          </>
+        ) : (
+          <>
+            Already have an account?{' '}
+            <Link to="/login" className="font-semibold text-spruce underline underline-offset-4">
+              Log in
+            </Link>
+          </>
+        )}
+      </p>
+    </AuthShell>
   );
 }
