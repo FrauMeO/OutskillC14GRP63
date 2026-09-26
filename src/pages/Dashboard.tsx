@@ -37,11 +37,12 @@ const COLORS = {
 
 const fmtNumber = (n: number, decimals = 0) => n.toLocaleString(undefined, { maximumFractionDigits: decimals, minimumFractionDigits: 0 });
 
-function Card({ title, accent, children }: { title: string; accent: string; children: ReactNode }) {
+function Card({ title, subtitle, accent, children }: { title: string; subtitle?: string; accent: string; children: ReactNode }) {
   return (
     <section aria-label={title} className="relative overflow-hidden rounded-lg border border-line bg-white p-5 pl-6">
       <span className="absolute inset-y-0 left-0 w-1.5" style={{ background: accent }} aria-hidden />
       <h2 className="font-display text-xl font-bold">{title}</h2>
+      {subtitle && <p className="text-sm text-spruce/65">{subtitle}</p>}
       <div className="mt-3 space-y-4">{children}</div>
     </section>
   );
@@ -298,21 +299,7 @@ export default function Dashboard() {
       <StreakBanner streak={streak} />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card title={PILLARS.exercise.name} accent={COLORS.exercise}>
-          {goalsIn('exercise').map((cfg) => (
-            <GoalMetric key={cfg.value} cfg={cfg} row={today} goal={goalOf(cfg)} color={COLORS.exercise} />
-          ))}
-        </Card>
-
-        <Card title={PILLARS.sleep.name} accent={COLORS.sleep}>
-          {goalsIn('sleep').map((cfg) => (
-            <GoalMetric key={cfg.value} cfg={cfg} row={today} goal={goalOf(cfg)} color={COLORS.sleep} />
-          ))}
-          <Value label="Time in bed" value={num(today, 'time_in_bed_hours')} unit="h" decimals={1} />
-          <Value label="Awake in bed" value={num(today, 'awake_minutes')} unit="min" />
-        </Card>
-
-        <Card title={PILLARS.nutrition.name} accent={COLORS.nutrition}>
+        <Card title={PILLARS.nutrition.name} subtitle={PILLARS.nutrition.subtitle} accent={COLORS.nutrition}>
           {goalsIn('nutrition').map((cfg) => (
             <GoalMetric
               key={cfg.value}
@@ -325,7 +312,21 @@ export default function Dashboard() {
           <Value label="Net calories (eaten minus active)" value={net} unit="kcal" />
         </Card>
 
-        <Card title={PILLARS.wellbeing.name} accent={COLORS.wellbeing}>
+        <Card title={PILLARS.sleep.name} subtitle={PILLARS.sleep.subtitle} accent={COLORS.sleep}>
+          {goalsIn('sleep').map((cfg) => (
+            <GoalMetric key={cfg.value} cfg={cfg} row={today} goal={goalOf(cfg)} color={COLORS.sleep} />
+          ))}
+          <Value label="Time in bed" value={num(today, 'time_in_bed_hours')} unit="h" decimals={1} />
+          <Value label="Awake in bed" value={num(today, 'awake_minutes')} unit="min" />
+        </Card>
+
+        <Card title={PILLARS.exercise.name} subtitle={PILLARS.exercise.subtitle} accent={COLORS.exercise}>
+          {goalsIn('exercise').map((cfg) => (
+            <GoalMetric key={cfg.value} cfg={cfg} row={today} goal={goalOf(cfg)} color={COLORS.exercise} />
+          ))}
+        </Card>
+
+        <Card title={PILLARS.wellbeing.name} subtitle={PILLARS.wellbeing.subtitle} accent={COLORS.wellbeing}>
           {mood === null ? (
             <p className="text-sm text-spruce/60">Mood not logged today.</p>
           ) : (
@@ -377,12 +378,6 @@ export default function Dashboard() {
 
       <h2 className="mt-10 font-display text-2xl font-bold">Last 7 days</h2>
       <div className="mt-4 grid gap-4 md:grid-cols-2">
-        <TrendChart title={PILLARS.exercise.name} color={COLORS.exercise} metrics={goalsIn('exercise').map(trend)} />
-        <TrendChart
-          title={PILLARS.sleep.name}
-          color={COLORS.sleep}
-          metrics={[...goalsIn('sleep').map(trend), plain('time_in_bed_hours', 'Time in bed', 'h', 1), plain('awake_minutes', 'Awake in bed', 'min')]}
-        />
         <TrendChart
           title={PILLARS.nutrition.name}
           color={COLORS.nutrition}
@@ -391,6 +386,12 @@ export default function Dashboard() {
             { key: 'net', label: 'Net calories', unit: 'kcal', points: netPoints, goal: null, decimals: 0 },
           ]}
         />
+        <TrendChart
+          title={PILLARS.sleep.name}
+          color={COLORS.sleep}
+          metrics={[...goalsIn('sleep').map(trend), plain('time_in_bed_hours', 'Time in bed', 'h', 1), plain('awake_minutes', 'Awake in bed', 'min')]}
+        />
+        <TrendChart title={PILLARS.exercise.name} color={COLORS.exercise} metrics={goalsIn('exercise').map(trend)} />
         <TrendChart
           title={PILLARS.wellbeing.name}
           color={COLORS.wellbeing}

@@ -1,23 +1,26 @@
-// The four pillars: the names people see. Chosen by Miah on 2026-09-26 (docs/development-log.md,
-// section 13). The database and code keep plain, descriptive keys (exercise, sleep, nutrition,
-// wellbeing), so renaming or translating a pillar is a change to this file only.
+// The four pillars: the names people see. Chosen by Miah on 2026-09-26: Eat, Sleep, Move, Balance
+// (docs/development-log.md, sections 13 and 14). The database and code keep plain, descriptive
+// keys (nutrition, sleep, exercise, wellbeing), so renaming or translating a pillar is a change to
+// this file only. How each pillar's measures map to Apple Health and Google is in healthMapping.ts.
 import type { Category } from './dashboard';
 
 export type Pillar = {
   key: Category;
   name: string;
-  about: string; // one line for headings, help text and translators
+  subtitle: string; // shown under the name, so each pillar is clear at a glance
   color: string; // CSS colour token
 };
 
 export const PILLARS: Record<Category, Pillar> = {
-  sleep: { key: 'sleep', name: 'Sleep Well', about: 'Sleep and rest', color: 'var(--color-dusk)' },
-  exercise: { key: 'exercise', name: 'Move More', about: 'Movement, in whatever way suits you', color: 'var(--color-ember)' },
-  nutrition: { key: 'nutrition', name: 'Eat Real', about: 'Food and water, clear and credible', color: 'var(--color-sprout)' },
-  wellbeing: { key: 'wellbeing', name: 'Steady On', about: 'Stress, resilience and how you feel', color: 'var(--color-bloom)' },
+  nutrition: { key: 'nutrition', name: 'Eat', subtitle: 'Food and water', color: 'var(--color-sprout)' },
+  sleep: { key: 'sleep', name: 'Sleep', subtitle: 'Sleep and rest', color: 'var(--color-dusk)' },
+  exercise: { key: 'exercise', name: 'Move', subtitle: 'Movement, your way', color: 'var(--color-ember)' },
+  wellbeing: { key: 'wellbeing', name: 'Balance', subtitle: 'Stress, mood and how you feel', color: 'var(--color-bloom)' },
 };
 
-// Display order used on the sign-in page and the dashboard.
-export const PILLAR_ORDER: Category[] = ['sleep', 'exercise', 'nutrition', 'wellbeing'];
+// Display order everywhere: Eat, Sleep, Move, Balance.
+export const PILLAR_ORDER: Category[] = ['nutrition', 'sleep', 'exercise', 'wellbeing'];
 
-export const PILLAR_TAGLINE = 'Four gentle pillars for noticing how you live, without judging yourself.';
+// Miah, 2026-09-26: "Create the pillars of health in your own house. Live long. Judge yourself
+// less." Polished to "home" (warmer, translates better) and "Live well" (avoids a longevity claim).
+export const PILLAR_TAGLINE = 'Build the pillars of health in your own home. Live well. Judge yourself less.';

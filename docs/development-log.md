@@ -193,6 +193,21 @@ decision below should be read in that light.
 - Open question from this discussion: whether calories eaten belong on the dashboard at all,
   given how strongly calorie counting pulls toward self-judgment.
 
+### 14. Eat, Sleep, Move, Balance, and the health-platform mapping (2026-09-26)
+- Miah proposed **Eat** (including water), **Sleep**, **Move**, **Balance**, replacing section 13's
+  names. Claude agreed: plain words that translate cleanly, no judgment built in, a gentle rhythm.
+  Subtitles keep each pillar clear: Eat, food and water; Sleep, sleep and rest; Move, movement,
+  your way; Balance, stress, mood and how you feel. Order everywhere: Eat, Sleep, Move, Balance.
+- Tagline, from Miah's words ("Create the pillars of health in your own house. Live long. Judge
+  yourself less."): **"Build the pillars of health in your own home. Live well. Judge yourself
+  less."** Claude suggested "home" (warmer, translates better) and "Live well" (avoids a longevity
+  claim); "Live long" is a one-word change if Miah prefers it.
+- Miah asked to map the pillars cleanly to Apple Health and Google. `src/lib/healthMapping.ts` and
+  `docs/health-mapping.md` map every measure to Apple Health, Google Health Connect and the Google
+  Health API, with tests. Findings: Apple has State of Mind (mood and our six feelings, one to one)
+  and PHQ-9 results; Health Connect has no mood or stress data; the Google Health API (a web API)
+  has Moods; Google Fit is deprecated in 2026. Energy and stress are app only everywhere.
+
 ### Working agreements that emerged
 - Claude shows every migration and waits for approval; destructive or tightening changes state
   the affected row count first.
