@@ -104,10 +104,86 @@ export function userMessage(d: Day): string {
 // Replies that break the principles are replaced with the fallback message.
 const BLOCKED = /\b(diagnos\w*|disorder|depress\w*|anxiety disorder|bmi|weight|lose|losing|diet\w*|deficit|should|must|lazy|fail\w*|bad day|good day|normal range|recommended amount|ideal)\b/i;
 
-export function cleanReply(raw: string | null | undefined): string | null {
+export function cleanReply(raw: string | null | undefined, maxLength = 700): string | null {
   if (!raw) return null;
   const text = raw.replace(/^["'\s]+|["'\s]+$/g, '').replace(/\s+/g, ' ').trim();
-  if (!text || text.length > 700) return null;
+  if (!text || text.length > maxLength) return null;
   if (BLOCKED.test(text)) return null;
   return text;
+}
+
+// ---------- Weekly coach (Michael's idea, reworked with Miah, 2026-09-26) ----------
+// A coach, not a judge: the person's own goals are welcome, but a goal not reached is
+// information, never failure. Same safeguards as the daily reflection.
+
+export type Goal = { goal_type: string; target_value: number | string | null };
+
+// Goals sent to the coach, in plain words. Calories-eaten goals are never sent: the coach
+// never talks about eating less.
+const GOAL_WORDS: Record<string, { label: string; unit: string }> = {
+  exercise: { label: 'exercise', unit: 'minutes a day' },
+  steps: { label: 'steps', unit: 'steps a day' },
+  stand_hours: { label: 'standing', unit: 'hours a day' },
+  active_calories: { label: 'active calories', unit: 'kcal a day' },
+  sleep: { label: 'sleep', unit: 'hours a night' },
+  water: { label: 'water', unit: 'liters a day' },
+};
+
+export function describeGoals(goals: Goal[]): string[] {
+  return goals
+    .filter((g) => GOAL_WORDS[g.goal_type] && n(g.target_value) !== null)
+    .map((g) => `${GOAL_WORDS[g.goal_type].label}: ${n(g.target_value)} ${GOAL_WORDS[g.goal_type].unit}`);
+}
+
+// A hard week never goes to AI: the most recent logged day was hard, or two or more days were.
+export function isHardWeek(days: Day[]): boolean {
+  if (!days.length) return false;
+  const sorted = [...days].sort((a, b) => a.log_date.localeCompare(b.log_date));
+  return isHardDay(sorted[sorted.length - 1]) || sorted.filter(isHardDay).length >= 2;
+}
+
+export const HARD_WEEK_MESSAGE =
+  "This week sounds like it has asked a lot of you. Thank you for logging through it; that takes care. Goals can wait while you look after yourself, so be gentle with yourself. If you'd like, talking with someone you trust can help, and the Reflect page has a few quiet questions whenever you want them.";
+
+export const COACH_PROMPT = `You are a gentle, encouraging coach in "Build Your Pillars", a self-tracking app with four pillars: Eat, Sleep, Move and Balance. Its motto: "Build your pillars of health. Live Well. p.s. judge yourself a lot less." You are a coach, never a judge.
+
+Write 3 to 5 short sentences, under 110 words, in plain, warm English that translates well.
+- Start with what the person did this week: notice showing up and effort, using their own numbers.
+- Name one strength from the week.
+- The goals are the person's own. If a goal was not reached, treat it as information, not failure: weeks vary and change is hard. Notice any progress toward it. Never use words like failed, missed, fell short, behind or only.
+- Offer one small, doable next step toward a goal they chose, as an invitation ("you could try", "if you like"), never "should" or "must".
+- Compare only with their own goals and their own days, never with other people, averages, norms or ideals.
+- Never mention weight, body shape, appearance, dieting, or calories as something to cut. Never give medical advice, diagnose, or name any condition.
+- You may describe what went together ("on nights with more sleep, your mood was higher"), never what caused what.
+- Do not invent numbers, and do not comment on pillars that were not logged.
+- End on encouragement. No emojis, no lists, no headings.`;
+
+export function weekMessage(days: Day[], goals: Goal[]): string {
+  const sorted = [...days].sort((a, b) => a.log_date.localeCompare(b.log_date));
+  const dayBlocks = sorted
+    .map((d) => {
+      const lines = describeDay(d);
+      return lines.length ? `${d.log_date}:\n${lines.map((l) => `- ${l}`).join('\n')}` : null;
+    })
+    .filter(Boolean)
+    .join('\n');
+  const goalLines = describeGoals(goals);
+  const goalText = goalLines.length ? goalLines.map((g) => `- ${g}`).join('\n') : '- none set';
+  return `The person's last ${sorted.length} logged days:\n${dayBlocks}\n\nGoals the person set for themselves:\n${goalText}`;
+}
+
+// The coach may name goals, but never frames them as a failure.
+const COACH_BLOCKED = /\b(missed|miss your|fell short|falling short|behind|only managed|disappoint\w*|not enough)\b/i;
+
+export function cleanCoachReply(raw: string | null | undefined): string | null {
+  const text = cleanReply(raw, 900);
+  return text && !COACH_BLOCKED.test(text) ? text : null;
+}
+
+// Local calendar arithmetic on YYYY-MM-DD (noon avoids daylight-saving edges).
+export function addDaysIso(iso: string, days: number): string {
+  const [y, m, d] = iso.split('-').map(Number);
+  const t = new Date(Date.UTC(y, m - 1, d, 12));
+  t.setUTCDate(t.getUTCDate() + days);
+  return t.toISOString().slice(0, 10);
 }

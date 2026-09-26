@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { FEELINGS } from '../../../src/lib/checkin';
-import { SYSTEM_PROMPT, cleanReply, describeDay, isHardDay, userMessage } from './logic';
+import { COACH_PROMPT, SYSTEM_PROMPT, addDaysIso, cleanCoachReply, cleanReply, describeDay, isHardDay, isHardWeek, userMessage, weekMessage } from './logic';
 
 const day = { log_date: '2026-09-26', sleep_hours: '7.5', steps: 6200, water_liters: '2', mood: 4, energy: 3, stress: 2, feelings: ['calm', 'grateful'] };
 
@@ -57,5 +57,54 @@ describe('reply filter', () => {
     }
     expect(cleanReply('')).toBeNull();
     expect(cleanReply('x'.repeat(701))).toBeNull();
+  });
+});
+
+describe('weekly coach', () => {
+  const week = [
+    { log_date: '2026-09-20', steps: 6000, sleep_hours: 7, mood: 4 },
+    { log_date: '2026-09-22', steps: 7500, sleep_hours: 6.5, mood: 3, feelings: ['tired'] },
+    { log_date: '2026-09-26', steps: 5200, water_liters: 2, mood: 4, energy: 3 },
+  ];
+  const goals = [
+    { goal_type: 'steps', target_value: 8000 },
+    { goal_type: 'sleep', target_value: '8' },
+    { goal_type: 'calories_consumed', target_value: 1800 },
+  ];
+
+  it('sends the days and the person’s own goals, but never a calories-eaten goal (control)', () => {
+    const msg = weekMessage(week, goals);
+    expect(msg).toContain('2026-09-22:\n- Sleep: slept 6.5 hours');
+    expect(msg).toContain('- steps: 8000 steps a day');
+    expect(msg).toContain('- sleep: 8 hours a night');
+    expect(msg).not.toMatch(/1800|calories eaten/);
+    expect(weekMessage(week, [])).toContain('- none set');
+  });
+
+  it('coaches without judging', () => {
+    expect(COACH_PROMPT).toMatch(/coach, never a judge/);
+    expect(COACH_PROMPT).toMatch(/information, not failure/);
+    expect(COACH_PROMPT).toMatch(/never "should" or "must"/);
+  });
+
+  it('keeps hard weeks away from AI: a hard latest day, or two hard days (control: one early hard day is not)', () => {
+    expect(isHardWeek([...week, { log_date: '2026-09-27', mood: 1 }])).toBe(true);
+    expect(isHardWeek([...week, { log_date: '2026-09-18', mood: 1 }, { log_date: '2026-09-19', mood: 2, stress: 5 }])).toBe(true);
+    expect(isHardWeek([{ log_date: '2026-09-18', mood: 1 }, ...week])).toBe(false);
+    expect(isHardWeek([])).toBe(false);
+  });
+
+  it('filters failure framing, and lets a kind coaching reply through (control)', () => {
+    const kind =
+      'You logged three days this week and kept moving, with 7500 steps on Tuesday. Your steps are building toward the 8000 you chose. If you like, you could try a short walk after lunch this week.';
+    expect(cleanCoachReply(kind)).toBe(kind);
+    for (const bad of ['You missed your step goal twice.', 'You fell short on sleep.', 'You are behind on steps.', 'You should walk more.']) {
+      expect(cleanCoachReply(bad), bad).toBeNull();
+    }
+  });
+
+  it('counts back seven days on the calendar', () => {
+    expect(addDaysIso('2026-09-26', -6)).toBe('2026-09-20');
+    expect(addDaysIso('2026-03-01', -1)).toBe('2026-02-28');
   });
 });
