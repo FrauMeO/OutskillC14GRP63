@@ -1,6 +1,7 @@
 // TEMPORARY, for the hackathon (see supabase/functions/daily-reflection/logic.ts for removal steps).
 // Shown only when VITE_AI_REFLECTION is "on". Opt-in: nothing is sent until the person asks.
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 
 export const AI_REFLECTION_ENABLED = import.meta.env.VITE_AI_REFLECTION === 'on';
@@ -32,7 +33,15 @@ export default function AiReflectionCard({ date, hasEntry }: { date: string; has
         A reflection on your day
       </h2>
       {!hasEntry ? (
-        <p className="mt-1 text-spruce/75">Log something today, and you can ask for a short, kind reflection on it.</p>
+        <>
+          <p className="mt-1 text-spruce/75">Log something today, and you can ask for a short, kind reflection on it.</p>
+          <Link
+            to="/habits"
+            className="mt-3 inline-flex min-h-11 items-center rounded-md bg-spruce px-5 font-semibold text-mist hover:bg-spruce-soft"
+          >
+            Log today
+          </Link>
+        </>
       ) : result ? (
         <>
           <p className="mt-2 text-lg leading-relaxed" aria-live="polite">
