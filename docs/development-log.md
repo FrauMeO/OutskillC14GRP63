@@ -253,6 +253,16 @@ decision below should be read in that light.
   "Coach me on my week" on the existing card, with the person's own goals, where a goal not
   reached is information, never failure, and one small next step is offered as an invitation.
   Same function and safeguards; calories-eaten goals are never sent; nothing saved.
+- **Travel demo year (Demo account).** Miah's own Apple Health year, made public-proof: daily
+  totals only (steps, exercise, stand hours, active energy, sleep, time in bed, awake), dates
+  rotated, rounded (steps 100, exercise 5 min, sleep a quarter hour), city centres only, and none
+  of the personal details in her trip files. 365 days through 50 places she has been, no more
+  than 21 in Philadelphia and 21 in the Seattle area, each with real weather. Water and
+  faces check-ins are made up (she tracks those in other apps); her real short-sleep nights and
+  heavy exercise days are kept. The recording week is kept gentle so the reflection and coach
+  speak. Built by `scripts/build-travel-demo.ts`; the old Demo data is backed up in
+  `sample-data/snapshots/2026-09-26-demo-before-travel-year/`. The Apple Health importer now
+  counts each stood hour once (it had counted up to 52 a day).
 - **Weekly rhythm instead of a daily streak.** From a scan of what people say about health apps
   (a third quit one because it made them feel worse; broken streaks make people give up). A day
   counts when anything is logged, any 4 logged days in the last 7 make a full week, a week in

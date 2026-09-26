@@ -1,0 +1,4 @@
+[
+  {"log_date":"2026-09-25","mood":4,"energy":3,"stress":3,"feelings":["grateful"],"notes":"It was rainy and quite windy today, with an early Nor'easter moving in from offshore and hitting New England.","steps":null,"sleep_hours":6,"stand_hours":null,"water_liters":3,"awake_minutes":null,"active_calories":null,"exercise_minutes":25,"calories_consumed":null,"time_in_bed_hours":null,"source":"manual","location_name":"Philadelphia, Pennsylvania","latitude":40,"longitude":-75.1,"location_source":"device"},
+  {"log_date":"2026-09-26","mood":3,"energy":3,"stress":4,"feelings":["frustrated","anxious","tired"],"notes":"Late night working","steps":2500,"sleep_hours":2,"stand_hours":null,"water_liters":3,"awake_minutes":null,"active_calories":null,"exercise_minutes":15,"calories_consumed":null,"time_in_bed_hours":null,"source":"manual","location_name":"Philadelphia, Pennsylvania","latitude":40,"longitude":-75.1,"location_source":"device"}
+]
