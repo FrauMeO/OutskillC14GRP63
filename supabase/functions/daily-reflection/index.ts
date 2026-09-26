@@ -46,7 +46,8 @@ Deno.serve(async (req) => {
   if (isHardDay(day as Day)) return json({ text: HARD_DAY_MESSAGE, source: 'fixed' });
   if (describeDay(day as Day).length === 0) return json({ text: FALLBACK_MESSAGE, source: 'fixed' });
 
-  const apiKey = Deno.env.get('ANTHROPIC_API_KEY');
+  // The secret was saved in the dashboard as Anthropic_API_Key; accept either spelling.
+  const apiKey = Deno.env.get('ANTHROPIC_API_KEY') ?? Deno.env.get('Anthropic_API_Key');
   if (!apiKey) return json({ error: 'The reflection service is not set up yet.' }, 503);
   const model = Deno.env.get('ANTHROPIC_MODEL') ?? 'claude-opus-5-5';
 
