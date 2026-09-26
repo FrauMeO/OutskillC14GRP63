@@ -223,6 +223,11 @@ decision below should be read in that light.
   (300/day), Mailjet (6,000/month, 200/day); SendGrid is no longer free.
 - Any provider needs a domain Miah owns, with SPF and DKIM records. Miah plans to put the domain on
   Vercel (account msolmsted@gmail.com, username fraumeo, Hobby plan; main team "olmsted-portfolio").
+- Domain: short "four pillars" names were all taken. Miah chose **buildyourpillars.com** (matches the
+  tagline; $11.25 a year on Vercel), available across social media handles and domain endings.
+  Miah buys it herself in Vercel (payment and registrant details are hers); Claude then sets up the
+  Vercel project, the domain, Supabase redirect URLs and Resend. Suggested: also claim
+  @buildyourpillars handles and buildyourpillars.app.
 
 ### Working agreements that emerged
 - Claude shows every migration and waits for approval; destructive or tightening changes state
