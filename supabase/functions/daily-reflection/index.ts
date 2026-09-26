@@ -43,6 +43,7 @@ Deno.serve(async (req) => {
   if (error) return json({ error: 'Could not read your entry.' }, 500);
   if (!day) return json({ error: 'There is no entry for that day yet.' }, 404);
 
+  if (isHardDay(day as Day)) console.log('daily-reflection: hard day, fixed message');
   if (isHardDay(day as Day)) return json({ text: HARD_DAY_MESSAGE, source: 'fixed' });
   if (describeDay(day as Day).length === 0) return json({ text: FALLBACK_MESSAGE, source: 'fixed' });
 
@@ -71,6 +72,7 @@ Deno.serve(async (req) => {
       .map((b) => b.text)
       .join(' ');
     const text = cleanReply(raw);
+    if (!text) console.log('daily-reflection: reply filtered by the principles check');
     return json(text ? { text, source: 'ai', model: response.model } : { text: FALLBACK_MESSAGE, source: 'fixed', note: 'filtered' });
   } catch (err) {
     const status = err instanceof Anthropic.APIError ? err.status : 'network';
