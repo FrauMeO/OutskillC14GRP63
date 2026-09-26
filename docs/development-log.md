@@ -175,6 +175,24 @@ decision below should be read in that light.
 - Guard rail: celebrations mark arrivals only. Nothing marks a missed day, resets or says a run
   was broken; days without an entry are simply blank.
 
+### 13. The four pillars (2026-09-26)
+- Miah proposed four named pillars: **Eat Real** (nutrition, "clear and credible"), **Sleep Well**
+  (sleep), **Move More** (exercise, "accessible"), **Steady On** (stress management, resilience,
+  emotional regulation), replacing "Sleep. Water. Movement." on the sign-in page.
+- Claude recommended keeping the database and code keys unchanged (they describe the data and map
+  to Apple Health, the importer, tests and statistics) and putting the names in one file,
+  `src/lib/pillars.ts`, so renaming or translating is a one-file change. Agreed.
+- Claude raised, for the record, that "Eat Real" can echo clean-eating language, "Move More" can
+  read as "never enough", and "Steady On" is a British idiom that can sound like a telling-off and
+  may not translate; alternatives were offered (Sleep Well, Move Well, Eat Well, Stay Steady).
+  **Miah chose her originals.** Revisit with native speakers when translating for India, the UAE
+  and Germany.
+- Mapping: Sleep Well = sleep, time in bed, awake minutes; Move More = exercise minutes, steps,
+  stand hours, active calories; Eat Real = water, calories eaten, net calories; Steady On = mood,
+  energy, stress, feelings, and the gentle check-in and reflection.
+- Open question from this discussion: whether calories eaten belong on the dashboard at all,
+  given how strongly calorie counting pulls toward self-judgment.
+
 ### Working agreements that emerged
 - Claude shows every migration and waits for approval; destructive or tightening changes state
   the affected row count first.

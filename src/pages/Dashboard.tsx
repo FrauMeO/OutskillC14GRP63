@@ -9,6 +9,7 @@ import TrendChart, { type TrendMetric } from '../components/TrendChart';
 import { FEELINGS, RATING_SCALES } from '../lib/checkin';
 import type { GoalConfig } from '../lib/goals';
 import { OFFER_TEXT, checkinState, type DayRow } from '../lib/reflection';
+import { PILLARS, PILLAR_ORDER } from '../lib/pillars';
 import {
   CATEGORY_FIELDS,
   CATEGORY_LABELS,
@@ -115,7 +116,7 @@ function StreakBanner({ streak }: { streak: Streak }) {
         {streak.todayComplete
           ? 'Today is fully logged. Nice work.'
           : `${streak.days > 0 ? 'Counting through yesterday. ' : ''}Still to log today: ${missing.join(', ')}.`}{' '}
-        A day counts when Exercise, Sleep, Nutrition and Wellbeing each have at least one entry.
+        A day counts when {PILLAR_ORDER.map((k) => PILLARS[k].name).join(', ').replace(/, ([^,]*)$/, ' and $1')} each have at least one entry.
       </p>
       {!streak.todayComplete && (
         <Link to="/habits" className="mt-2 inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
@@ -297,13 +298,13 @@ export default function Dashboard() {
       <StreakBanner streak={streak} />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card title="Exercise" accent={COLORS.exercise}>
+        <Card title={PILLARS.exercise.name} accent={COLORS.exercise}>
           {goalsIn('exercise').map((cfg) => (
             <GoalMetric key={cfg.value} cfg={cfg} row={today} goal={goalOf(cfg)} color={COLORS.exercise} />
           ))}
         </Card>
 
-        <Card title="Sleep" accent={COLORS.sleep}>
+        <Card title={PILLARS.sleep.name} accent={COLORS.sleep}>
           {goalsIn('sleep').map((cfg) => (
             <GoalMetric key={cfg.value} cfg={cfg} row={today} goal={goalOf(cfg)} color={COLORS.sleep} />
           ))}
@@ -311,7 +312,7 @@ export default function Dashboard() {
           <Value label="Awake in bed" value={num(today, 'awake_minutes')} unit="min" />
         </Card>
 
-        <Card title="Nutrition" accent={COLORS.nutrition}>
+        <Card title={PILLARS.nutrition.name} accent={COLORS.nutrition}>
           {goalsIn('nutrition').map((cfg) => (
             <GoalMetric
               key={cfg.value}
@@ -324,7 +325,7 @@ export default function Dashboard() {
           <Value label="Net calories (eaten minus active)" value={net} unit="kcal" />
         </Card>
 
-        <Card title="Wellbeing" accent={COLORS.wellbeing}>
+        <Card title={PILLARS.wellbeing.name} accent={COLORS.wellbeing}>
           {mood === null ? (
             <p className="text-sm text-spruce/60">Mood not logged today.</p>
           ) : (
@@ -376,14 +377,14 @@ export default function Dashboard() {
 
       <h2 className="mt-10 font-display text-2xl font-bold">Last 7 days</h2>
       <div className="mt-4 grid gap-4 md:grid-cols-2">
-        <TrendChart title="Exercise" color={COLORS.exercise} metrics={goalsIn('exercise').map(trend)} />
+        <TrendChart title={PILLARS.exercise.name} color={COLORS.exercise} metrics={goalsIn('exercise').map(trend)} />
         <TrendChart
-          title="Sleep"
+          title={PILLARS.sleep.name}
           color={COLORS.sleep}
           metrics={[...goalsIn('sleep').map(trend), plain('time_in_bed_hours', 'Time in bed', 'h', 1), plain('awake_minutes', 'Awake in bed', 'min')]}
         />
         <TrendChart
-          title="Nutrition"
+          title={PILLARS.nutrition.name}
           color={COLORS.nutrition}
           metrics={[
             ...goalsIn('nutrition').map(trend),
@@ -391,7 +392,7 @@ export default function Dashboard() {
           ]}
         />
         <TrendChart
-          title="Wellbeing"
+          title={PILLARS.wellbeing.name}
           color={COLORS.wellbeing}
           metrics={RATING_SCALES.map((s) => plain(s.key, s.label, '', 0, [1, 5]))}
         />
