@@ -253,6 +253,10 @@ decision below should be read in that light.
   "Coach me on my week" on the existing card, with the person's own goals, where a goal not
   reached is information, never failure, and one small next step is offered as an invitation.
   Same function and safeguards; calories-eaten goals are never sent; nothing saved.
+- **Weekly rhythm instead of a daily streak.** From a scan of what people say about health apps
+  (a third quit one because it made them feel worse; broken streaks make people give up). A day
+  counts when anything is logged, any 4 logged days in the last 7 make a full week, a week in
+  progress never breaks the run, and nothing names missed days or a lost streak.
 - **Today's weather on the Dashboard.** Miah asked to see the weather that Insights compares with:
   "Today in Atlanta: 15–28°C, dry, …", linking to Insights, with Open-Meteo credited.
 - **Name.** The app is now "Build Your Pillars" in the header, the browser tab and CLAUDE.md,

@@ -1,7 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { addDays, goalTargets, indicatorFor, loggingStreak, missingCategories, netCalories, progress, series } from './dashboard';
-
-const full = (log_date: string) => ({ log_date, steps: 4000, sleep_hours: 7, water_liters: 2, mood: 3 });
+import { FULL_WEEK_DAYS, addDays, goalTargets, indicatorFor, missingCategories, netCalories, progress, rhythmText, series, weeklyRhythm } from './dashboard';
 
 describe('progress', () => {
   it('shows the real percentage over 100 but caps the fill', () => {
@@ -47,33 +45,37 @@ describe('local date boundaries', () => {
   });
 });
 
-describe('logging streak', () => {
-  const today = '2026-09-25';
+describe('weekly rhythm', () => {
+  const today = '2026-09-26';
+  const on = (...offsets: number[]) => offsets.map((o) => ({ log_date: addDays(today, -o), mood: 3 }));
 
-  it('counts a streak longer than seven days', () => {
-    const rows = Array.from({ length: 10 }, (_, i) => full(addDays(today, -i)));
-    expect(loggingStreak(rows, today)).toMatchObject({ days: 10, endsOn: today, todayComplete: true });
+  it('counts any logged day, and a full week is four of the last seven (control: a notes-only row is not a logged day)', () => {
+    expect(FULL_WEEK_DAYS).toBe(4);
+    expect(weeklyRhythm(on(0, 2, 4, 6), today)).toMatchObject({ daysThisWeek: 4, fullWeek: true, loggedToday: true });
+    expect(weeklyRhythm([...on(1, 2, 3), { log_date: today, notes: 'hi' }], today)).toMatchObject({ daysThisWeek: 3, fullWeek: false, loggedToday: false });
   });
 
-  it('stops at a broken day (control: the gap is what ends it)', () => {
-    const rows = [full(today), full(addDays(today, -1)), full(addDays(today, -3))];
-    expect(loggingStreak(rows, today).days).toBe(2);
-    expect(loggingStreak([...rows, full(addDays(today, -2))], today).days).toBe(4);
+  it('rest days never break the run, and a week still in progress does not either', () => {
+    // Four days in each of the last three weeks, with rest days between.
+    const three = on(0, 2, 4, 6, 7, 9, 11, 13, 14, 16, 18, 20);
+    expect(weeklyRhythm(three, today).weeksInRow).toBe(3);
+    // This week only has one day so far: last week's run still stands.
+    expect(weeklyRhythm(on(1, 7, 8, 9, 10), today)).toMatchObject({ daysThisWeek: 1, weeksInRow: 1 });
+    // Control: a quiet week earlier ends the run.
+    expect(weeklyRhythm(on(0, 1, 2, 3, 14, 15, 16, 17), today).weeksInRow).toBe(1);
   });
 
-  it('counts through yesterday when today is incomplete, and lists what is missing', () => {
-    const rows = [{ log_date: today, steps: 3000, mood: 4 }, full(addDays(today, -1)), full(addDays(today, -2))];
-    expect(loggingStreak(rows, today)).toEqual({ days: 2, endsOn: addDays(today, -1), todayComplete: false, todayMissing: ['sleep', 'nutrition'] });
-  });
-
-  it('needs all four categories; notes do not count and goals need not be met', () => {
-    expect(missingCategories({ steps: 1, sleep_hours: 1, water_liters: 1, notes: 'hi' })).toEqual(['wellbeing']);
-    expect(missingCategories({ exercise_minutes: 0, awake_minutes: 0, calories_consumed: 0, stress: 1 })).toEqual([]);
-  });
-
-  it('is zero for a new user with no logs (empty state)', () => {
-    expect(loggingStreak([], today)).toEqual({
-      days: 0, endsOn: null, todayComplete: false, todayMissing: ['exercise', 'sleep', 'nutrition', 'wellbeing'],
-    });
+  it('celebrates arrivals and never names missed days or a lost streak', () => {
+    const texts = [
+      rhythmText({ daysThisWeek: 5, fullWeek: true, weeksInRow: 3, loggedToday: true }),
+      rhythmText({ daysThisWeek: 3, fullWeek: false, weeksInRow: 1, loggedToday: false }),
+      rhythmText({ daysThisWeek: 1, fullWeek: false, weeksInRow: 2, loggedToday: true }),
+      rhythmText({ daysThisWeek: 0, fullWeek: false, weeksInRow: 0, loggedToday: false }),
+    ];
+    expect(texts[0]).toEqual({ title: 'A full week', body: 'You logged 5 days in the last seven. That is 3 full weeks in a row.' });
+    expect(texts[1]).toEqual({ title: '3 days this week', body: 'One more day makes a full week, whenever it suits you. The week before was a full one.' });
+    expect(texts[2].body).toBe('3 more days make a full week, whenever it suits you. The 2 weeks before were full ones.');
+    expect(texts[3]).toEqual({ title: 'A fresh week', body: 'Log whenever you are ready.' });
+    for (const t of texts) expect(`${t.title} ${t.body}`).not.toMatch(/missed|lost|broke|only|behind|streak/i);
   });
 });
