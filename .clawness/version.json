@@ -1,0 +1,10 @@
+{
+  "version": "1.18.0",
+  "covered": [
+    "css",
+    "react",
+    "sql",
+    "typescript"
+  ],
+  "updated": 1790694182.7974389
+}
