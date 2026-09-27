@@ -307,6 +307,34 @@ decision below should be read in that light.
 - **Name.** The app is now "Build Your Pillars" in the header, the browser tab and CLAUDE.md,
   matching buildyourpillars.com. Historical documents keep the old name.
 
+### 18. Demo video, deck and submission (2026-09-26)
+- **Narrated demo video, 4:27.** The first cut (the Loom recording with narration laid over it)
+  had long silences and was cut to 2:56, which dropped features the brief highlights. Miah asked
+  for the full brief in about 4½ minutes. Claude wrote a 10-paragraph script from the brief;
+  ElevenLabs read it in the Bomani voice, one clip per paragraph, placed back to back with
+  half-second pauses. A timed script then drove the live app on the Demo account on each spoken
+  cue (clicks, typing, scrolling, a visible pointer) while the screen was recorded at 1920 × 1080,
+  so the screen follows the voice with no dead air. Claude wrote the daily reflection and the
+  weekly coach reply live during the take.
+- **What the video checks and hides.** Every cue was checked against its words, no silence over
+  1.5 s. The Demo login email is hidden in the sidebar and blurred in Settings; browser pop-ups
+  and the Chrome extension's marker are covered. The Privacy scene was filmed again so the daily
+  log downloads and opens as a spreadsheet. A closing cutaway shows the real `npx vitest run`
+  output (125 passed). The end card names Group 63: Michael Stuewing, Mushtaq Ahmed, Miah Shull
+  Olmsted and Muzzafar Shaikh. Loom: https://www.loom.com/share/ade24c3c61e74865b0c4c3d2d1fc5e9d
+- **Script corrected to match the app.** Insights shows one "Something to try" suggestion for the
+  Demo data, so the line "two small things to try" was re-recorded as "a small thing to try".
+- **Demo account changes (approved by Miah).** Three goals added (water 2 L, sleep 7.5 h, steps
+  10,000) so the Dashboard and the weekly coach have goals to work with. Today's entry
+  (2026-09-26) was removed before each take so logging could happen on camera; the final take
+  logged it again (mood Happy, energy High, stress Low, Calm and Grateful, water 2.2 L, sleep
+  7.25 h, 13,000 steps).
+- **Brief, package and deck.** The product brief, a demo video package (creative brief, script,
+  shot list, feature coverage) and the Outskill pitch deck were filled in and exported. The deck
+  keeps Outskill's template, colours and fonts; research sources are in its speaker notes.
+- **Submitted** to the Outskill AI Accelerator hackathon (group 63) before the deadline of
+  27 September, 10:00 a.m. IST.
+
 ### Working agreements that emerged
 - Claude shows every migration and waits for approval; destructive or tightening changes state
   the affected row count first.
@@ -323,3 +351,7 @@ decision below should be read in that light.
   `prompt-03c-reflection`.
 - Future: translations for the launch countries (the interface is English only).
 - After judging: remove the AI reflection; turn email confirmation back on with Resend.
+- After judging: decide whether the Demo account keeps the three goals and the recorded entry for
+  2026-09-26.
+- Later: a sleep-quality field, crisis lines for Oman, a design pass, and automated checks on
+  GitHub (CI).
