@@ -2,6 +2,12 @@
 // (the Settings switch, the dialog, the card), in this tab and in other tabs.
 import { useCallback, useEffect, useState } from 'react';
 import { consentKey, isSnoozed, mayCallAi, readConsent, snoozeAsk, writeConsent, type ConsentStatus } from '../../lib/aiConsent';
+import { noteSynced, shouldSyncStored, syncConsentToServer } from '../../lib/aiConsentSync';
+import { supabase } from '../../lib/supabase';
+
+// Best effort, never blocks the screen and never throws (migration 0019 may not be applied yet).
+const sendToServer = (granted: boolean) =>
+  syncConsentToServer((g, version) => supabase.rpc('set_ai_consent', { p_granted: g, p_version: version }), granted);
 
 const EVENT = 'byp-ai-consent-changed';
 
@@ -26,10 +32,20 @@ export function useAiConsent(userId: string | null | undefined) {
     };
   }, [userId]);
 
+  // The choice already stored in this browser is copied to the server once per page load, so people who
+  // said yes before the server kept a record are covered. "Not asked yet" sends nothing.
+  useEffect(() => {
+    if (!userId || status === 'unset') return;
+    const granted = status === 'granted';
+    if (shouldSyncStored(userId, granted)) void sendToServer(granted);
+  }, [userId, status]);
+
   const set = useCallback(
     (granted: boolean) => {
       if (!userId) return;
       writeConsent(userId, granted);
+      noteSynced(userId, granted);
+      void sendToServer(granted); // also tell the server; the screen does not wait for it
       window.dispatchEvent(new Event(EVENT));
     },
     [userId],

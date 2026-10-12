@@ -30,12 +30,17 @@ founders decide otherwise, change the expectation, not the code.
 
 ## Baseline and CI
 
-`baseline.json` lists case ids that fail today (known gaps found on 2026-10-12). The default run fails only when
-a case outside the baseline fails (a regression), and tells you when a baseline case starts passing so you can
-remove it. When the gaps are closed, delete `baseline.json` and run with `--strict` in CI.
+`baseline.json` records `passCount` and `total` (how many cases passed when it was last updated) and `knownFailures`
+(case ids that still fail, each either a plain id or `{ "id": ..., "reason": ... }`). Since the checker rewrite
+(`src/lib/replySafety.ts`) all 69 cases pass and `knownFailures` is empty.
 
-Suggested CI line (not added, because this task may not change existing files):
-`"test:safety": "vite-node tests-safety/run-against-checker.mjs"` in `package.json`, run after `npm test`.
+The gate runs inside `npm test`: `tests-safety/cases.test.ts` fails the build when fewer cases pass than `passCount`,
+when a case outside `knownFailures` fails, when a listed known failure starts passing (so the list never goes stale), or
+when cases were deleted (`total`). Raise `passCount` when you fix more cases; never lower it to hide a regression. Do
+not weaken a case to make it pass: a case that is a policy question or unsafe by design stays in `knownFailures` with a
+reason.
+
+`run-case.mjs` is the single place that decides how each case kind is run; both the report script and the gate use it.
 
 ## Limits (be honest in the DPIA)
 

@@ -7,47 +7,17 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import {
-  cleanReply, cleanCoachReply, isHardDay, isHardWeek, describeDay, describeGoals, userMessage,
-} from '../supabase/functions/daily-reflection/logic.ts';
+import { runCase } from './run-case.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const { cases } = JSON.parse(readFileSync(join(here, 'cases.json'), 'utf8'));
 const baselinePath = join(here, 'baseline.json');
-const baseline = new Set(existsSync(baselinePath) ? JSON.parse(readFileSync(baselinePath, 'utf8')).knownFailures : []);
+const baseline = new Set(
+  (existsSync(baselinePath) ? JSON.parse(readFileSync(baselinePath, 'utf8')).knownFailures : []).map((k) => (typeof k === 'string' ? k : k.id)),
+);
 const strict = process.argv.includes('--strict');
 
-function run(c) {
-  const e = c.expect;
-  if (c.kind === 'reply' || c.kind === 'coachReply') {
-    const text = c.repeat ? c.input.repeat(c.repeat) : c.input;
-    const out = (c.kind === 'reply' ? cleanReply : cleanCoachReply)(text);
-    const got = out === null ? 'reject' : 'pass';
-    return { ok: got === e.reply, got, want: e.reply };
-  }
-  if (c.kind === 'day') {
-    if ('hardDay' in e) {
-      const got = isHardDay(c.input);
-      return { ok: got === e.hardDay, got: `hardDay=${got}`, want: `hardDay=${e.hardDay}` };
-    }
-    // Same text the model would receive: the user message for that day.
-    const sent = userMessage(c.input);
-    const hit = new RegExp(e.promptMustNotMatch, 'i').exec(sent);
-    return { ok: !hit, got: hit ? `sent contains "${hit[0]}"` : 'clean', want: `must not match /${e.promptMustNotMatch}/` };
-  }
-  if (c.kind === 'goals') {
-    const sent = describeGoals(c.input).join('\n');
-    const hit = new RegExp(e.promptMustNotMatch, 'i').exec(sent);
-    return { ok: !hit, got: hit ? `sent contains "${hit[0]}"` : 'clean', want: `must not match /${e.promptMustNotMatch}/` };
-  }
-  if (c.kind === 'week') {
-    const got = isHardWeek(c.input);
-    return { ok: got === e.hardWeek, got: `hardWeek=${got}`, want: `hardWeek=${e.hardWeek}` };
-  }
-  throw new Error(`unknown kind ${c.kind}`);
-}
-
-const results = cases.map((c) => ({ c, ...run(c) }));
+const results = cases.map((c) => ({ c, ...runCase(c) }));
 const failed = results.filter((r) => !r.ok);
 const regressions = failed.filter((r) => !baseline.has(r.c.id));
 const fixed = results.filter((r) => r.ok && baseline.has(r.c.id));
@@ -62,7 +32,7 @@ for (const sev of ['high', 'medium', 'low']) {
 if (fixed.length) console.log(`\nNow passing, remove from baseline: ${fixed.map((r) => r.c.id).join(', ')}`);
 
 if (process.argv.includes('--update-baseline')) {
-  writeFileSync(baselinePath, JSON.stringify({ knownFailures: failed.map((r) => r.c.id) }, null, 2) + '\n');
+  writeFileSync(baselinePath, JSON.stringify({ knownFailures: failed.map((r) => r.c.id), passCount: results.length - failed.length, total: results.length }, null, 2) + '\n');
   console.log('\nbaseline.json updated.');
   process.exit(0);
 }

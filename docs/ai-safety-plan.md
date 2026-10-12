@@ -240,3 +240,11 @@ Effort: S = under half a day, M = 1-3 days, L = a week or more. Owner: F = found
 - garak 0.17.0 (9 Sep 2026) release: one Wikipedia infobox, not NVIDIA.
 - What exactly "a new NVIDIA shield" refers to; no matching announcement found.
 - Nemotron benchmark numbers are NVIDIA's own.
+
+## 7. Status after the first fixes (2026-10-12, branch worktree-agent-a309ed6b580a8babc)
+
+- Reply checker rewritten as one shared pure module (`src/lib/replySafety.ts`, byte-identical copy in the edge function, guarded by a test): Unicode normalisation, look-alike and leetspeak handling, rule groups, structure checks, fails closed. The safety cases went from 22 of 69 passing to 69 of 69. "weight", "ideal" and "lose" on their own are allowed (tested).
+- Input sanity, own-property lookups and unsafe-goal handling are in `logic.ts`; the hard-day and hard-week gate has the conservative rules behind constants marked `POLICY: Miah to confirm`; both fixed messages carry a crisis pointer and the card shows the person's country lines.
+- Server-side consent and a 20-an-hour limit are written as migration 0019 (not applied) and wired into the function (not deployed). The browser records and withdraws consent through `set_ai_consent`, best effort.
+- CI: `tests-safety/cases.test.ts` runs inside `npm test`.
+- Still open: PHQ-9 scoring and tiers (founders and a lawyer), model pinning and `max_tokens`, CORS, "Report this reflection", the optional same-model judge, garak.
