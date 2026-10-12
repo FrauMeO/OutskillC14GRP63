@@ -12,6 +12,7 @@ import { OFFER_TEXT, checkinState, type DayRow } from '../lib/reflection';
 import { PILLARS } from '../lib/pillars';
 import AiReflectionCard from '../features/aiReflection/AiReflectionCard';
 import TodayWeather from '../components/TodayWeather';
+import SharedWithLine from '../components/SharedWithLine';
 import {
   CATEGORY_FIELDS,
   FULL_WEEK_DAYS,
@@ -282,6 +283,7 @@ export default function Dashboard() {
   return (
     <>
       {header}
+      <SharedWithLine />
       {checkinOffer && (
         <section aria-labelledby="gentle-checkin" className="mb-6 rounded-lg border border-bloom/40 bg-bloom/5 p-5">
           <h2 id="gentle-checkin" className="font-display text-xl font-bold">
