@@ -1,0 +1,77 @@
+/* Print layout for "Summary for my appointment" (src/pages/AppointmentSummary.tsx).
+   Black on white, no navigation, 12pt or larger, no page breaks inside a block. The paper size is
+   left to the printer (A4 or Letter). The selectors use :has(.summary-page) so nothing changes on
+   any other page. */
+
+.summary-print-only {
+  display: none;
+}
+
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 12pt;
+  }
+
+  /* Hide the app's side navigation, log out buttons and every on-screen control. */
+  body:has(.summary-page) aside,
+  body:has(.summary-page) main > button,
+  .summary-page .summary-no-print {
+    display: none !important;
+  }
+
+  /* The app layout is a two-column grid; print uses the whole page. */
+  body:has(.summary-page) .min-h-screen {
+    display: block !important;
+    min-height: 0 !important;
+  }
+  body:has(.summary-page) main {
+    padding: 0 !important;
+  }
+  body:has(.summary-page) main > div {
+    max-width: none !important;
+  }
+
+  .summary-print-only {
+    display: block;
+  }
+
+  .summary-page,
+  .summary-page * {
+    color: #000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border-color: #000 !important;
+    animation: none !important;
+  }
+
+  .summary-page {
+    font-size: 12pt;
+    line-height: 1.35;
+  }
+  .summary-page h1 {
+    font-size: 20pt;
+  }
+  .summary-page h2 {
+    font-size: 15pt;
+  }
+  .summary-page .summary-small {
+    font-size: 12pt !important;
+  }
+
+  .summary-block {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .summary-page h1,
+  .summary-page h2 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+}
