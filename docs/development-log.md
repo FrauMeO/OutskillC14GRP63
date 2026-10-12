@@ -355,3 +355,7 @@ decision below should be read in that light.
   2026-09-26.
 - Later: a sleep-quality field, crisis lines for Oman, a design pass, and automated checks on
   GitHub (CI).
+
+### 18. Demo year extended to today (2026-10-12)
+- Miah approved extending the Demo account. The year had ended on 2026-09-26, so the Dashboard showed "Not logged" for the current week. Added 16 days (2026-09-27 to 2026-10-12), now 381 days in all, all in Philadelphia (where the year ends), with real Open-Meteo weather for each day fetched by the app's own `fetchConditionRange`. Habit values are copies of the first 16 days of the year (the same rotation idea as the original build), notes left empty. Additive only; nothing was deleted or changed. The 10-12 weather row is a forecast (`is_final` false) and refreshes by the app's normal rule.
+- Not reproducible from `scripts/build-travel-demo.ts` (that builds a 365-day year ending 2026-09-26); if the year is rebuilt, set its `LAST_DAY`.
