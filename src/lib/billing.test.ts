@@ -174,9 +174,10 @@ describe('caregiver card', () => {
 
 describe('birth prompt rules (shared with sign-up)', () => {
   const today = new Date(2026, 9, 12);
-  it('refuses under 16 and accepts exactly 16 (boundary)', () => {
-    expect(validateBirth(10, 2010, today).ok).toBe(true);
-    expect(validateBirth(11, 2010, today).ok).toBe(false);
+  it('refuses under 18 and accepts exactly 18 (boundary)', () => {
+    expect(validateBirth(10, 2008, today).ok).toBe(true);
+    expect(validateBirth(11, 2008, today).ok).toBe(false);
+    expect(validateBirth(10, 2010, today).ok).toBe(false); // control: the old limit of 16 no longer passes
   });
   it('puts someone born in October 1966 on the free plan, November 1966 on the paid plan', () => {
     expect(validateBirth(10, 1966, today)).toMatchObject({ ok: true, plan: 'free_60_plus' });

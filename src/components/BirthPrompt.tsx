@@ -20,7 +20,7 @@ export default function BirthPrompt({ onSaved }: { onSaved?: () => void }) {
     e.preventDefault();
     setMessage(null);
     const result = validateBirth(month ? Number(month) : null, year ? Number(year) : null, today);
-    if (!result.ok) return setMessage(result.message); // includes refusing anyone under 16
+    if (!result.ok) return setMessage(result.message); // includes refusing anyone under 18
     setBusy(true);
     const { data: sessionData } = await supabase.auth.getSession();
     const id = sessionData.session?.user.id;

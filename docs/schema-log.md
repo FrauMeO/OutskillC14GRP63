@@ -202,3 +202,24 @@ All applied to PersonalHealthManager and tested in rolled-back blocks.
 - 0015: care_shares gains level (presence/summary/detail; existing shares carried over as detail), paused_at, last_confirmed_at; care_share_views (owner-readable access log, one row per share per day, written only by the viewer functions); set_care_share_options, confirm_care_share, shared_week_summary; shared_days / shared_goals / followed_people updated. Test `care_sharing_v2_test_after_0015.sql` matched its expected line.
 - 0016: profiles.birth_month / birth_year (both or neither; under 16 refused by the sign-up trigger); the sign-up name is one display name (40 characters).
 - 0018: app_settings (billing_enforced = false), customers, subscriptions, stripe_events, plan_from_birth, plan_for (server only), my_entitlement, viewer_may_view, profile_birth_needed. Verified live (rolled back): beta gives full access; with enforcement on, 60+ free, under-60 none until an active subscription, a legacy account is asked for its birth month and year, a caregiver subscription grants viewing; clients cannot write settings or subscriptions or call plan_for. NOT yet done: calling viewer_may_view inside shared_days / shared_week_summary / shared_goals (docs/billing.md), so flipping billing_enforced does not yet gate caregivers.
+
+## 0020_consent_ledger (2026-10-12)
+
+Written, not yet applied (Miah's main session applies it and runs `supabase/tests/consent_ledger_test_after_0020.sql`). Spec: `docs/privacy-consent-spec.md`. Additive, except that `handle_new_user()` is replaced.
+
+### What changed
+- New table `consents`: append-only ledger (identity id, user_id cascade, kind in `collect_use`, `share_caregiver`, `ai_processing`, `email_marketing`, version, granted, text_hash of 64 lower-case hex digits, share_id for `share_caregiver` only, details jsonb under 2000 characters, created_at). RLS: select own rows only. Clients have no insert, update, delete or truncate; a trigger also refuses updates and truncate for everyone. Rows leave only with the account (cascade). The spec sketch called this `consent_events`; Miah's brief named a `consents` ledger with a `record_consent(p_kind, p_version, p_granted, p_text_hash, p_share_id)` function, so that shape is built, plus an optional sixth argument `p_details` (what was agreed to: pillars, level, recipient).
+- `record_consent(...)`: security definer, uses `auth.uid()` only. Checks kind, version (1 to 1000), hash format, the share belongs to the caller (for `share_caregiver`), and a limit of 60 changes an hour. For `email_marketing` it also sets `profiles.marketing_opt_in` and its timestamp; for `collect_use` it sets or clears `profiles.health_consent_at`. Returns the new row id.
+- `my_consents()`: latest row per kind (per share for `share_caregiver`), runs as the caller.
+- New table `privacy_requests` (type access, delete, correct, restrict, object, withdraw, list_third_parties or appeal; status; `due_at` = created_at + 30 days; extension, answer and outcome fields; founders' `notes`). RLS: select own rows, and `notes` is not granted to clients (column grant). `create_privacy_request(p_type, p_details)` allows 5 open at a time. `my_privacy_requests()` returns the safe columns. Decision (earlier): the spec sketched a founders-only table with no client access; Miah asked for own-row access and a 30-day clock in the app, so clients can create and read their own.
+- On account deletion the consents cascade, but the `privacy_requests` rows stay (spec section 7: the request log is kept) with the person unlinked (`user_id` set null) and `details` cleared by a trigger on `auth.users`. Request log retention (24 months) still needs a job.
+- `handle_new_user()` replaced: minimum age 18 (was 16 in 0016). Everything else is copied unchanged from 0016. Accounts that already exist are not touched.
+
+### Reverses an earlier decision
+- Minimum age 16 (0016, Prompt "sign-up name and birth") becomes 18 everywhere, on Miah's decision of 2026-10-12 (India's DPDP Act treats under-18s as children). Existing 16 and 17 year old accounts, if any, are not removed; decide separately.
+
+### Verified
+- `consent_ledger_test_after_0020.sql` run against a scratch local PostgreSQL 17 (stub `auth` schema and roles, migrations 0001 to 0018 and 0020; not the live project): matched its expected line, including controls. Not yet run on PersonalHealthManager. Security advisor not yet run on it.
+
+### Not done (see the status table in the spec)
+- A `consent_texts` table checking the hash against stored wording; `has_consent` and the insert policies on `habit_logs`, `goals`, `reflections`; the AI gate in the edge function and `set_ai_consent` calling `record_consent`; a withdraw dialog that pauses saving; export of `consents` in the download; retention jobs.

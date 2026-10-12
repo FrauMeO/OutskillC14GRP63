@@ -123,7 +123,7 @@ How the pieces behave:
 Accounts made before sign-up asked for birth data have `plan = 'unknown'`.
 
 - **During the beta:** treated as free; everything works.
-- **At next login:** `profile_birth_needed()` is true, and the app should show `BirthPrompt` (month and year only; it refuses under 16 using the same `validateBirth` as sign-up).
+- **At next login:** `profile_birth_needed()` is true, and the app should show `BirthPrompt` (month and year only; it refuses under 18 using the same `validateBirth` as sign-up).
 - **After billing is on:** an `unknown` person has `status = 'needs_birth'` and no paid features until they answer, so nobody under 60 can avoid the plan by never answering, and nobody over 60 is charged (the monthly checkout is refused for `unknown` until they give their birth data). You may prefer to keep them free forever instead; that is a one-line change in `my_entitlement`.
 - Age is self-declared; there are no ID checks. A person could enter a false year to get free access; that is the rule you chose.
 
@@ -224,7 +224,7 @@ Prepare: sections 8 and 9 in test mode, billing still off. Use two or three thro
 7. **Cancel in the portal.** Open "Manage or cancel my plan", cancel at period end: the page says the plan is set to end on the date, and everything still works until then. Advance the clock past the date: access ends.
 8. **Webhook safety.** In the Stripe CLI (`stripe listen`/`stripe trigger`) or the dashboard "Resend": resend the same event twice (second is ignored, one row); send a request with a wrong secret or an old timestamp (400); send an unknown type (200, nothing written). Out of order: resend an old `customer.subscription.updated` after a newer one: the row still shows the latest state, because the function re-reads Stripe.
 9. **Native.** Run the Capacitor shell: the Plan page shows no price, no button, no link, only "Manage your plan on buildyourpillars.com" (when billing is on).
-10. **Legacy account.** An account with no birth data: during the beta, a prompt appears; after billing is on it is stuck at "needs birth" until it answers; under 16 is refused.
+10. **Legacy account.** An account with no birth data: during the beta, a prompt appears; after billing is on it is stuck at "needs birth" until it answers; under 18 is refused.
 
 ## 12. Flipping the switch, and what is unverified
 

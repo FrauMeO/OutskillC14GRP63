@@ -3,7 +3,9 @@
 
 export type Plan = 'free_60_plus' | 'standard';
 
-export const MIN_AGE = 16;
+// Miah, 2026-10-12: DPDP treats under-18s as children, so the minimum is 18 everywhere.
+// Keep in step with handle_new_user() in supabase/migrations/0020_consent_ledger.sql.
+export const MIN_AGE = 18;
 export const FREE_AGE = 60;
 export const NAME_MAX = 40;
 

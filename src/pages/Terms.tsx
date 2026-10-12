@@ -49,7 +49,7 @@ export default function Terms() {
         </Section>
 
         <Section id="age" title="Who can use it">
-          <p>You must be 16 or older. {/* LEGAL REVIEW: confirm age. */}</p>
+          <p>You must be 18 or older. {/* LEGAL REVIEW: confirm age (18 everywhere, Miah 2026-10-12). */}</p>
         </Section>
 
         <Section id="price" title="What it costs">

@@ -11,6 +11,7 @@ import { ABOUT_STORY, foundersLine } from '../lib/about';
 import { validateDisplayName } from '../lib/signup';
 import SharingSettings from '../components/SharingSettings';
 import DeleteAccount from '../components/DeleteAccount';
+import PrivacyCenter from '../components/PrivacyCenter';
 import EmailPreferences from '../components/EmailPreferences';
 import AiConsentSetting from '../components/AiConsentSetting';
 import ReminderSetting from '../components/ReminderSetting';
@@ -322,6 +323,8 @@ export default function Settings() {
           </p>
         )}
       </section>
+
+      <PrivacyCenter />
 
       <section aria-labelledby="plan" className="mt-6 max-w-md rounded-lg border border-line bg-white p-6">
         <h2 id="plan" className="font-display text-xl font-bold">
