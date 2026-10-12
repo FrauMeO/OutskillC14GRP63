@@ -6,6 +6,9 @@ import { CONTACT_EMAIL } from '../lib/waitlist';
 // Public Privacy Policy (route /privacy). Plain words, 18px text from PublicLayout.
 // Every statement here was checked against the code; the evidence is in docs/gdpr-compliance.md.
 // Anything uncertain lives in that document, not here.
+// Standard: docs/privacy-standard.md (Washington My Health My Data Act for everyone, stricter foreign rule where it asks more).
+// Health information has its own page: src/pages/HealthDataPrivacy.tsx (route /health-data-privacy).
+// LEGAL REVIEW: the 30-day answer time and the minimum age (code enforces 16; the standard asks for 18, see the gap table).
 // LEGAL REVIEW needed before launch: controller identity and address, the "16" age wording, the
 // transfer wording, the supervisory-authority wording, retention wording for backups and the
 // waitlist, and the Anthropic paragraph (check Anthropic's terms first).
@@ -48,6 +51,15 @@ export default function Privacy() {
         <p className="mt-6">
           This page explains, in plain words, what Build Your Pillars keeps about you, why, who else handles it, and what you can do
           about it. Your health information is private to you unless you choose to share it.
+        </p>
+
+        <p className="mt-4 rounded-lg border border-line bg-white p-5">
+          <strong>Your health information has its own page.</strong> Read the{' '}
+          <Link to="/health-data-privacy" className="font-semibold underline underline-offset-4">
+            Consumer Health Data Privacy Policy
+          </Link>{' '}
+          for exactly what health information we keep, who receives it, and how to use your rights. We follow it for everyone, wherever
+          you live. If the two pages ever differ, the stricter one applies.
         </p>
 
         <nav aria-label="On this page" className="mt-6 rounded-lg border border-line bg-white p-5">
@@ -130,8 +142,10 @@ export default function Privacy() {
         <Section id="health" title="Health information and your consent">
           <p>
             What you log about your sleep, movement, eating, mood, energy, stress, feelings and check-ins is health information. Privacy
-            laws treat it as especially sensitive. We keep it only with your clear, explicit agreement, which you give when you choose
-            to log it. You can take that agreement back at any time by deleting entries or your whole account (see Your rights).
+            laws treat it as especially sensitive. We keep it only with your clear, explicit agreement, which you give by ticking a box
+            when you create your account (it is not hidden inside these pages). Sharing it with another person, and AI help, each ask for
+            a separate yes of their own. You can take your agreement back at any time by deleting entries or your whole account (see
+            Your rights).
           </p>
           <p>
             You choose what to log. Nothing is required except an email address and a password to have an account.
@@ -204,10 +218,6 @@ export default function Privacy() {
               <>
                 <strong>Open-Meteo</strong> and <strong>BigDataCloud</strong>: weather and city names, only as described above.
               </>,
-              <>
-                <strong>Google Fonts</strong> (United States): the text fonts on this site are loaded from Google, so Google receives the
-                internet address and browser type of people who open a page.
-              </>,
             ]}
           />
           <p>
@@ -242,7 +252,12 @@ export default function Privacy() {
         </Section>
 
         <Section id="rights" title="Your rights and how to use them">
-          <p>You can do all of these from the app, or by emailing {mail}. We answer within one month.</p>
+          <p>You can do all of these from the app, or by emailing {mail}. We answer within 30 days. If we need more time we will tell you
+            why, and take no more than 30 extra days. If you disagree with an answer, you can appeal; see the{' '}
+            <Link to="/health-data-privacy#appeal" className="font-semibold underline underline-offset-4">
+              Consumer Health Data Privacy Policy
+            </Link>
+            .</p>
           <Bullets
             items={[
               <>
@@ -257,7 +272,8 @@ export default function Privacy() {
                 history on its own.
               </>,
               <>
-                <strong>Switch off AI help:</strong> do not press the reflection button, and keep the automatic option in Settings off.
+                <strong>Switch off AI help:</strong> in Settings, turn off &ldquo;Use AI help for reflections&rdquo;. Nothing is sent after
+                that.
               </>,
               <>
                 <strong>Switch off gentle check-ins:</strong> in Settings.
@@ -283,8 +299,8 @@ export default function Privacy() {
           </p>
           <Bullets
             items={[
-              'They see only the pillars you tick, and only for days you logged. It is read-only.',
-              'Your notes, feelings, locations and gentle check-in answers are never shared.',
+              'They see only the pillars you tick, and only for days you logged. You choose how much: just that you logged, a weekly summary in words, or day-by-day detail. It is read-only.',
+              'Your notes, feelings list, locations and gentle check-in answers are never shared. Mood, energy and stress scores are shared only if you tick Balance.',
               'They also see your name, so they know whose pillars they are looking at.',
               'We keep the email address you enter so that the invitation matches the person when they log in. We do not send them an email ourselves, so please tell them yourself.',
               'When you end a share, they lose access straight away. We keep a short record that it ended, including that email address, until you delete your account.',
@@ -294,8 +310,9 @@ export default function Privacy() {
 
         <Section id="browser" title="Cookies and browser storage">
           <p>
-            Our app does not set cookies of its own. Your browser keeps one thing so you stay signed in: your sign-in session. That is
-            strictly necessary, and it is removed when you sign out.
+            Our app does not set cookies of its own. Your browser keeps your sign-in session so you stay signed in. That is strictly
+            necessary, and it is removed when you sign out. If you answer the question about AI help, your browser also keeps that one
+            answer (yes or no, with the date), so we do not ask again.
           </p>
           <p>
             Build Your Pillars does not contain advertising, analytics or tracking tools. Our website host and the outside services
@@ -332,8 +349,12 @@ export default function Privacy() {
         <Section id="complain" title="Complaints">
           <p>
             Please talk to us first at {mail}; we will do our best to put things right. You also have the right to complain to your
-            local data protection authority, for example the authority in the EU country where you live or work, or the Office of the
-            Privacy Commissioner of Canada.{' '}
+            local data protection authority, for example the authority in the EU country where you live or work, the Office of the
+            Privacy Commissioner of Canada, or the Washington State Attorney General (see the{' '}
+            <Link to="/health-data-privacy#appeal" className="font-semibold underline underline-offset-4">
+              Consumer Health Data Privacy Policy
+            </Link>
+            ).{' '}
             {/* LEGAL REVIEW: list the right authority for each target country. */}
           </p>
         </Section>

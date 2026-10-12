@@ -22,6 +22,7 @@ const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const Why = lazy(() => import('./pages/Why'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
+const HealthDataPrivacy = lazy(() => import('./pages/HealthDataPrivacy'));
 const Plan = lazy(() => import('./pages/Plan'));
 const AppointmentSummary = lazy(() => import('./pages/AppointmentSummary'));
 
@@ -35,6 +36,7 @@ export default function App() {
       <Route path="/why" element={page(<Why />)} />
       <Route path="/privacy" element={page(<Privacy />)} />
       <Route path="/terms" element={page(<Terms />)} />
+      <Route path="/health-data-privacy" element={page(<HealthDataPrivacy />)} />
 
       <Route element={<PublicOnlyRoute />}>
         <Route path="/login" element={<AuthPage mode="login" />} />

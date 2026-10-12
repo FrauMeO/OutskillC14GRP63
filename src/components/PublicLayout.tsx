@@ -50,6 +50,15 @@ export default function PublicLayout({ title, children }: { title: string; child
 
       <footer className="border-t border-line bg-white">
         <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
+          {/* Washington My Health My Data Act (RCW 19.373.020): a prominent, separate link to the
+              Consumer Health Data Privacy Policy on the homepage. This footer renders on the landing page. */}
+          <p className="mb-5 max-w-2xl rounded-lg border border-line bg-mist px-5 py-4 text-base">
+            <span className="font-semibold">Your health information is private to you.</span> Read how we handle it in our{' '}
+            <Link to="/health-data-privacy" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+              Consumer Health Data Privacy Policy
+            </Link>
+            .
+          </p>
           <p className="max-w-2xl text-base text-spruce/85">
             Build Your Pillars is for reflection. It is not medical advice and it does not diagnose anything.
           </p>
@@ -65,6 +74,9 @@ export default function PublicLayout({ title, children }: { title: string; child
             </Link>
             <Link to="/privacy" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
               Privacy
+            </Link>
+            <Link to="/health-data-privacy" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+              Health data privacy
             </Link>
             <Link to="/terms" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
               Terms
