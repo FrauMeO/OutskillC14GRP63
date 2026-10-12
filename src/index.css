@@ -14,7 +14,20 @@
   --color-sun: #946200; /* milestones: every 5th completed day, celebrations */
   --color-alert: #a63d32;
   --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Public Sans", ui-sans-serif, system-ui, sans-serif;
+  /* Body text uses the device's own font: nothing to download. */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* The one self-hosted font: Bricolage Grotesque Bold (SIL Open Font License 1.1), Latin letters,
+   digits and punctuation only, about 11 KB. Headings are the only text that uses it, always bold.
+   Replaces the Google Fonts request (about 104 KB, and a third-party connection). Characters
+   outside this set use the fallback font. */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("./assets/fonts/bricolage-grotesque-latin-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 body {
