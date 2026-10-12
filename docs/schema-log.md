@@ -160,3 +160,18 @@ Applied as migration `more_feelings` after Miah approved. Loosening only: the al
 ## Not schema, but touches the data
 
 - `sample-data/seed_habit_logs.sql` (built by `scripts/build-demo-seed.mjs` since Prompt 3A) inserts 59 days of sample rows, check-ins, locations and matching `daily_conditions` for `msolmsted+demo@gmail.com` using `on conflict (user_id, log_date) do update`. It was run on the new project on 2026-09-25 (59 rows).
+
+## 0015_care_sharing_v2 (2026-10-12)
+
+Written, not yet applied (Miah's main session applies and tests it). Contract: `docs/care-sharing-v2-contract.md`. Additive except that `followed_people()` is dropped and recreated (a function's return type cannot change in place).
+
+### What changed
+- `care_shares` gains `level` (`presence`, `summary` or `detail`; new shares start at `presence`), `paused_at` (set while paused) and `last_confirmed_at` (default now). Shares that already exist are set to `detail` once, which is what their viewers already see.
+- New table `care_share_views` (`share_id`, `viewed_on`, `views`; one row per share per day, the counter goes up on repeat looks). RLS lets only the owner of the share read it; clients cannot insert, update or delete. Index on `share_id`.
+- New functions `set_care_share_options(p_id, p_level, p_paused)` and `confirm_care_share(p_id)` (owner only; a null argument leaves that setting alone; nothing notifies anyone). The 90-day re-confirmation is stored and offered only; nothing is enforced server-side.
+- `shared_days` keeps its signature and columns but is now volatile (it records a view). Paused returns nothing; `presence` and `summary` return the logged days with every value null; `detail` is the old behaviour.
+- New `shared_week_summary(p_owner)` returns (`pillar`, `days_logged`, `trend`) with trend words only: `not_enough_days` under 4 logged days this week or 10 in the owner's own 56-day baseline, otherwise `about_usual`, `a_little_lower` or `a_little_higher` at 10% of the baseline mean. Uses the database's `current_date`. Empty if paused, not active, or `presence`.
+- `followed_people()` appends `level` and `paused`. `shared_goals` returns rows only at `detail` and not paused.
+
+### Verified
+- Not yet run. Test to run after applying: `supabase/tests/care_sharing_v2_test_after_0015.sql` (rolled back; expected result line in the comment at its end).
