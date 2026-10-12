@@ -8,6 +8,7 @@ import type { HomeCity } from '../lib/location';
 import { exportFileName, logsToCsv, toJson, type ExportData } from '../lib/export';
 import { toISODate } from '../lib/dates';
 import { ABOUT_STORY, foundersLine } from '../lib/about';
+import { validateDisplayName } from '../lib/signup';
 import SharingSettings from '../components/SharingSettings';
 import DeleteAccount from '../components/DeleteAccount';
 import EmailPreferences from '../components/EmailPreferences';
@@ -141,9 +142,15 @@ export default function Settings() {
     if (!user) return;
     setSaving(true);
     setStatus(null);
+    const nameCheck = fullName.trim() ? validateDisplayName(fullName) : null;
+    if (nameCheck && !nameCheck.ok) {
+      setSaving(false);
+      setStatus({ kind: 'error', text: nameCheck.message });
+      return;
+    }
     const { error } = await supabase
       .from('profiles')
-      .upsert({ id: user.id, full_name: fullName.trim() || null });
+      .upsert({ id: user.id, full_name: nameCheck?.name ?? null });
     setSaving(false);
     setStatus(error ? { kind: 'error', text: error.message } : { kind: 'ok', text: 'Name saved.' });
   }
@@ -163,13 +170,15 @@ export default function Settings() {
 
         <form onSubmit={handleSave} className="mt-6 space-y-4">
           <label className="block text-sm font-medium">
-            Full name
+            What should we call you?
             <input
               className="mt-1.5 block w-full rounded-md border border-line px-3 py-2.5 focus:border-current focus:outline-none"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              autoComplete="name"
+              autoComplete="nickname"
+              maxLength={40}
             />
+            <span className="mt-1.5 block text-xs text-spruce/60">One name only. It does not need to be your real name.</span>
           </label>
           <button
             type="submit"

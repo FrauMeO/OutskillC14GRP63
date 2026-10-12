@@ -52,6 +52,14 @@ export default function Terms() {
           <p>You must be 16 or older. {/* LEGAL REVIEW: confirm age. */}</p>
         </Section>
 
+        <Section id="price" title="What it costs">
+          <p>
+            Build Your Pillars is free for everyone aged 60 and over. For everyone else it is $2.99 a month. A caregiver can follow an older
+            person for $34.99 a year, and only when that older person has said yes to sharing. While we are in beta, everything is free. We will
+            tell you before any charge begins, and you can cancel any time. {/* LEGAL REVIEW: refunds, cancellation, taxes, and how age is confirmed (self-declared month and year of birth). */}
+          </p>
+        </Section>
+
         <Section id="yours" title="Your data is yours">
           <p>
             What you log belongs to you. You can download it or delete your account at any time in Settings. We use it only to run the

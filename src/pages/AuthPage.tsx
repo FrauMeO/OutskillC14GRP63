@@ -6,6 +6,7 @@ import AuthShell from '../components/AuthShell';
 import SignupWelcome from '../components/SignupWelcome';
 import WaitlistForm from '../components/WaitlistForm';
 import { authProblem, type AuthProblem } from '../lib/authErrors';
+import { birthYearOptions, MONTHS, validateBirth, validateDisplayName } from '../lib/signup';
 import type { HomeCity } from '../lib/location';
 
 type Mode = 'login' | 'signup';
@@ -30,6 +31,8 @@ export default function AuthPage({ mode }: { mode: Mode }) {
   const [error, setError] = useState<AuthProblem | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [birthMonth, setBirthMonth] = useState('');
+  const [birthYear, setBirthYear] = useState('');
   const [healthConsent, setHealthConsent] = useState(false);
   const [marketing, setMarketing] = useState(false);
 
@@ -47,13 +50,27 @@ export default function AuthPage({ mode }: { mode: Mode }) {
       return;
     }
 
+    const nameCheck = validateDisplayName(fullName);
+    if (!nameCheck.ok) {
+      setSubmitting(false);
+      return setError({ text: nameCheck.message, actions: [] });
+    }
+    const today = new Date();
+    const birth = validateBirth(birthMonth ? Number(birthMonth) : null, birthYear ? Number(birthYear) : null, today);
+    if (!birth.ok) {
+      setSubmitting(false);
+      return setError({ text: birth.message, actions: [] });
+    }
+
     const { data, error: err } = await supabase.auth.signUp({
       email,
       password,
       options: {
         // The sign-up trigger copies these into profiles; the city is optional.
         data: {
-          full_name: fullName.trim(),
+          full_name: nameCheck.name,
+          birth_month: String(birth.month),
+          birth_year: String(birth.year),
           // Consent is recorded by the sign-up trigger. Both are false unless ticked.
           health_consent: healthConsent ? 'true' : 'false',
           marketing_opt_in: marketing ? 'true' : 'false',
@@ -85,15 +102,59 @@ export default function AuthPage({ mode }: { mode: Mode }) {
       <form onSubmit={handleSubmit} className="mt-8 space-y-5" noValidate={false}>
         {mode === 'signup' && (
           <label className="block text-sm font-medium">
-            Full name
+            What should we call you?
             <input
               className={inputClass}
               type="text"
-              autoComplete="name"
+              autoComplete="nickname"
+              maxLength={40}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
+              aria-describedby="name-help"
             />
+            <span id="name-help" className="mt-1.5 block text-xs text-spruce/60">
+              One name only, like Sam. It does not need to be your real name, and please do not use your full name.
+            </span>
           </label>
+        )}
+
+        {mode === 'signup' && (
+          <fieldset>
+            <legend className="text-sm font-medium">Month and year you were born</legend>
+            <div className="mt-1.5 grid grid-cols-2 gap-3">
+              <select
+                aria-label="Birth month"
+                className={inputClass.replace('mt-1.5', 'mt-0')}
+                value={birthMonth}
+                onChange={(e) => setBirthMonth(e.target.value)}
+                required
+              >
+                <option value="">Month</option>
+                {MONTHS.map((m, i) => (
+                  <option key={m} value={i + 1}>
+                    {m}
+                  </option>
+                ))}
+              </select>
+              <select
+                aria-label="Birth year"
+                className={inputClass.replace('mt-1.5', 'mt-0')}
+                value={birthYear}
+                onChange={(e) => setBirthYear(e.target.value)}
+                required
+              >
+                <option value="">Year</option>
+                {birthYearOptions(new Date()).map((y) => (
+                  <option key={y} value={y}>
+                    {y}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <span className="mt-1.5 block text-xs text-spruce/60">
+              Only the month and year, never the day. We use it to work out your plan, nothing else.
+            </span>
+          </fieldset>
         )}
 
         {mode === 'signup' &&

@@ -24,7 +24,7 @@ export default function Why() {
             instead of judgment.
           </p>
           <p>
-            We kept it independent on purpose. There is no insurer or medical provider behind it, no ads and no paywall. You decide how
+            We kept it independent on purpose. There is no insurer or medical provider behind it, no ads, and it is free for everyone 60 and over. You decide how
             much to share, nothing is all-or-nothing, and your data can be downloaded or deleted whenever you wish.
           </p>
           <p>

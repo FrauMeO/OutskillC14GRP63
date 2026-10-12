@@ -12,11 +12,11 @@ It began at home. My husband Robert (72) and I (60) wanted a simple way to share
 
 **Mental health sits beside water and sleep.** Mood, energy and stress are one of four pillars (Eat, Sleep, Move, Balance), because these are the areas where many older adults struggle quietly. About one in four older adults is dehydrated [1], insomnia symptoms are reported by a large share of them [2], and 28% screen positive for depression in a large review [3]. On a hard day the app does not hand the day to AI. It shows a caring message and, if needed, crisis lines for your country.
 
-**Private by design.** It is not tied to any insurer or medical provider, and it has no ads and no paywall. Most adults over 50 worry about how companies use their data (67%) and about records reaching people other than their doctors (58%) [4]. Your information stays yours: each person sees only their own, locations are rounded to about 11 km, the AI sees numbers only, and everything can be downloaded.
+**Private by design.** It is not tied to any insurer or medical provider, and it has no ads. It is free for everyone 60 and over, $2.99 a month for everyone else, and $34.99 a year for a caregiver who the older person has said yes to. Most adults over 50 worry about how companies use their data (67%) and about records reaching people other than their doctors (58%) [4]. Your information stays yours: each person sees only their own, locations are rounded to about 11 km, the AI sees your numbers, ratings and chosen feelings but never your notes, name or email, and everything can be downloaded or deleted.
 
-**Live now at buildyourpillars.com**, with a year of real, anonymised data in the demo and 125 automated tests.
+**Live at buildyourpillars.com**, with a year of anonymised data in the demo and more than 280 automated tests.
 
-Next: Apple Health and Google Health Connect syncing, and optional sharing so a remote caregiver can follow along, only if the person invites them.
+Built and in testing: read-only sharing so a remote caregiver can follow along only if the person invites them, with a choice of how much they see; a printable summary for doctor visits; and an offline-friendly mobile app for people on small data plans. Next: Apple Health and Google Health Connect syncing.
 
 ## Sources (check each before submitting)
 

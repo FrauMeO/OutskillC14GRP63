@@ -26,7 +26,7 @@ const FEATURES = [
 
 const PROMISES = [
   'No insurer or medical provider is behind this app.',
-  'No ads, and no paywall.',
+  'No ads, ever. Free for everyone 60 and over.',
   'You choose how much to enter. Leave anything blank.',
   'Nothing is all-or-nothing.',
   'Download your data, or delete it, whenever you like.',
@@ -131,6 +131,31 @@ export default function Landing() {
             Read why we built it
           </Link>
         </p>
+      </section>
+
+      <section aria-labelledby="pricing" className="border-t border-line bg-white">
+        <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+          <h2 id="pricing" className="font-display text-3xl font-bold tracking-tight">
+            What it costs
+          </h2>
+          <ul className="mt-6 grid gap-4 md:grid-cols-3">
+            <li className="rounded-lg border border-line px-5 py-4">
+              <h3 className="font-display text-2xl font-bold">Free</h3>
+              <p className="mt-2">For everyone 60 and over.</p>
+            </li>
+            <li className="rounded-lg border border-line px-5 py-4">
+              <h3 className="font-display text-2xl font-bold">$2.99 a month</h3>
+              <p className="mt-2">For everyone under 60. Free while we are in beta.</p>
+            </li>
+            <li className="rounded-lg border border-line px-5 py-4">
+              <h3 className="font-display text-2xl font-bold">$34.99 a year</h3>
+              <p className="mt-2">For a caregiver, and only when the older person has said yes to sharing.</p>
+            </li>
+          </ul>
+          <p className="mt-6">
+            We ask only for the month and year you were born, never the day, to work out your plan.
+          </p>
+        </div>
       </section>
 
       <section aria-labelledby="install" className="border-t border-line bg-white">

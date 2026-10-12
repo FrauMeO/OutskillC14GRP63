@@ -231,6 +231,8 @@ export type Database = {
           marketing_opt_in: boolean
           marketing_opt_in_at: string | null
           health_consent_at: string | null
+          birth_month: number | null
+          birth_year: number | null
           created_at: string
           full_name: string | null
           home_city: string | null
@@ -245,6 +247,8 @@ export type Database = {
           marketing_opt_in?: boolean
           marketing_opt_in_at?: string | null
           health_consent_at?: string | null
+          birth_month?: number | null
+          birth_year?: number | null
           created_at?: string
           full_name?: string | null
           home_city?: string | null
@@ -259,6 +263,8 @@ export type Database = {
           marketing_opt_in?: boolean
           marketing_opt_in_at?: string | null
           health_consent_at?: string | null
+          birth_month?: number | null
+          birth_year?: number | null
           created_at?: string
           full_name?: string | null
           home_city?: string | null
