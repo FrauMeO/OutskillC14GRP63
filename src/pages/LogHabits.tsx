@@ -19,6 +19,9 @@ import {
 } from '../lib/checkin';
 import { chooseLocation, cityNameFor, deviceCoordinates, type HomeCity, type LoggedLocation } from '../lib/location';
 import { ensureConditions } from '../lib/conditions';
+import { useDataSaver } from '../lib/useDataSaver';
+import { UPLOAD_PENDING_TEXT, isNetworkError } from '../lib/offlineQueue';
+import { queueHabitLog } from '../lib/offlineSync';
 import MonthCalendar from '../components/MonthCalendar';
 import { setUnsaved } from '../lib/unsaved';
 import { celebrationText, dayNumbers, encouragementLine, isCelebrationEntry, isEncouragementEntry } from '../lib/milestones';
@@ -96,6 +99,7 @@ function RatingGroup({
 
 export default function LogHabits() {
   const { user } = useAuth();
+  const { saveData } = useDataSaver();
   const todayIso = toISODate(new Date());
 
   const [date, setDate] = useState(todayIso);
@@ -257,23 +261,47 @@ export default function LogHabits() {
     let device = null;
     if (isToday) {
       const coords = await deviceCoordinates();
-      if (coords) device = { ...coords, name: await cityNameFor(coords.latitude, coords.longitude) };
+      // The city-name lookup is an extra request to another service: skipped offline and with Data saver on.
+      if (coords) device = { ...coords, name: saveData || !navigator.onLine ? null : await cityNameFor(coords.latitude, coords.longitude) };
     }
     const place = chooseLocation({ isToday, device, existing: existingLocation, home });
 
-    const { error } = await supabase.from('habit_logs').upsert(
-      {
-        log_date: date,
-        ...fields,
-        // Entered or changed by hand, so the dashboard shows bars rather than Apple Health rings.
-        source: 'manual',
-        location_name: place?.name ?? null,
-        latitude: place?.latitude ?? null,
-        longitude: place?.longitude ?? null,
-        location_source: place?.source ?? null,
-      },
-      { onConflict: 'user_id,log_date' },
-    );
+    const row = {
+      log_date: date,
+      ...fields,
+      // Entered or changed by hand, so the dashboard shows bars rather than Apple Health rings.
+      source: 'manual',
+      location_name: place?.name ?? null,
+      latitude: place?.latitude ?? null,
+      longitude: place?.longitude ?? null,
+      location_source: place?.source ?? null,
+    };
+    // No connection, or a request that fails the way a weak signal does: keep the day on this device
+    // (src/lib/offlineQueue.ts) and upload it later. Other errors (the server said no) show as before.
+    let error: { message: string } | null = null;
+    if (navigator.onLine) {
+      try {
+        ({ error } = await supabase.from('habit_logs').upsert(row, { onConflict: 'user_id,log_date' }));
+      } catch (e) {
+        error = { message: e instanceof Error ? e.message : String(e) };
+      }
+    } else {
+      error = { message: 'Failed to fetch' };
+    }
+    if (error && (!navigator.onLine || isNetworkError(error))) {
+      const kept = user ? await queueHabitLog(user.id, row) : false;
+      setSaving(false);
+      if (!kept) {
+        setFlash({ kind: 'error', text: 'Could not save: there is no connection, and this device could not keep the day.' });
+        return false;
+      }
+      setBaseline(saved);
+      setIsExisting(true);
+      setExistingLocation(place);
+      setAllDates((d) => (d.includes(date) ? d : [...d, date].sort()));
+      setFlash({ kind: 'ok', text: UPLOAD_PENDING_TEXT });
+      return true;
+    }
     if (error) {
       setSaving(false);
       setFlash({ kind: 'error', text: `Could not save: ${error.message}` });
@@ -289,6 +317,8 @@ export default function LogHabits() {
     let weatherNote = '';
     if (!place) {
       weatherNote = ' Add a home city to include the weather.';
+    } else if (saveData) {
+      weatherNote = ' Weather skipped to save data.';
     } else {
       const result = await ensureConditions(place, date, todayIso);
       if (result === 'failed') {

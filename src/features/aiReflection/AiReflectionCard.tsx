@@ -9,6 +9,8 @@ import { supabase } from '../../lib/supabase';
 import AiConsentDialog from './AiConsentDialog';
 import { entryFingerprint } from './fingerprint';
 import { useAiConsent } from './useAiConsent';
+import { useDataSaver } from '../../lib/useDataSaver';
+import { REFLECTION_DATA_NOTE } from '../../lib/dataSaver';
 
 export const AI_REFLECTION_ENABLED = import.meta.env.VITE_AI_REFLECTION === 'on';
 
@@ -23,13 +25,16 @@ const buttonClass = 'inline-flex min-h-11 items-center rounded-md px-5 font-semi
 
 type Props = { date: string; today: Record<string, unknown> | null; auto: boolean };
 
-export default function AiReflectionCard({ date, today, auto }: Props) {
+export default function AiReflectionCard({ date, today, auto: autoSetting }: Props) {
   const { user } = useAuth();
   const consent = useAiConsent(user?.id);
   const allowed = consent.allowed;
   const allowedRef = useRef(allowed);
   allowedRef.current = allowed;
   const [asking, setAsking] = useState(false);
+  // Data saver: never write a reflection by itself; only when the person taps.
+  const { saveData } = useDataSaver();
+  const auto = autoSetting && !saveData;
   const fingerprint = entryFingerprint(today);
   const cached = allowed && auto && lastAuto && lastAuto.date === date && lastAuto.fingerprint === fingerprint ? lastAuto.result : null;
   const [result, setResult] = useState<Result | null>(cached);
@@ -185,7 +190,8 @@ export default function AiReflectionCard({ date, today, auto }: Props) {
               {busy === 'week' ? 'Looking at your week…' : 'Coach me on my week'}
             </button>
           </div>
-          {!auto && (
+          {saveData && <p className="mt-2 text-xs text-spruce/60">{REFLECTION_DATA_NOTE}</p>}
+          {!autoSetting && (
             <p className="mt-2 text-xs text-spruce/60">
               Prefer it written automatically after each log?{' '}
               <Link to="/settings" className="underline underline-offset-4">

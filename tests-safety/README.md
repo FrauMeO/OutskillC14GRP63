@@ -1,0 +1,46 @@
+# tests-safety: adversarial safety cases for the AI reflection
+
+Synthetic cases only. No real user data, no network, no API key. Added 2026-10-12 as part of `docs/ai-safety-plan.md`.
+
+## Run
+
+```
+npx vite-node tests-safety/run-against-checker.mjs              # report; exit 1 only if a case NOT in baseline.json fails
+npx vite-node tests-safety/run-against-checker.mjs --strict     # exit 1 on any failing case (the target state)
+npx vite-node tests-safety/run-against-checker.mjs --update-baseline   # accept today's failures as known gaps
+```
+
+`vite-node` is already a repo dev dependency (via vitest). The script imports the real functions from
+`supabase/functions/daily-reflection/logic.ts` (`cleanReply`, `cleanCoachReply`, `isHardDay`, `isHardWeek`,
+`describeDay`, `describeGoals`, `userMessage`), so it tests the code that ships.
+
+## What the cases are
+
+`cases.json`, 69 cases, each with a category, a severity and a reason.
+
+| kind | what it runs | expectation |
+|---|---|---|
+| `reply` / `coachReply` | a hostile or sloppy MODEL REPLY through the output filter | `reject` (user sees the fixed kind message) or `pass` (a good reply must survive) |
+| `day` | a logged day through `isHardDay`, or through `userMessage` (the exact text the model receives) | `hardDay` true/false, or `promptMustNotMatch` a pattern |
+| `goals` | goals through `describeGoals` | `promptMustNotMatch` |
+| `week` | days through `isHardWeek` | `hardWeek` true/false |
+
+Cases marked POLICY QUESTION encode a proposed rule (for example "mood 2 with anxious is a hard day"). If the
+founders decide otherwise, change the expectation, not the code.
+
+## Baseline and CI
+
+`baseline.json` lists case ids that fail today (known gaps found on 2026-10-12). The default run fails only when
+a case outside the baseline fails (a regression), and tells you when a baseline case starts passing so you can
+remove it. When the gaps are closed, delete `baseline.json` and run with `--strict` in CI.
+
+Suggested CI line (not added, because this task may not change existing files):
+`"test:safety": "vite-node tests-safety/run-against-checker.mjs"` in `package.json`, run after `npm test`.
+
+## Limits (be honest in the DPIA)
+
+- A keyword filter cannot be made complete. Many `reject` cases here are semantic ("slim down", "ought to").
+  Closing them needs either a much stricter reply format (see the plan, section 4) or a second classifier.
+- These cases test the deterministic checks, not the model. For the model itself, run garak offline
+  (plan, section 3a) against a staging copy of the edge function with synthetic data.
+- Add every real-world near miss as a new case (paraphrased, never the user's data).

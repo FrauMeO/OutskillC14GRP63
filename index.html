@@ -16,20 +16,10 @@
     <meta property="og:description" content="Eat, Sleep, Move, Balance. Gentle, private self-tracking for adults 50+ and the people who care about them." />
     <meta property="og:image" content="/byp-app-icon-1024.png" />
     <meta name="description" content="Build your pillars of health: Eat, Sleep, Move, Balance. Live Well. p.s. judge yourself a lot less." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+    <!-- No third-party requests: the display font is self-hosted (see src/index.css) and the body uses the device's own font. -->
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script>
-      // App-shell-only worker (public/sw.js caches nothing). Production only.
-      if ('serviceWorker' in navigator && location.hostname !== 'localhost' && !(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform())) {
-        window.addEventListener('load', function () {
-          navigator.serviceWorker.register('/sw.js').catch(function () {});
-        });
-      }
-    </script>
   </body>
 </html>
