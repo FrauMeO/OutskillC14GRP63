@@ -241,6 +241,8 @@ export type Database = {
       }
       profiles: {
         Row: {
+          ai_consent_at: string | null
+          ai_consent_version: number | null
           auto_reflection: boolean
           gentle_checkin_enabled: boolean
           marketing_opt_in: boolean
@@ -257,6 +259,8 @@ export type Database = {
           id: string
         }
         Insert: {
+          ai_consent_at?: string | null
+          ai_consent_version?: number | null
           auto_reflection?: boolean
           gentle_checkin_enabled?: boolean
           marketing_opt_in?: boolean
@@ -273,6 +277,8 @@ export type Database = {
           id: string
         }
         Update: {
+          ai_consent_at?: string | null
+          ai_consent_version?: number | null
           auto_reflection?: boolean
           gentle_checkin_enabled?: boolean
           marketing_opt_in?: boolean
@@ -330,6 +336,8 @@ export type Database = {
     Functions: {
       array_has_no_duplicates: { Args: { arr: string[] }; Returns: boolean }
       delete_my_account: { Args: Record<PropertyKey, never>; Returns: undefined }
+      set_ai_consent: { Args: { p_granted: boolean; p_version: number }; Returns: undefined }
+      ai_consume_call: { Args: { p_version: number }; Returns: string }
       join_waitlist: { Args: { p_email: string; p_ios: boolean; p_android: boolean; p_consent: boolean }; Returns: undefined }
       create_care_share: {
         Args: { p_email: string; p_eat: boolean; p_sleep: boolean; p_move: boolean; p_balance: boolean }

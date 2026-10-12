@@ -8,6 +8,9 @@ import { useAuth } from '../../context/AuthContext';
 import { supabase } from '../../lib/supabase';
 import AiConsentDialog from './AiConsentDialog';
 import { entryFingerprint } from './fingerprint';
+import HardDaySupport from './HardDaySupport';
+import { needsSupportLines } from './hardDayResources';
+import { FALLBACK_MESSAGE, checkReply } from '../../lib/replySafety';
 import { useAiConsent } from './useAiConsent';
 import { useDataSaver } from '../../lib/useDataSaver';
 import { REFLECTION_DATA_NOTE } from '../../lib/dataSaver';
@@ -15,7 +18,7 @@ import { REFLECTION_DATA_NOTE } from '../../lib/dataSaver';
 export const AI_REFLECTION_ENABLED = import.meta.env.VITE_AI_REFLECTION === 'on';
 
 type Mode = 'day' | 'week';
-type Result = { text: string; source: 'ai' | 'fixed'; mode: Mode };
+type Result = { text: string; source: 'ai' | 'fixed'; mode: Mode; reason?: string };
 
 // The last automatic reflection, kept in memory only (never stored), so moving between pages does
 // not ask Claude again. A reload, or a changed entry, writes a fresh one.
@@ -58,7 +61,12 @@ export default function AiReflectionCard({ date, today, auto: autoSetting }: Pro
       );
       return null;
     }
-    const next: Result = { text: data.text, source: data.source === 'ai' ? 'ai' : 'fixed', mode };
+    // Second line of defence: the same checker the server uses. Anything doubtful becomes the fixed kind
+    // message. The check fails closed (it never throws; a surprise is "not ok").
+    const checked = data.source === 'ai' && !checkReply(data.text, { mode: mode === 'week' ? 'coach' : 'day' }).ok;
+    const next: Result = checked
+      ? { text: FALLBACK_MESSAGE, source: 'fixed', mode, reason: 'filtered' }
+      : { text: data.text, source: data.source === 'ai' ? 'ai' : 'fixed', mode, reason: typeof data.reason === 'string' ? data.reason : undefined };
     setResult(next);
     return next;
   }
@@ -133,9 +141,10 @@ export default function AiReflectionCard({ date, today, auto: autoSetting }: Pro
           <p className="mt-2 text-xs text-spruce/60">
             {result.source === 'ai'
               ? `Written by AI (Claude, by Anthropic) from ${result.mode === 'week' ? 'this week’s entries and your goals' : 'today’s entry'}${autoDay ? ', automatically after you logged' : ''}. `
-              : ''}
+              : 'A kind message from the app. '}
             Not medical advice. Nothing is saved.
           </p>
+          {needsSupportLines(result.reason) && <HardDaySupport />}
           <div className="mt-3 flex flex-wrap gap-4 text-sm font-semibold">
             {result.mode === 'week' ? (
               <button type="button" onClick={() => setResult(auto && lastAuto?.date === date ? lastAuto.result : null)} className="underline underline-offset-4">
