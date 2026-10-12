@@ -12,6 +12,7 @@ import { validateDisplayName } from '../lib/signup';
 import SharingSettings from '../components/SharingSettings';
 import DeleteAccount from '../components/DeleteAccount';
 import EmailPreferences from '../components/EmailPreferences';
+import AiConsentSetting from '../components/AiConsentSetting';
 import { AI_REFLECTION_ENABLED } from '../features/aiReflection/AiReflectionCard';
 
 export default function Settings() {
@@ -225,6 +226,9 @@ export default function Settings() {
             Choose when the few gentle sentences about your day are written. Either way, only today’s numbers, ratings and
             feelings are sent to Claude (Anthropic), never your name, email, location or notes, and nothing is saved.
           </p>
+          <div className="mt-4">
+            <AiConsentSetting />
+          </div>
           <label className="mt-4 flex min-h-11 items-center gap-3">
             <input type="checkbox" className="h-5 w-5" checked={autoOn} onChange={(e) => toggleAuto(e.target.checked)} />
             <span className="font-medium">Write my daily reflection automatically after I log</span>
@@ -315,6 +319,16 @@ export default function Settings() {
             {downloadStatus.text}
           </p>
         )}
+      </section>
+
+      <section aria-labelledby="appt" className="mt-6 max-w-md rounded-lg border border-line bg-white p-6">
+        <h2 id="appt" className="font-display text-xl font-bold">
+          For a doctor visit
+        </h2>
+        <p className="mt-2 text-sm text-spruce/80">A one-page summary of your last 30 or 90 days that you can print or save. It uses only what you logged, and it never leaves your device.</p>
+        <Link to="/appointment-summary" className="mt-3 inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+          Summary for my appointment
+        </Link>
       </section>
 
       <SharingSettings />
