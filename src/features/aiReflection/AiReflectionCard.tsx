@@ -4,8 +4,11 @@
 // Two asks: a reflection on today, and a gentle coach on the week (Michael's idea, with goals).
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import { supabase } from '../../lib/supabase';
+import AiConsentDialog from './AiConsentDialog';
 import { entryFingerprint } from './fingerprint';
+import { useAiConsent } from './useAiConsent';
 
 export const AI_REFLECTION_ENABLED = import.meta.env.VITE_AI_REFLECTION === 'on';
 
@@ -21,14 +24,22 @@ const buttonClass = 'inline-flex min-h-11 items-center rounded-md px-5 font-semi
 type Props = { date: string; today: Record<string, unknown> | null; auto: boolean };
 
 export default function AiReflectionCard({ date, today, auto }: Props) {
+  const { user } = useAuth();
+  const consent = useAiConsent(user?.id);
+  const allowed = consent.allowed;
+  const allowedRef = useRef(allowed);
+  allowedRef.current = allowed;
+  const [asking, setAsking] = useState(false);
   const fingerprint = entryFingerprint(today);
-  const cached = auto && lastAuto && lastAuto.date === date && lastAuto.fingerprint === fingerprint ? lastAuto.result : null;
+  const cached = allowed && auto && lastAuto && lastAuto.date === date && lastAuto.fingerprint === fingerprint ? lastAuto.result : null;
   const [result, setResult] = useState<Result | null>(cached);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState<Mode | null>(null);
   const started = useRef<string | null>(null);
 
   async function ask(mode: Mode): Promise<Result | null> {
+    // The one gate: without a current yes from this person, nothing leaves the browser.
+    if (!allowedRef.current) return null;
     setBusy(mode);
     setError(null);
     const { data, error: err } = await supabase.functions.invoke('daily-reflection', { body: { date, mode } });
@@ -49,15 +60,57 @@ export default function AiReflectionCard({ date, today, auto }: Props) {
 
   // Automatic mode: write once per changed entry.
   useEffect(() => {
-    if (!AI_REFLECTION_ENABLED || !auto || !fingerprint || cached || started.current === fingerprint) return;
+    if (!AI_REFLECTION_ENABLED || !allowed || !auto || !fingerprint || cached || started.current === fingerprint) return;
     started.current = fingerprint;
     ask('day').then((r) => {
       if (r) lastAuto = { date, fingerprint, result: r };
     });
     // ask is recreated each render; the fingerprint decides when to run.
-  }, [auto, fingerprint, date]);
+  }, [auto, fingerprint, date, allowed]);
+
+  // Withdrawing consent removes any reflection on screen and the in-memory copy.
+  useEffect(() => {
+    if (!allowed) {
+      lastAuto = null;
+      started.current = null;
+      setResult(null);
+      setError(null);
+    }
+  }, [allowed]);
 
   if (!AI_REFLECTION_ENABLED) return null;
+
+  if (!allowed) {
+    return (
+      <section aria-labelledby="ai-reflection" className="mb-6 rounded-lg border border-line bg-white p-5">
+        <h2 id="ai-reflection" className="font-display text-xl font-bold">
+          A reflection on your day
+        </h2>
+        <p className="mt-2 text-lg leading-relaxed">
+          AI reflection is off. Turn it on if you would like gentle, written reflections.
+        </p>
+        <button
+          type="button"
+          onClick={() => setAsking(true)}
+          className={`${buttonClass} mt-3 border border-spruce text-lg text-spruce hover:bg-mist`}
+        >
+          Turn on AI reflection
+        </button>
+        {asking && (
+          <AiConsentDialog
+            onYes={() => {
+              consent.grant();
+              setAsking(false);
+            }}
+            onNotNow={() => {
+              consent.notNow();
+              setAsking(false);
+            }}
+          />
+        )}
+      </section>
+    );
+  }
 
   const hasEntry = fingerprint !== null;
   const autoDay = auto && result?.mode !== 'week';
