@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import CityPicker from '../components/CityPicker';
 import AuthShell from '../components/AuthShell';
+import SignupWelcome from '../components/SignupWelcome';
+import WaitlistForm from '../components/WaitlistForm';
 import { authProblem, type AuthProblem } from '../lib/authErrors';
 import type { HomeCity } from '../lib/location';
 
@@ -28,6 +30,8 @@ export default function AuthPage({ mode }: { mode: Mode }) {
   const [error, setError] = useState<AuthProblem | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [healthConsent, setHealthConsent] = useState(false);
+  const [marketing, setMarketing] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -50,6 +54,9 @@ export default function AuthPage({ mode }: { mode: Mode }) {
         // The sign-up trigger copies these into profiles; the city is optional.
         data: {
           full_name: fullName.trim(),
+          // Consent is recorded by the sign-up trigger. Both are false unless ticked.
+          health_consent: healthConsent ? 'true' : 'false',
+          marketing_opt_in: marketing ? 'true' : 'false',
           ...(home && {
             home_city: home.city,
             home_country_code: home.countryCode,
@@ -74,7 +81,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
   const copy = COPY[mode];
 
   return (
-    <AuthShell title={copy.title}>
+    <AuthShell title={copy.title} intro={mode === 'signup' ? <SignupWelcome /> : undefined}>
       <form onSubmit={handleSubmit} className="mt-8 space-y-5" noValidate={false}>
         {mode === 'signup' && (
           <label className="block text-sm font-medium">
@@ -127,15 +134,47 @@ export default function AuthPage({ mode }: { mode: Mode }) {
             className={inputClass}
             type="password"
             autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-            minLength={6}
+            minLength={mode === 'signup' ? 8 : undefined}
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           {mode === 'signup' && (
-            <span className="mt-1.5 block text-xs text-spruce/60">At least 6 characters.</span>
+            <span className="mt-1.5 block text-xs text-spruce/60">At least 8 characters.</span>
           )}
         </label>
+        {mode === 'signup' && (
+          <fieldset className="space-y-3 text-sm">
+            <legend className="sr-only">Your choices</legend>
+            <label className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                required
+                checked={healthConsent}
+                onChange={(e) => setHealthConsent(e.target.checked)}
+                className="mt-0.5 size-5 shrink-0 accent-spruce"
+              />
+              <span>
+                I agree that Build Your Pillars may store and use the health information I choose to enter, to run the app for me, as
+                described in the{' '}
+                <a href="/privacy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">
+                  Privacy Policy
+                </a>
+                . I can delete my account at any time.
+              </span>
+            </label>
+            <label className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                checked={marketing}
+                onChange={(e) => setMarketing(e.target.checked)}
+                className="mt-0.5 size-5 shrink-0 accent-spruce"
+              />
+              <span>Optional: email me occasional news about Build Your Pillars. I can change this any time in Settings.</span>
+            </label>
+          </fieldset>
+        )}
+
         {mode === 'login' && (
           <p className="-mt-2 text-sm">
             <Link to="/forgot-password" state={{ email }} className="font-semibold text-spruce underline underline-offset-4">
@@ -200,6 +239,12 @@ export default function AuthPage({ mode }: { mode: Mode }) {
           </>
         )}
       </p>
+
+      {mode === 'signup' && (
+        <div className="mt-10">
+          <WaitlistForm />
+        </div>
+      )}
     </AuthShell>
   );
 }

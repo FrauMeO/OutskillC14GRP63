@@ -1,0 +1,17 @@
+{
+  "name": "Build Your Pillars",
+  "short_name": "Pillars",
+  "description": "Build your pillars of health: Eat, Sleep, Move, Balance. Gentle, private self-tracking.",
+  "id": "/",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#1e3b37",
+  "background_color": "#edf1ee",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/byp-app-icon-1024.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" }
+  ]
+}

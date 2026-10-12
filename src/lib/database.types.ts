@@ -18,6 +18,26 @@ export type Database = {
   }
   public: {
     Tables: {
+      care_shares: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          ended_at: string | null
+          id: string
+          owner_id: string
+          share_balance: boolean
+          share_eat: boolean
+          share_move: boolean
+          share_sleep: boolean
+          status: string
+          viewer_email: string
+          viewer_id: string | null
+        }
+        // Read only from the browser: every write goes through the care sharing functions (0010).
+        Insert: never
+        Update: never
+        Relationships: []
+      }
       daily_conditions: {
         Row: {
           apparent_temp_max_c: number | null
@@ -208,6 +228,9 @@ export type Database = {
         Row: {
           auto_reflection: boolean
           gentle_checkin_enabled: boolean
+          marketing_opt_in: boolean
+          marketing_opt_in_at: string | null
+          health_consent_at: string | null
           created_at: string
           full_name: string | null
           home_city: string | null
@@ -219,6 +242,9 @@ export type Database = {
         Insert: {
           auto_reflection?: boolean
           gentle_checkin_enabled?: boolean
+          marketing_opt_in?: boolean
+          marketing_opt_in_at?: string | null
+          health_consent_at?: string | null
           created_at?: string
           full_name?: string | null
           home_city?: string | null
@@ -230,6 +256,9 @@ export type Database = {
         Update: {
           auto_reflection?: boolean
           gentle_checkin_enabled?: boolean
+          marketing_opt_in?: boolean
+          marketing_opt_in_at?: string | null
+          health_consent_at?: string | null
           created_at?: string
           full_name?: string | null
           home_city?: string | null
@@ -279,6 +308,55 @@ export type Database = {
     }
     Functions: {
       array_has_no_duplicates: { Args: { arr: string[] }; Returns: boolean }
+      delete_my_account: { Args: Record<PropertyKey, never>; Returns: undefined }
+      join_waitlist: { Args: { p_email: string; p_ios: boolean; p_android: boolean; p_consent: boolean }; Returns: undefined }
+      create_care_share: {
+        Args: { p_email: string; p_eat: boolean; p_sleep: boolean; p_move: boolean; p_balance: boolean }
+        Returns: string
+      }
+      update_care_share: {
+        Args: { p_id: string; p_eat: boolean; p_sleep: boolean; p_move: boolean; p_balance: boolean }
+        Returns: undefined
+      }
+      accept_care_share: { Args: { p_id: string }; Returns: undefined }
+      end_care_share: { Args: { p_id: string }; Returns: undefined }
+      followed_people: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          share_id: string
+          owner_id: string
+          owner_name: string
+          status: string
+          share_eat: boolean
+          share_sleep: boolean
+          share_move: boolean
+          share_balance: boolean
+          created_at: string
+          accepted_at: string | null
+        }[]
+      }
+      shared_days: {
+        Args: { p_owner: string; p_from: string; p_to: string }
+        Returns: {
+          log_date: string
+          water_liters: number | null
+          calories_consumed: number | null
+          sleep_hours: number | null
+          time_in_bed_hours: number | null
+          awake_minutes: number | null
+          exercise_minutes: number | null
+          steps: number | null
+          stand_hours: number | null
+          active_calories: number | null
+          mood: number | null
+          energy: number | null
+          stress: number | null
+        }[]
+      }
+      shared_goals: {
+        Args: { p_owner: string }
+        Returns: { goal_type: string; target_value: number; unit: string }[]
+      }
     }
     Enums: {
       [_ in never]: never
@@ -293,4 +371,5 @@ export type Profile = Database['public']['Tables']['profiles']['Row'];
 export type Goal = Database['public']['Tables']['goals']['Row'];
 export type HabitLog = Database['public']['Tables']['habit_logs']['Row'];
 export type DailyConditions = Database['public']['Tables']['daily_conditions']['Row'];
+export type CareShare = Database['public']['Tables']['care_shares']['Row'];
 export type Reflection = Database['public']['Tables']['reflections']['Row'];

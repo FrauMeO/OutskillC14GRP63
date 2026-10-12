@@ -160,3 +160,24 @@ Applied as migration `more_feelings` after Miah approved. Loosening only: the al
 ## Not schema, but touches the data
 
 - `sample-data/seed_habit_logs.sql` (built by `scripts/build-demo-seed.mjs` since Prompt 3A) inserts 59 days of sample rows, check-ins, locations and matching `daily_conditions` for `msolmsted+demo@gmail.com` using `on conflict (user_id, log_date) do update`. It was run on the new project on 2026-09-25 (59 rows).
+
+## 0010_care_shares and 0011_waitlist (2026-10-12)
+
+Both applied to PersonalHealthManager (`gzsawayrorlcjmpssalc`) as migrations `care_shares` and `waitlist` after Miah approved the design. Additive only; nothing existing changed.
+
+### What changed
+- New table `care_shares` (owner invites a viewer by email; pending, active or revoked; the owner picks Eat, Sleep, Move and Balance, with Balance off by default). RLS gives select to the owner and the viewer only, and the table has no write policies: every change goes through security-definer functions `create_care_share`, `update_care_share`, `accept_care_share`, `end_care_share`. Viewers read through `followed_people`, `shared_days` (permitted columns only, days with something shared logged, 93-day cap) and `shared_goals`; they never get select access to `habit_logs`, and notes, feelings and locations are never returned. Limits: 5 open shares per owner; accepting needs a confirmed email that matches the invite.
+- New table `waitlist` (email, want_ios, want_android) with RLS on and no policies; signed-out visitors join through `join_waitlist`, which returns nothing so it cannot reveal whether an address is already listed. Email and store choice are all that is kept.
+
+### Verified
+- `supabase/tests/care_shares_test_after_0010.sql` (rolled back): stranger sees 0 shares and 0 days and cannot accept or end; an unconfirmed or different account cannot accept; the viewer sees 0 days before accepting and 1 after (the mood-only day stays hidden until Balance is shared, then 2 days and mood 4); notes and feelings are not returnable; direct inserts and flag updates by the viewer are blocked; turning Move off removes steps and the steps goal; ending the share returns 0 days.
+- `supabase/tests/waitlist_test_after_0011.sql` (rolled back): anon can join, bad email and no-store are blocked, repeat joins merge the store flags into one row, anon and signed-in users read 0 rows and cannot insert directly.
+- Not yet verified: the security advisor result after these migrations (see the session report), and the screens (built by separate agents).
+
+## 0012_delete_my_account, 0013_email_consent, 0014_review_fixes (2026-10-12)
+
+All applied to PersonalHealthManager after Miah's go-ahead; each tested in a rolled-back block.
+- `delete_my_account()`: deletes the caller's auth user; every user table cascades (checked via pg_constraint). Test: other user's rows untouched, anon blocked.
+- Consent: `profiles.marketing_opt_in`, `marketing_opt_in_at`, `health_consent_at` (set by the sign-up trigger only when the form sends the string 'true'); `waitlist.consent_at`; `join_waitlist` now takes `p_consent` and refuses without it.
+- Review fixes (from `docs/security-review-2026-10-12.md`): invitations expire after 14 days and match the confirmed address on `auth.users` (not the token's email claim); viewers read pending invites through `followed_people()` only; per-owner advisory lock on the 5-share limit; names capped at 100; anon loses all privileges on the health tables and signed-in users lose TRUNCATE/REFERENCES/TRIGGER; a repeat waiting-list sign-up keeps the first consent time.
+- Known and left: no double opt-in on the waiting list (send one confirming email before any launch mail); consent columns are client-writable (acceptable for marketing, weak evidence for Art. 9 consent: confirm with a lawyer); delete needs no re-authentication; leaked-password protection is a Supabase Auth dashboard setting, still off.

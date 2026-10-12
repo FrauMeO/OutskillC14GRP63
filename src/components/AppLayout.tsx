@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import { confirmLeave } from '../lib/unsaved';
 import { useAuth } from '../context/AuthContext';
+import { useFollowedPeople } from '../lib/useFollowedPeople';
 
 const NAV = [
   { to: '/dashboard', label: 'Dashboard' },
@@ -12,6 +13,10 @@ const NAV = [
 
 export default function AppLayout() {
   const { user, signOut } = useAuth();
+  // The Following item appears only when there is someone to follow or an invitation waiting.
+  // If the lookup fails, the item stays hidden.
+  const { people } = useFollowedPeople();
+  const nav = people.length > 0 ? [...NAV.slice(0, -1), { to: '/following', label: 'Following' }, NAV[NAV.length - 1]] : NAV;
 
   return (
     <div className="min-h-screen md:grid md:grid-cols-[15rem_1fr]">
@@ -24,7 +29,7 @@ export default function AppLayout() {
         </div>
 
         <nav aria-label="Main" className="flex gap-1 overflow-x-auto px-3 pb-3 md:flex-col md:pb-0">
-          {NAV.map((item) => (
+          {nav.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
@@ -33,7 +38,7 @@ export default function AppLayout() {
               }}
               className={({ isActive }) =>
                 [
-                  'whitespace-nowrap rounded-md px-3 py-2 text-[15px] transition-colors',
+                  'flex min-h-11 items-center whitespace-nowrap rounded-md px-3 text-base transition-colors',
                   isActive
                     ? 'bg-mist font-semibold text-spruce'
                     : 'text-mist/80 hover:bg-spruce-soft hover:text-mist',

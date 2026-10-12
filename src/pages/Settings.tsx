@@ -7,6 +7,10 @@ import CityPicker from '../components/CityPicker';
 import type { HomeCity } from '../lib/location';
 import { exportFileName, logsToCsv, toJson, type ExportData } from '../lib/export';
 import { toISODate } from '../lib/dates';
+import { ABOUT_STORY, foundersLine } from '../lib/about';
+import SharingSettings from '../components/SharingSettings';
+import DeleteAccount from '../components/DeleteAccount';
+import EmailPreferences from '../components/EmailPreferences';
 import { AI_REFLECTION_ENABLED } from '../features/aiReflection/AiReflectionCard';
 
 export default function Settings() {
@@ -57,14 +61,15 @@ export default function Settings() {
     if (!user) return;
     setDownloading(kind);
     setDownloadStatus(null);
-    const [profile, logs, goals, conditions, reflections] = await Promise.all([
+    const [profile, logs, goals, conditions, reflections, shares] = await Promise.all([
       supabase.from('profiles').select('*').eq('id', user.id).maybeSingle(),
       supabase.from('habit_logs').select('*').order('log_date'),
       supabase.from('goals').select('*'),
       supabase.from('daily_conditions').select('*').order('date'),
       supabase.from('reflections').select('*').order('offered_on'),
+      supabase.from('care_shares').select('*').eq('owner_id', user.id).order('created_at'),
     ]);
-    const failed = profile.error ?? logs.error ?? goals.error ?? conditions.error ?? reflections.error;
+    const failed = profile.error ?? logs.error ?? goals.error ?? conditions.error ?? reflections.error ?? shares.error;
     if (failed) {
       setDownloading(null);
       setDownloadStatus({ kind: 'error', text: `Could not gather your data: ${failed.message}` });
@@ -76,6 +81,7 @@ export default function Settings() {
       goals: goals.data ?? [],
       daily_conditions: conditions.data ?? [],
       reflections: reflections.data ?? [],
+      care_shares: shares.data ?? [],
     };
     const text = kind === 'json' ? toJson(data, user.email ?? null, new Date().toISOString()) : logsToCsv(data.habit_logs);
     const url = URL.createObjectURL(new Blob([text], { type: kind === 'json' ? 'application/json' : 'text/csv' }));
@@ -300,6 +306,20 @@ export default function Settings() {
             {downloadStatus.text}
           </p>
         )}
+      </section>
+
+      <SharingSettings />
+
+      <EmailPreferences />
+
+      <DeleteAccount />
+
+      <section aria-labelledby="about" className="mt-6 max-w-md rounded-lg border border-line bg-white p-6">
+        <h2 id="about" className="font-display text-xl font-bold">
+          About Build Your Pillars
+        </h2>
+        <p className="mt-2 text-sm text-spruce/80">{ABOUT_STORY}</p>
+        <p className="mt-2 text-sm text-spruce/80">Founders: {foundersLine()}.</p>
       </section>
 
       <button

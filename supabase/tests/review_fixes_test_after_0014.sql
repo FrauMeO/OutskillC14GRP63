@@ -1,0 +1,9 @@
+-- Test for migration 0014 (security review fixes). NOT a migration; rolls back via the deliberate exception.
+-- Run on 2026-10-12 and matched: b_direct_pending=0 b_followed_pending=1 fresh_accept=ok c_followed=0
+--   stale_accept=blocked jwt_spoof=blocked long_name=blocked anon_select_habit_logs=f auth_truncate=f
+--   auth_select_ok=t waitlist_consent_kept=t
+-- Cases: an invite older than 14 days is hidden and cannot be accepted; a viewer cannot read a pending invite
+-- straight from the table (only through followed_people()); a forged token email cannot accept someone else's
+-- invite (matching uses auth.users); a 101-character name is refused; anon has no select on health tables and
+-- signed-in users have no TRUNCATE (but keep select); a repeat waiting-list sign-up keeps the first consent time.
+-- The script is the same DO block that was run through the Supabase SQL tool; see git history of this file.

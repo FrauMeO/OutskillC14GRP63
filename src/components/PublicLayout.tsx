@@ -1,0 +1,77 @@
+import { useEffect, type ReactNode } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+
+const linkClass =
+  'inline-flex min-h-11 items-center rounded-md px-3 font-semibold text-spruce underline-offset-4 hover:underline';
+
+// Frame for the signed-out pages (landing, why we built it). Base text is 18px for older eyes.
+export default function PublicLayout({ title, children }: { title: string; children: ReactNode }) {
+  const { session } = useAuth();
+
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
+  return (
+    <div className="flex min-h-screen flex-col bg-mist text-lg leading-relaxed text-spruce">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-10 focus:rounded-md focus:bg-spruce focus:px-4 focus:py-3 focus:text-mist"
+      >
+        Skip to the main content
+      </a>
+      <header className="border-b border-line bg-white">
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2 sm:px-6">
+          <Link to="/" className="inline-flex min-h-11 items-center gap-3 rounded-md font-display text-xl font-bold tracking-tight">
+            <img src="/icon-192.png" alt="" width={36} height={36} className="rounded-lg" />
+            Build Your Pillars
+          </Link>
+          <nav aria-label="Main" className="flex flex-wrap items-center">
+            <NavLink to="/why" className={linkClass}>
+              Why we built it
+            </NavLink>
+            {session ? (
+              <Link to="/dashboard" className={linkClass}>
+                Open your dashboard
+              </Link>
+            ) : (
+              <Link to="/login" className={linkClass}>
+                Log in
+              </Link>
+            )}
+          </nav>
+        </div>
+      </header>
+
+      <main id="main" className="flex-1">
+        {children}
+      </main>
+
+      <footer className="border-t border-line bg-white">
+        <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
+          <p className="max-w-2xl text-base text-spruce/85">
+            Build Your Pillars is for reflection. It is not medical advice and it does not diagnose anything.
+          </p>
+          <p className="mt-3 flex flex-wrap gap-x-2 text-base">
+            <Link to="/why" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+              Why we built it
+            </Link>
+            <Link to="/signup" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+              Create your account
+            </Link>
+            <Link to="/login" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+              Log in
+            </Link>
+            <Link to="/privacy" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+              Privacy
+            </Link>
+            <Link to="/terms" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+              Terms
+            </Link>
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+}

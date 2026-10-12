@@ -9,12 +9,23 @@ import Goals from './pages/Goals';
 import Insights from './pages/Insights';
 import Reflect from './pages/Reflect';
 import Settings from './pages/Settings';
+import Following from './pages/Following';
+import FollowingPerson from './pages/FollowingPerson';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import HomeRoute from './components/HomeRoute';
+import Why from './pages/Why';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
 
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<HomeRoute />} />
+      <Route path="/why" element={<Why />} />
+      <Route path="/privacy" element={<Privacy />} />
+      <Route path="/terms" element={<Terms />} />
+
       <Route element={<PublicOnlyRoute />}>
         <Route path="/login" element={<AuthPage mode="login" />} />
         <Route path="/signup" element={<AuthPage mode="signup" />} />
@@ -32,6 +43,8 @@ export default function App() {
           <Route path="/insights" element={<Insights />} />
           <Route path="/reflect" element={<Reflect />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/following" element={<Following />} />
+          <Route path="/following/:ownerId" element={<FollowingPerson />} />
         </Route>
       </Route>
 
