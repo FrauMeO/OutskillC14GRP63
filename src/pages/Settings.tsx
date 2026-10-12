@@ -13,6 +13,8 @@ import SharingSettings from '../components/SharingSettings';
 import DeleteAccount from '../components/DeleteAccount';
 import EmailPreferences from '../components/EmailPreferences';
 import AiConsentSetting from '../components/AiConsentSetting';
+import ReminderSetting from '../components/ReminderSetting';
+import HealthImport from '../components/HealthImport';
 import { AI_REFLECTION_ENABLED } from '../features/aiReflection/AiReflectionCard';
 
 export default function Settings() {
@@ -334,6 +336,10 @@ export default function Settings() {
       <SharingSettings />
 
       <EmailPreferences />
+
+      <ReminderSetting />
+
+      <HealthImport />
 
       <DeleteAccount />
 
