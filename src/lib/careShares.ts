@@ -12,6 +12,9 @@ import { PILLARS } from './pillars';
 
 export type ShareStatus = 'pending' | 'active' | 'revoked';
 
+/** How much the supporter sees (migration 0015). Missing on rows from before it: those behave as 'detail'. */
+export type ShareLevel = 'presence' | 'summary' | 'detail';
+
 export type PillarFlags = { eat: boolean; sleep: boolean; move: boolean; balance: boolean };
 
 /** A row of care_shares as the owner sees it. */
@@ -28,6 +31,10 @@ export type CareShareRow = {
   created_at: string;
   accepted_at: string | null;
   ended_at: string | null;
+  // Added by migration 0015; absent until it is applied.
+  level?: ShareLevel;
+  paused_at?: string | null;
+  last_confirmed_at?: string | null;
 };
 
 /** A row of followed_people(): the viewer's active follows and pending invitations. */
@@ -42,6 +49,9 @@ export type FollowedPerson = {
   share_balance: boolean;
   created_at: string;
   accepted_at: string | null;
+  // Added by migration 0015; absent until it is applied.
+  level?: ShareLevel;
+  paused?: boolean;
 };
 
 /** A row of shared_days(): unshared pillars are null. */

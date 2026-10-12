@@ -24,7 +24,11 @@ export type Database = {
           created_at: string
           ended_at: string | null
           id: string
+          // Care sharing v2 (migration 0015, docs/care-sharing-v2-contract.md)
+          last_confirmed_at: string
+          level: string
           owner_id: string
+          paused_at: string | null
           share_balance: boolean
           share_eat: boolean
           share_move: boolean
@@ -34,6 +38,17 @@ export type Database = {
           viewer_id: string | null
         }
         // Read only from the browser: every write goes through the care sharing functions (0010).
+        Insert: never
+        Update: never
+        Relationships: []
+      }
+      care_share_views: {
+        Row: {
+          share_id: string
+          viewed_on: string
+          views: number
+        }
+        // Read only (owner of the share); written only by the definer functions.
         Insert: never
         Update: never
         Relationships: []
@@ -324,6 +339,12 @@ export type Database = {
         Args: { p_id: string; p_eat: boolean; p_sleep: boolean; p_move: boolean; p_balance: boolean }
         Returns: undefined
       }
+      set_care_share_options: { Args: { p_id: string; p_level: string; p_paused: boolean }; Returns: undefined }
+      confirm_care_share: { Args: { p_id: string }; Returns: undefined }
+      shared_week_summary: {
+        Args: { p_owner: string }
+        Returns: { pillar: string; days_logged: number; trend: string }[]
+      }
       accept_care_share: { Args: { p_id: string }; Returns: undefined }
       end_care_share: { Args: { p_id: string }; Returns: undefined }
       followed_people: {
@@ -339,6 +360,8 @@ export type Database = {
           share_balance: boolean
           created_at: string
           accepted_at: string | null
+          level: string
+          paused: boolean
         }[]
       }
       shared_days: {
