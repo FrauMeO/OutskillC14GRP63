@@ -6,7 +6,9 @@ import AuthShell from '../components/AuthShell';
 import SignupWelcome from '../components/SignupWelcome';
 import WaitlistForm from '../components/WaitlistForm';
 import { authProblem, type AuthProblem } from '../lib/authErrors';
-import { birthYearOptions, MONTHS, validateBirth, validateDisplayName } from '../lib/signup';
+import { birthYearOptions, MIN_AGE, MONTHS, validateBirth, validateDisplayName } from '../lib/signup';
+import { PENDING_KEY, pendingMetadata, SIGNUP_CONSENT_ERROR, type PendingConsent } from '../lib/consent';
+import { COLLECT_USE, consentHash, CURRENT_VERSION, EMAIL_MARKETING, LINK_TEXT } from '../lib/consentTexts';
 import type { HomeCity } from '../lib/location';
 
 type Mode = 'login' | 'signup';
@@ -62,6 +64,16 @@ export default function AuthPage({ mode }: { mode: Mode }) {
       return setError({ text: birth.message, actions: [] });
     }
 
+    // Two separate, unticked choices (docs/privacy-consent-spec.md). The ledger cannot be written
+    // until there is a session, so the choices travel in the sign-up metadata and are recorded
+    // once, after the first sign-in (PendingConsentRecorder).
+    if (!healthConsent) {
+      setSubmitting(false);
+      return setError({ text: SIGNUP_CONSENT_ERROR, actions: [] });
+    }
+    const choices: PendingConsent[] = [{ kind: 'collect_use', version: CURRENT_VERSION.collect_use, hash: await consentHash('collect_use') }];
+    if (marketing) choices.push({ kind: 'email_marketing', version: CURRENT_VERSION.email_marketing, hash: await consentHash('email_marketing') });
+
     const { data, error: err } = await supabase.auth.signUp({
       email,
       password,
@@ -74,6 +86,8 @@ export default function AuthPage({ mode }: { mode: Mode }) {
           // Consent is recorded by the sign-up trigger. Both are false unless ticked.
           health_consent: healthConsent ? 'true' : 'false',
           marketing_opt_in: marketing ? 'true' : 'false',
+          // What exactly was agreed to (version and wording hash), written to the consent ledger after sign-in.
+          [PENDING_KEY]: pendingMetadata(choices),
           ...(home && {
             home_city: home.city,
             home_country_code: home.countryCode,
@@ -152,7 +166,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
               </select>
             </div>
             <span className="mt-1.5 block text-xs text-spruce/60">
-              Only the month and year, never the day. We use it to work out your plan, nothing else.
+              You must be {MIN_AGE} or older. Only the month and year, never the day. We use it to work out your plan, nothing else.
             </span>
           </fieldset>
         )}
@@ -205,34 +219,44 @@ export default function AuthPage({ mode }: { mode: Mode }) {
           )}
         </label>
         {mode === 'signup' && (
-          <fieldset className="space-y-3 text-sm">
+          <fieldset className="space-y-4 text-lg">
             <legend className="sr-only">Your choices</legend>
-            <label className="flex items-start gap-3">
-              <input
-                type="checkbox"
-                required
-                checked={healthConsent}
-                onChange={(e) => setHealthConsent(e.target.checked)}
-                className="mt-0.5 size-5 shrink-0 accent-spruce"
-              />
-              <span>
-                I agree that Build Your Pillars may store and use the health information I choose to enter, to run the app for me, as
-                described in the{' '}
-                <a href="/privacy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">
-                  Privacy Policy
+            {/* Two separate choices, both unticked. The words and their hash are recorded in the consent ledger. */}
+            <div className="rounded-md border border-line bg-white p-4">
+              <h2 className="font-display text-xl font-bold">{COLLECT_USE.heading}</h2>
+              <p className="mt-2">
+                {COLLECT_USE.body.split(LINK_TEXT)[0]}
+                <a href="/health-data-privacy" target="_blank" rel="noopener noreferrer" className="font-semibold underline underline-offset-4">
+                  {LINK_TEXT}
                 </a>
-                . I can delete my account at any time.
-              </span>
-            </label>
-            <label className="flex items-start gap-3">
-              <input
-                type="checkbox"
-                checked={marketing}
-                onChange={(e) => setMarketing(e.target.checked)}
-                className="mt-0.5 size-5 shrink-0 accent-spruce"
-              />
-              <span>Optional: email me occasional news about Build Your Pillars. I can change this any time in Settings.</span>
-            </label>
+                {COLLECT_USE.body.split(LINK_TEXT)[1]}
+              </p>
+              <label className="mt-3 flex min-h-11 items-start gap-3">
+                <input
+                  type="checkbox"
+                  required
+                  checked={healthConsent}
+                  onChange={(e) => setHealthConsent(e.target.checked)}
+                  className="mt-1 size-6 shrink-0 accent-spruce"
+                />
+                <span>{COLLECT_USE.label}</span>
+              </label>
+            </div>
+            <div className="rounded-md border border-line bg-white p-4">
+              <label className="flex min-h-11 items-start gap-3">
+                <input
+                  type="checkbox"
+                  checked={marketing}
+                  onChange={(e) => setMarketing(e.target.checked)}
+                  className="mt-1 size-6 shrink-0 accent-spruce"
+                />
+                <span>
+                  <span className="font-semibold">Optional. </span>
+                  {EMAIL_MARKETING.label}
+                </span>
+              </label>
+              <p className="mt-1 pl-9 text-base text-spruce/75">{EMAIL_MARKETING.note}</p>
+            </div>
           </fieldset>
         )}
 

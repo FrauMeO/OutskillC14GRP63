@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
+import { CONSENT_CHANGED, setConsent } from '../lib/consentApi';
 
 // Email choices (GDPR opt-in): news about Build Your Pillars is off unless the person turns it on.
 export default function EmailPreferences() {
@@ -12,29 +13,32 @@ export default function EmailPreferences() {
   useEffect(() => {
     if (!user) return;
     let cancelled = false;
-    supabase
-      .from('profiles')
-      .select('marketing_opt_in')
-      .eq('id', user.id)
-      .maybeSingle()
-      .then(({ data }) => {
-        if (!cancelled) setOptIn(data?.marketing_opt_in ?? false);
-      });
+    const load = () =>
+      supabase
+        .from('profiles')
+        .select('marketing_opt_in')
+        .eq('id', user.id)
+        .maybeSingle()
+        .then(({ data }) => {
+          if (!cancelled) setOptIn(data?.marketing_opt_in ?? false);
+        });
+    load();
+    // The Privacy and consent section can change this too; stay in step with it.
+    window.addEventListener(CONSENT_CHANGED, load);
     return () => {
       cancelled = true;
+      window.removeEventListener(CONSENT_CHANGED, load);
     };
   }, [user]);
 
+  // The choice goes through the consent ledger, which also keeps the profile flag in step.
   async function change(next: boolean) {
     if (!user) return;
     setBusy(true);
     setMessage(null);
-    const { error } = await supabase
-      .from('profiles')
-      .update({ marketing_opt_in: next, marketing_opt_in_at: new Date().toISOString() })
-      .eq('id', user.id);
+    const problem = await setConsent('email_marketing', next);
     setBusy(false);
-    if (error) return setMessage({ kind: 'error', text: `Could not save that: ${error.message}` });
+    if (problem) return setMessage({ kind: 'error', text: problem });
     setOptIn(next);
     setMessage({ kind: 'ok', text: next ? 'You will get occasional news by email.' : 'You will not get news by email.' });
   }

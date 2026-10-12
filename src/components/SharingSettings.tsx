@@ -3,6 +3,8 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { toISODate } from '../lib/dates';
 import SharedLevelView from './SharedLevelView';
+import ShareConsentDialog from './ShareConsentDialog';
+import { SAVE_PROBLEM, setConsent } from '../lib/consentApi';
 import {
   NO_PILLAR_ERROR,
   flagsOf,
@@ -11,6 +13,7 @@ import {
   openShares,
   pillarSummary,
   sameFlags,
+  sharedPillarNames,
   statusLabel,
   validateEmail,
   type CareShareRow,
@@ -193,6 +196,7 @@ export default function SharingSettings() {
   const [inviteLevel, setInviteLevel] = useState<ShareLevel>('presence');
   const [inviting, setInviting] = useState(false);
   const [inviteFlash, setInviteFlash] = useState<Flash>(null);
+  const [askingConsent, setAskingConsent] = useState(false);
   const [drafts, setDrafts] = useState<Record<string, { flags: PillarFlags; level: ShareLevel }>>({});
   const [busyId, setBusyId] = useState<string | null>(null);
   const [rowFlash, setRowFlash] = useState<Record<string, Flash>>({});
@@ -234,11 +238,19 @@ export default function SharingSettings() {
     }
   }
 
-  async function handleInvite(e: FormEvent) {
+  // Step 1: check the form, then ask for the person's yes (the consent dialog). Nothing is created yet.
+  function handleInvite(e: FormEvent) {
     e.preventDefault();
     setInviteFlash(null);
     const problem = validateEmail(email) ?? (hasAnyPillar(invite) ? null : NO_PILLAR_ERROR);
     if (problem) return setInviteFlash({ kind: 'error', text: problem });
+    setAskingConsent(true);
+  }
+
+  // Step 2, after "Send invitation" in the dialog: create the share, save the level, then record the
+  // consent for THIS share. If the record cannot be saved, the share is ended so none exists without one.
+  async function sendInvite() {
+    setInviteFlash(null);
     const clean = normaliseEmail(email);
     setInviting(true);
     let createError: { code?: string; message: string } | null = null;
@@ -258,11 +270,24 @@ export default function SharingSettings() {
     }
     if (createError) {
       setInviting(false);
+      setAskingConsent(false);
       return setInviteFlash({ kind: 'error', text: friendlyError(createError) });
     }
     // Save the level on the new share (the invitation itself still waits for them to accept).
     const levelProblem = newId ? await call('set_care_share_options', { p_id: newId, p_level: inviteLevel, p_paused: false }) : NOT_AVAILABLE_YET;
+    // Record what they agreed to, naming the person, the pillars and the level at this moment.
+    const recordProblem = newId
+      ? await setConsent('share_caregiver', true, { shareId: newId, details: { recipient: clean, pillars: sharedPillarNames(invite), level: inviteLevel } })
+      : SAVE_PROBLEM;
+    if (recordProblem) {
+      if (newId) await call('end_care_share', { p_id: newId });
+      setInviting(false);
+      setAskingConsent(false);
+      await load();
+      return setInviteFlash({ kind: 'error', text: 'We could not save your invitation, so nothing was shared. Please try again.' });
+    }
     setInviting(false);
+    setAskingConsent(false);
     setEmail('');
     setInvite(NO_PILLARS);
     setInviteLevel('presence');
@@ -315,6 +340,8 @@ export default function SharingSettings() {
     setBusyId(null);
     setEndingId(null);
     if (problem) return (fromBanner ? setBannerFlash : (f: Flash) => setRowFlash((all) => ({ ...all, [r.id]: f })))({ kind: 'error', text: problem });
+    // The share has ended, so take back the consent for it too (the ledger keeps both rows). Best effort: the share is already ended.
+    await setConsent('share_caregiver', false, { shareId: r.id, details: { recipient: r.viewer_email } });
     setInviteFlash({ kind: 'ok', text: `Sharing with ${r.viewer_email} has ended.` });
     setBannerFlash(null);
     await load();
@@ -406,6 +433,17 @@ export default function SharingSettings() {
         </div>
         <Message flash={inviteFlash} />
       </form>
+      {askingConsent && (
+        <ShareConsentDialog
+          email={normaliseEmail(email)}
+          pillars={pillarSummary(invite)}
+          level={inviteLevel}
+          balance={invite.balance}
+          busy={inviting}
+          onCancel={() => setAskingConsent(false)}
+          onConfirm={sendInvite}
+        />
+      )}
 
       <h3 className="mt-8 font-display text-lg font-bold">People you share with</h3>
       {loadError && (

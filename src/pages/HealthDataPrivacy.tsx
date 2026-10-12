@@ -96,7 +96,7 @@ export default function HealthDataPrivacy() {
           <Link to="/privacy" className="font-semibold underline underline-offset-4">
             Privacy Policy
           </Link>{' '}
-          covers everything else, such as your email address and the waiting list.
+          covers everything else, such as your email address and the waiting list. Build Your Pillars is for people 18 and older.
         </p>
         <p className="mt-4">
           We follow the Washington My Health My Data Act for <strong>everyone</strong>, wherever you live. Where the privacy laws of the

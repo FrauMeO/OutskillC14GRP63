@@ -18,6 +18,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      // Migration 0020. Append-only: the browser can only read its own rows; record_consent() writes them.
+      consents: {
+        Row: {
+          created_at: string
+          details: Json
+          granted: boolean
+          id: number
+          kind: string
+          share_id: string | null
+          text_hash: string
+          user_id: string
+          version: number
+        }
+        Insert: never
+        Update: never
+        Relationships: []
+      }
+      // Migration 0020. The browser reads its own rows through my_privacy_requests() and writes through
+      // create_privacy_request(); the founders' notes column is never granted to it.
+      privacy_requests: {
+        Row: {
+          answered_at: string | null
+          created_at: string
+          details: string | null
+          due_at: string
+          extended_due_at: string | null
+          id: string
+          outcome: string | null
+          request_type: string
+          status: string
+          user_id: string | null
+        }
+        Insert: never
+        Update: never
+        Relationships: []
+      }
       care_shares: {
         Row: {
           accepted_at: string | null
@@ -338,6 +374,32 @@ export type Database = {
       delete_my_account: { Args: Record<PropertyKey, never>; Returns: undefined }
       set_ai_consent: { Args: { p_granted: boolean; p_version: number }; Returns: undefined }
       ai_consume_call: { Args: { p_version: number }; Returns: string }
+      record_consent: {
+        Args: { p_kind: string; p_version: number; p_granted: boolean; p_text_hash: string; p_share_id?: string | null; p_details?: Json }
+        Returns: number
+      }
+      my_consents: {
+        Args: Record<PropertyKey, never>
+        Returns: { kind: string; version: number; granted: boolean; share_id: string | null; created_at: string }[]
+      }
+      create_privacy_request: {
+        Args: { p_type: string; p_details?: string | null }
+        Returns: { request_id: string; request_created_at: string; request_due_at: string }[]
+      }
+      my_privacy_requests: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          request_type: string
+          details: string | null
+          status: string
+          created_at: string
+          due_at: string
+          extended_due_at: string | null
+          answered_at: string | null
+          outcome: string | null
+        }[]
+      }
       join_waitlist: { Args: { p_email: string; p_ios: boolean; p_android: boolean; p_consent: boolean }; Returns: undefined }
       create_care_share: {
         Args: { p_email: string; p_eat: boolean; p_sleep: boolean; p_move: boolean; p_balance: boolean }

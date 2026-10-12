@@ -2,6 +2,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { confirmLeave } from '../lib/unsaved';
 import { useAuth } from '../context/AuthContext';
 import { useFollowedPeople } from '../lib/useFollowedPeople';
+import PendingConsentRecorder from './PendingConsentRecorder';
 
 const NAV = [
   { to: '/dashboard', label: 'Dashboard' },
@@ -20,6 +21,7 @@ export default function AppLayout() {
 
   return (
     <div className="min-h-screen md:grid md:grid-cols-[15rem_1fr]">
+      <PendingConsentRecorder />
       <aside className="flex flex-col bg-spruce text-mist md:sticky md:top-0 md:h-screen">
         <div className="px-6 pt-6 pb-4 md:pb-10">
           <p className="font-display text-2xl font-bold leading-tight tracking-tight">

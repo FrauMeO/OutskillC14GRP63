@@ -8,8 +8,8 @@ import { CONTACT_EMAIL } from '../lib/waitlist';
 // Anything uncertain lives in that document, not here.
 // Standard: docs/privacy-standard.md (Washington My Health My Data Act for everyone, stricter foreign rule where it asks more).
 // Health information has its own page: src/pages/HealthDataPrivacy.tsx (route /health-data-privacy).
-// LEGAL REVIEW: the 30-day answer time and the minimum age (code enforces 16; the standard asks for 18, see the gap table).
-// LEGAL REVIEW needed before launch: controller identity and address, the "16" age wording, the
+// LEGAL REVIEW: the 30-day answer time and the minimum age (code now enforces 18, decided 2026-10-12).
+// LEGAL REVIEW needed before launch: controller identity and address, the "18" age wording, the
 // transfer wording, the supervisory-authority wording, retention wording for backups and the
 // waitlist, and the Anthropic paragraph (check Anthropic's terms first).
 
@@ -333,9 +333,9 @@ export default function Privacy() {
 
         <Section id="children" title="Children">
           <p>
-            Build Your Pillars is not for anyone under 16. Please do not create an account if you are under 16. If we learn that we
-            hold data from someone under 16, we will delete it.{' '}
-            {/* LEGAL REVIEW: confirm 16 and the wording for each target country. */}
+            Build Your Pillars is not for anyone under 18. Please do not create an account if you are under 18. If we learn that we
+            hold data from someone under 18, we will delete it.{' '}
+            {/* LEGAL REVIEW: confirm 18 (Miah, 2026-10-12) and the wording for each target country. */}
           </p>
         </Section>
 

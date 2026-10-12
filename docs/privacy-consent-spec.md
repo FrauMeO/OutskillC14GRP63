@@ -1,8 +1,34 @@
 # Consent and rights UX: engineering spec (12 October 2026)
 
-For the code agent that implements this next. Standard: `docs/privacy-standard.md` (Washington MHMDA for everyone; stricter GDPR, PIPEDA or DPDP rule wins). Public wording lives in `src/pages/HealthDataPrivacy.tsx`; the dialogs below must say the same thing. **Not legal advice. Every LEGAL REVIEW tag needs a lawyer before launch.** Nothing here has been built or applied. No migration file exists yet; section 3 is a sketch only.
+For the code agent that implements this next. Standard: `docs/privacy-standard.md` (Washington MHMDA for everyone; stricter GDPR, PIPEDA or DPDP rule wins). Public wording lives in `src/pages/HealthDataPrivacy.tsx`; the dialogs below must say the same thing. **Not legal advice. Every LEGAL REVIEW tag needs a lawyer before launch.** Part of this is now built, not applied: see the implementation status below. Section 3 is still the original sketch; the migration that was actually written is `supabase/migrations/0020_consent_ledger.sql`.
 
 Rules for the implementer: follow `CLAUDE.md` (principles, schema policy, tests with positive controls). Text at 18px for public pages; in-app dialogs at least `text-lg`. 44px tap targets. `role="alert"` for errors, `role="status"` for confirmations. No `window.confirm`. Reduced motion respected. Copy below is written at about a 6th to 8th grade reading level; keep it that way when edited.
+
+
+## Implementation status (updated 12 October 2026, branch `worktree-agent-ad3d32ff3017753a8`)
+
+Decisions by Miah on 2026-10-12 that change this spec: minimum age is 18 everywhere (not 16); the answer time is 30 days; Washington is the standard, the stricter rule wins. Purpose keys used in code are the four in section 2 (`collect_use`, `share_caregiver`, `ai_processing`, `email_marketing`).
+
+| Item | Status | Where |
+|---|---|---|
+| Ledger table, `record_consent`, `my_consents` | Implemented, NOT applied. Differences from the sketch: table `consents` (not `consent_events`), signature `record_consent(p_kind, p_version, p_granted, p_text_hash, p_share_id, p_details)`, no `consent_texts` table (the hash format is checked, not its match to stored wording), no `surface` column | `supabase/migrations/0020_consent_ledger.sql` |
+| `privacy_requests` and the 30-day clock | Implemented, NOT applied. Clients create and read their own (the sketch had founders only); max 5 open; rows are kept after deletion but unlinked | same |
+| Age 18 | Implemented in code (`MIN_AGE`, sign-up trigger in 0020, Terms, Privacy, Health Data Privacy, sign-up hint, billing doc). Trigger NOT applied | `src/lib/signup.ts`, 0020 |
+| 4.1 Sign-up: two separate unticked consents, recorded in the ledger | Implemented. Choices travel in the sign-up metadata with version and wording hash, and are written once after the first sign-in | `AuthPage.tsx`, `PendingConsentRecorder.tsx`, `src/lib/consent.ts` |
+| 4.2 Caregiver consent dialog, ledger row per share, `withdrawn` row on end | Implemented for new invitations and for ending a share. If the record fails the share is ended. NOT done: reopening the dialog when a pillar or level is raised on an existing share | `ShareConsentDialog.tsx`, `SharingSettings.tsx` |
+| 4.3 AI dialog and `ai_processing` ledger rows; server gate; edge function check | NOT done here (another agent owns it). Integration: `set_ai_consent` should call `record_consent('ai_processing', <version>, <granted>, <hash>)` | |
+| 4.4 Email news writes a ledger row | Implemented in Settings > Email and the new section. One-click unsubscribe page NOT done | `EmailPreferences.tsx` |
+| 4.5 Location notice | NOT done | |
+| 5.1 Export includes consents | NOT done | `src/lib/export.ts`, `Settings.tsx` |
+| 5.2 Who has my data (static list) | Implemented. The live list of shares and "looked on N days" is NOT done (Sharing section has it) | `src/lib/dataRecipients.ts`, `PrivacyCenter.tsx` |
+| 5.3 "My choices over time" | NOT done (the data is in `my_consents()` history only through the table) | |
+| 6 Withdrawal in Settings | Implemented as a "Privacy and consent" section: current state per choice with Take back or Say yes. Per Miah, taking back `collect_use` explains it means deleting the account and points to Delete my account; the three-button "pause saving" dialog is NOT built, and no insert policy checks `collect_use` | `PrivacyCenter.tsx` |
+| 7 Delete wording, password re-entry, 30-day backup note | NOT done | `DeleteAccount.tsx` |
+| 8 Request form with a due date | Implemented (form, list, due date from the database). The founders' weekly query and email procedure are still manual | `PrivacyCenter.tsx`, `src/lib/privacyRequests.ts` |
+| 9 Tests | SQL test and unit tests written (controls included). The SQL test passed on a local scratch PostgreSQL 17, not yet on the live project. No component or Playwright tests | `supabase/tests/consent_ledger_test_after_0020.sql`, `src/lib/*.test.ts` |
+| 10 Order of work | Steps 1, 3 (partly), 4, 5, 6 (partly), 7 (request table only) done | |
+
+Still to do after this change: `consent_texts` mirror and server-side hash check; `has_consent()` and insert policies; AI gate; export; retention jobs; password re-entry on delete; reopen the share dialog on edits; unsubscribe page; lawyer review of every changed string.
 
 ---
 

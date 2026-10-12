@@ -21,9 +21,14 @@ describe('validateBirth', () => {
     expect(validateBirth(11, 1966, TODAY)).toMatchObject({ ok: true, age: 59, plan: 'standard' });
     expect(validateBirth(1, 1950, TODAY)).toMatchObject({ ok: true, plan: 'free_60_plus' });
   });
-  it('refuses under 16, missing, impossible and future values', () => {
-    expect(validateBirth(10, 2010, TODAY)).toMatchObject({ ok: true, age: 16 });
-    expect(validateBirth(11, 2010, TODAY)).toMatchObject({ ok: false });
+  it('refuses under 18, missing, impossible and future values', () => {
+    // Boundary by month and year: 18 years 0 months is in, 17 years 11 months is out.
+    expect(validateBirth(10, 2008, TODAY)).toMatchObject({ ok: true, age: 18 });
+    expect(validateBirth(11, 2008, TODAY)).toMatchObject({ ok: false });
+    expect(validateBirth(1, 2008, TODAY)).toMatchObject({ ok: true, age: 18 });
+    // Controls: the old limit of 16 is now refused, and so is 17.
+    expect(validateBirth(10, 2010, TODAY)).toMatchObject({ ok: false });
+    expect(validateBirth(1, 2009, TODAY)).toMatchObject({ ok: false });
     expect(validateBirth(null, 1960, TODAY)).toMatchObject({ ok: false });
     expect(validateBirth(5, null, TODAY)).toMatchObject({ ok: false });
     expect(validateBirth(13, 1960, TODAY)).toMatchObject({ ok: false });
@@ -39,7 +44,8 @@ describe('validateBirth', () => {
 describe('birthYearOptions', () => {
   it('runs from the youngest allowed year down 110 years', () => {
     const years = birthYearOptions(TODAY);
-    expect(years[0]).toBe(2010);
+    expect(years[0]).toBe(2008); // this year minus 18
     expect(years.at(-1)).toBe(1916);
+    expect(years).not.toContain(2009); // control: someone aged 17 is not offered
   });
 });
