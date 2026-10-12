@@ -16,6 +16,7 @@ import ResetPassword from './pages/ResetPassword';
 import HomeRoute from './components/HomeRoute';
 import Why from './pages/Why';
 import Privacy from './pages/Privacy';
+import Plan from './pages/Plan';
 import AppointmentSummary from './pages/AppointmentSummary';
 import Terms from './pages/Terms';
 
@@ -45,6 +46,7 @@ export default function App() {
           <Route path="/reflect" element={<Reflect />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/appointment-summary" element={<AppointmentSummary />} />
+          <Route path="/plan" element={<Plan />} />
           <Route path="/following" element={<Following />} />
           <Route path="/following/:ownerId" element={<FollowingPerson />} />
         </Route>

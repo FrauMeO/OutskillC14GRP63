@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import CaregiverPlanCard from '../components/CaregiverPlanCard';
 import { Link, useParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import PageHeader from '../components/PageHeader';
@@ -89,6 +90,9 @@ export default function FollowingPerson() {
       <Link to="/following" className="-mt-4 mb-6 inline-flex min-h-11 items-center text-lg font-semibold underline underline-offset-4">
         Back to Following
       </Link>
+      <div className="mb-6">
+        <CaregiverPlanCard name={name} />
+      </div>
 
       {paused && (
         <p role="status" className="max-w-xl rounded-lg border border-line bg-white p-6 text-lg">

@@ -323,6 +323,16 @@ export default function Settings() {
         )}
       </section>
 
+      <section aria-labelledby="plan" className="mt-6 max-w-md rounded-lg border border-line bg-white p-6">
+        <h2 id="plan" className="font-display text-xl font-bold">
+          Your plan
+        </h2>
+        <p className="mt-2 text-sm text-spruce/80">See what you pay, if anything. Free for everyone 60 and over.</p>
+        <Link to="/plan" className="mt-3 inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+          See my plan
+        </Link>
+      </section>
+
       <section aria-labelledby="appt" className="mt-6 max-w-md rounded-lg border border-line bg-white p-6">
         <h2 id="appt" className="font-display text-xl font-bold">
           For a doctor visit

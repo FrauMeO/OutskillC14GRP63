@@ -196,3 +196,9 @@ Written, not yet applied (Miah's main session applies and tests it). Contract: `
 
 ### Verified
 - Not yet run. Test to run after applying: `supabase/tests/care_sharing_v2_test_after_0015.sql` (rolled back; expected result line in the comment at its end).
+
+## 0015_care_sharing_v2, 0016_signup_name_and_birth, 0018_billing (2026-10-12)
+All applied to PersonalHealthManager and tested in rolled-back blocks.
+- 0015: care_shares gains level (presence/summary/detail; existing shares carried over as detail), paused_at, last_confirmed_at; care_share_views (owner-readable access log, one row per share per day, written only by the viewer functions); set_care_share_options, confirm_care_share, shared_week_summary; shared_days / shared_goals / followed_people updated. Test `care_sharing_v2_test_after_0015.sql` matched its expected line.
+- 0016: profiles.birth_month / birth_year (both or neither; under 16 refused by the sign-up trigger); the sign-up name is one display name (40 characters).
+- 0018: app_settings (billing_enforced = false), customers, subscriptions, stripe_events, plan_from_birth, plan_for (server only), my_entitlement, viewer_may_view, profile_birth_needed. Verified live (rolled back): beta gives full access; with enforcement on, 60+ free, under-60 none until an active subscription, a legacy account is asked for its birth month and year, a caregiver subscription grants viewing; clients cannot write settings or subscriptions or call plan_for. NOT yet done: calling viewer_may_view inside shared_days / shared_week_summary / shared_goals (docs/billing.md), so flipping billing_enforced does not yet gate caregivers.
