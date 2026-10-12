@@ -1,0 +1,85 @@
+# Builds a DEBUG Android APK in the cloud (this Mac has no Android SDK or Java).
+# Runs by hand (Actions tab > "Mobile: Android debug APK" > Run workflow) and on tags named app-v*.
+# The APK is a test build: installable by sideloading, NOT for the Play Store (that needs a signed
+# release build, see docs/mobile-build.md). The repo is private, so only people with repo access can
+# download the artifact.
+name: Mobile Android debug APK
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'app-v*'
+
+concurrency:
+  group: mobile-android-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  debug-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read # checkout only
+    env:
+      # Not secrets: both values are public by design (they ship inside the web app). They are kept
+      # as repository variables so they are not hard coded here.
+      # TODO (Miah): Settings > Secrets and variables > Actions > Variables:
+      #   VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY (publishable/anon key ONLY, never service_role).
+      VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+      # Keep the health import button OFF in test builds unless a repository variable turns it on.
+      VITE_HEALTH_IMPORT: ${{ vars.VITE_HEALTH_IMPORT }}
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Check the build variables are set
+        run: |
+          if [ -z "$VITE_SUPABASE_URL" ] || [ -z "$VITE_SUPABASE_PUBLISHABLE_KEY" ]; then
+            echo "::error::Set the repository variables VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY first (Settings > Secrets and variables > Actions > Variables). The app cannot start without them."
+            exit 1
+          fi
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22 # Capacitor 8 CLI needs Node 22 or newer
+          cache: npm
+
+      - name: Set up Java 21
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: '21' # the health plugin compiles with Java 21
+
+      - name: Set up Gradle (with cache)
+        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+
+      - name: Install web dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build the web app
+        run: npm run build
+
+      - name: Copy the web app into the Android project
+        run: npx cap sync android
+
+      - name: Build the debug APK
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Upload the APK
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: build-your-pillars-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
