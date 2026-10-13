@@ -1,7 +1,7 @@
 // The legal owner of Build Your Pillars. Supplied by Miah on 2026-10-12. Counsel has not reviewed the wording
 // that uses it (see the LEGAL REVIEW notes in Privacy.tsx and Terms.tsx).
 export const COMPANY = {
-  legalName: 'TranslatingData, LLC',
+  legalName: 'TransformingData, LLC',
   street: '100 N Howard St, Ste R',
   city: 'Spokane',
   region: 'WA',
