@@ -24,6 +24,12 @@ export default function AuthShell({ title, intro, children }: { title: string; i
           {children}
         </div>
       </section>
+
+      {/* Small screens: the tagline and signature, compact, last on the page. */}
+      <footer className="bg-spruce px-6 py-6 text-center text-mist md:hidden">
+        <p className="text-base">{PILLAR_TAGLINE}</p>
+        <p className="mt-1 text-sm italic">{PILLAR_PS}</p>
+      </footer>
     </div>
   );
 }

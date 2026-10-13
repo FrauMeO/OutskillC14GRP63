@@ -8,7 +8,7 @@ describe('what is sent', () => {
   it('describes only logged values, grouped by pillar, with no identity or location', () => {
     const lines = describeDay(day);
     expect(lines).toEqual([
-      'Eat: drank 2 liters of water',
+      'Drink: drank 2 liters of water',
       'Sleep: slept 7.5 hours',
       'Move: 6200 steps',
       'Balance: mood happy',

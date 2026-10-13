@@ -10,7 +10,7 @@ export type RequestType = 'access' | 'delete' | 'correct' | 'restrict' | 'object
 export const REQUEST_TYPES: { value: RequestType; label: string; needsDetails: boolean; hint: string }[] = [
   { value: 'access', label: 'See or get a copy of my information', needsDetails: false, hint: 'You can also download it yourself, any time, in "Your data" above.' },
   { value: 'list_third_parties', label: 'Find out who else gets my information', needsDetails: false, hint: 'The list is on this page. We can also send it to you in an email.' },
-  { value: 'correct', label: 'Fix something that is wrong', needsDetails: true, hint: 'Tell us what is wrong and what it should say.' },
+  { value: 'correct', label: 'Fix something that is wrong', needsDetails: true, hint: 'Tell us what is wrong and what you would like it to say.' },
   { value: 'delete', label: 'Delete my information', needsDetails: false, hint: 'You can also delete your whole account yourself, below.' },
   { value: 'withdraw', label: 'Take back a choice I made', needsDetails: false, hint: 'Most choices can be taken back with a button above.' },
   { value: 'restrict', label: 'Limit how you use my information', needsDetails: true, hint: 'Tell us what you want us to stop doing.' },

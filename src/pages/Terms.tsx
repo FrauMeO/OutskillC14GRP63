@@ -80,7 +80,7 @@ export default function Terms() {
 
         <Section id="change" title="Changes to the service">
           <p>
-            We are a small team. We may change features, pause the service, or stop it. If we stop it, we will tell you in advance where
+            We are a small, founder-led team. We may change features, pause the service, or stop it. If we stop it, we will tell you in advance where
             we can, and give you time to download your data. We may also update these terms, and will tell you in the app if the change
             matters.
           </p>

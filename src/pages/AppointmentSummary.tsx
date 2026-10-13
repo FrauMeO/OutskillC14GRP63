@@ -7,6 +7,7 @@ import {
 } from '../lib/appointmentSummary';
 import { PILLARS } from '../lib/pillars';
 import './appointmentSummary.css';
+import Notice from '../components/Notice';
 
 // Built only from the signed-in person's own habit_logs and goals (Row Level Security scopes both
 // reads). Notes, feelings and locations are never selected. Nothing is stored or sent anywhere:
@@ -141,9 +142,9 @@ export default function AppointmentSummary() {
       </div>
 
       {error && (
-        <p role="alert" className="summary-no-print rounded-md border border-alert bg-white p-4 text-alert">
+        <Notice kind="error" className="summary-no-print rounded-md border border-alert bg-white p-4">
           {error}
-        </p>
+        </Notice>
       )}
 
       {loading && !error ? (

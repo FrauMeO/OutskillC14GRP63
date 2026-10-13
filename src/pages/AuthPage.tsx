@@ -10,6 +10,7 @@ import { birthYearOptions, MIN_AGE, MONTHS, validateBirth, validateDisplayName }
 import { PENDING_KEY, pendingMetadata, SIGNUP_CONSENT_ERROR, type PendingConsent } from '../lib/consent';
 import { COLLECT_USE, consentHash, CURRENT_VERSION, EMAIL_MARKETING, LINK_TEXT } from '../lib/consentTexts';
 import type { HomeCity } from '../lib/location';
+import Notice from '../components/Notice';
 
 type Mode = 'login' | 'signup';
 
@@ -117,7 +118,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
       <form onSubmit={handleSubmit} className="mt-8 space-y-5" noValidate={false}>
         {mode === 'signup' && (
           <label className="block text-sm font-medium">
-            What should we call you?
+            What would you like us to call you?
             <input
               className={inputClass}
               type="text"
@@ -279,8 +280,8 @@ export default function AuthPage({ mode }: { mode: Mode }) {
         )}
 
         {error && (
-          <div role="alert" className="rounded-md bg-alert/10 px-3 py-2 text-sm text-alert">
-            <p>{error.text}</p>
+          <Notice kind="error" as="div" className="rounded-md bg-alert/10 px-3 py-2 text-sm">
+            <span>{error.text}</span>
             {error.actions.length > 0 && (
               <p className="mt-1.5 flex flex-wrap gap-x-4 font-semibold">
                 {error.actions.includes('login') && (
@@ -300,12 +301,12 @@ export default function AuthPage({ mode }: { mode: Mode }) {
                 )}
               </p>
             )}
-          </div>
+          </Notice>
         )}
         {notice && (
-          <p role="status" className="rounded-md bg-current/10 px-3 py-2 text-sm text-current">
+          <Notice kind="success" className="rounded-md bg-current/10 px-3 py-2 text-sm">
             {notice}
-          </p>
+          </Notice>
         )}
 
         <button

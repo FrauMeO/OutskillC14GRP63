@@ -8,6 +8,7 @@ import { toISODate } from '../lib/dates';
 import { flagsOf, pillarSummary, summaryRange, type SharedDay, type SharedGoal } from '../lib/careShares';
 import { NOT_AVAILABLE_YET, cleanWeekRows, friendlyError, levelOf, type PillarWeek } from '../lib/careShareLevels';
 import { useFollowedPeople } from '../lib/useFollowedPeople';
+import Notice from '../components/Notice';
 
 export default function FollowingPerson() {
   const { ownerId = '' } = useParams();
@@ -69,7 +70,7 @@ export default function FollowingPerson() {
     return (
       <>
         <PageHeader title="Following" />
-        {failed && <p role="alert" className="mb-3 text-lg text-alert">Could not load this page: {failed}</p>}
+        {failed && <Notice kind="error" className="mb-3 text-lg">Could not load this page: {failed}</Notice>}
         <p className="max-w-xl text-lg text-moss">You are not following this person. This may have ended, or the invitation is still waiting.</p>
         <Link to="/following" className="mt-4 inline-flex min-h-11 items-center text-lg font-semibold underline underline-offset-4">
           Back to Following
@@ -101,9 +102,9 @@ export default function FollowingPerson() {
       )}
 
       {!paused && error && (
-        <p role="alert" className="mb-4 max-w-xl text-lg text-alert">
+        <Notice kind="error" className="mb-4 max-w-xl text-lg">
           {error === NOT_AVAILABLE_YET ? error : `Could not load ${name}’s days: ${error}`}
-        </p>
+        </Notice>
       )}
       {!paused && !error && !ready && <p role="status" className="text-lg text-moss">Loading…</p>}
 

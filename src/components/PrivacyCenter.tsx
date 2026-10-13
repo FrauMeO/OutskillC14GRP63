@@ -14,6 +14,7 @@ import { CONSENT_CHANGED, createRequest, fetchMyConsents, fetchMyRequests, setCo
 import { RECIPIENTS } from '../lib/dataRecipients';
 import { formatDay, REQUEST_TYPES, requestStatusText, RESPONSE_DAYS, typeLabel, validateRequest, DETAILS_MAX, type RequestRow } from '../lib/privacyRequests';
 import { CONTACT_EMAIL } from '../lib/waitlist';
+import Notice from './Notice';
 
 type Flash = { kind: 'ok' | 'error'; text: string } | null;
 
@@ -33,9 +34,9 @@ function goTo(id: string) {
 function Say({ flash }: { flash: Flash }) {
   if (!flash) return null;
   return (
-    <p role={flash.kind === 'error' ? 'alert' : 'status'} className={`mt-3 text-lg ${flash.kind === 'error' ? 'text-alert' : 'text-current'}`}>
+    <Notice kind={flash.kind} className="mt-3 text-lg">
       {flash.text}
-    </p>
+    </Notice>
   );
 }
 

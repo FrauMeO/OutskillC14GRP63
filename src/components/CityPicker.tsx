@@ -1,5 +1,6 @@
 import { useId, useState } from 'react';
 import { searchCities, type CityMatch, type HomeCity } from '../lib/location';
+import Notice from './Notice';
 
 const input =
   'block w-full rounded-md border border-line bg-white px-3 py-2.5 text-spruce placeholder:text-moss focus:border-current focus:outline-none';
@@ -65,9 +66,9 @@ export default function CityPicker({
         </button>
       </div>
       {error && (
-        <p role="alert" className="mt-2 text-sm text-alert">
+        <Notice kind="error" className="mt-2 text-sm">
           {error}
-        </p>
+        </Notice>
       )}
       {matches && matches.length > 0 && (
         <ul className="mt-2 divide-y divide-line rounded-md border border-line bg-white" aria-label="Matching cities">

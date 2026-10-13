@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { canConfirmDelete, DELETE_WORD } from '../lib/deleteAccount';
+import Notice from './Notice';
 
 // Delete my account: removes the sign-in and everything saved (logs, goals, check-ins, sharing).
 export default function DeleteAccount() {
@@ -78,9 +79,9 @@ export default function DeleteAccount() {
         </div>
       )}
       {error && (
-        <p role="alert" className="mt-3 text-sm text-alert">
+        <Notice kind="error" className="mt-3 text-sm">
           {error}
-        </p>
+        </Notice>
       )}
     </section>
   );
