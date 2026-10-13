@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import PublicLayout from '../components/PublicLayout';
+import { routeTitle } from '../lib/siteMeta';
 import { CONTACT_EMAIL } from '../lib/waitlist';
 
 // Consumer Health Data Privacy Policy (route /health-data-privacy). Plain words, 18px text from PublicLayout.
@@ -86,7 +87,7 @@ const settingsLink = (
 
 export default function HealthDataPrivacy() {
   return (
-    <PublicLayout title="Consumer Health Data Privacy Policy | Build Your Pillars">
+    <PublicLayout title={routeTitle('/health-data-privacy')}>
       <article className="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-16">
         <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">Consumer Health Data Privacy Policy</h1>
         <p className="mt-3 text-moss">Last updated {HEALTH_PRIVACY_UPDATED}</p>

@@ -1,7 +1,7 @@
 {
   "name": "Build Your Pillars",
   "short_name": "Pillars",
-  "description": "Build your pillars of health: Drink. Sleep. Move. Balance. Gentle, private self-tracking.",
+  "description": "Drink. Sleep. Move. Balance. Gentle, private self-tracking for adults 50+ and the people who care about them. Share only what you choose, with someone you trust.",
   "id": "/",
   "start_url": "/dashboard",
   "scope": "/",

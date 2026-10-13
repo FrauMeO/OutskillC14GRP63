@@ -20,6 +20,7 @@ const FollowingPerson = lazy(() => import('./pages/FollowingPerson'));
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const Why = lazy(() => import('./pages/Why'));
+const Sharing = lazy(() => import('./pages/Sharing'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const HealthDataPrivacy = lazy(() => import('./pages/HealthDataPrivacy'));
@@ -34,6 +35,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<HomeRoute />} />
       <Route path="/why" element={page(<Why />)} />
+      <Route path="/sharing" element={page(<Sharing />)} />
       <Route path="/privacy" element={page(<Privacy />)} />
       <Route path="/terms" element={page(<Terms />)} />
       <Route path="/health-data-privacy" element={page(<HealthDataPrivacy />)} />
