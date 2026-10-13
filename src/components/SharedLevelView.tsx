@@ -88,7 +88,7 @@ function MetricCard({ s }: { s: MetricSeries }) {
   );
 }
 
-function RhythmList({ weeks, weeksInRow, name }: { weeks: WeekSummary[]; weeksInRow: number; name: string }) {
+function RhythmList({ weeks, name }: { weeks: WeekSummary[]; name: string }) {
   return (
     <section aria-labelledby="rhythm" className="max-w-xl rounded-lg border border-line bg-white p-6">
       <h2 id="rhythm" className="font-display text-2xl font-bold">
@@ -109,7 +109,6 @@ function RhythmList({ weeks, weeksInRow, name }: { weeks: WeekSummary[]; weeksIn
           </li>
         ))}
       </ul>
-      {weeksInRow >= 2 && <p className="mt-3 text-lg text-moss">{weeksInRow} full weeks in a row.</p>}
     </section>
   );
 }
@@ -150,7 +149,7 @@ export default function SharedLevelView({
           <p className="mt-1 text-lg text-moss">This is all that is shared at this level: just that a day was logged.</p>
         </section>
         <div className="mt-6">
-          <RhythmList weeks={presence.weeks} weeksInRow={presence.weeksInRow} name={name} />
+          <RhythmList weeks={presence.weeks} name={name} />
         </div>
       </>
     );
@@ -184,7 +183,7 @@ export default function SharedLevelView({
   if (detail) {
     return (
       <>
-        <RhythmList weeks={detail.weeks} weeksInRow={detail.weeksInRow} name={name} />
+        <RhythmList weeks={detail.weeks} name={name} />
         <h2 className="mt-8 font-display text-2xl font-bold">The last seven days</h2>
         <div className="mt-3 grid gap-4 md:grid-cols-2">
           {detail.metrics.map((m) => (

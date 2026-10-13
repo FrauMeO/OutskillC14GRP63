@@ -19,7 +19,7 @@ const weekday = (iso: string) => {
 // Plot area inside a 320 x 176 drawing that scales to the card's width.
 const W = 320;
 const H = 176;
-const PAD = { top: 12, right: 10, bottom: 24, left: 36 };
+const PAD = { top: 12, right: 18, bottom: 24, left: 36 };
 
 // One seven-day line chart for a card, with a toggle between that card's metrics.
 // Missing days are gaps in the line, not zero. The goal is a dashed line.
@@ -64,13 +64,13 @@ export default function TrendChart({ title, color, metrics }: { title: string; c
         {scale.ticks.map((t) => (
           <g key={t}>
             <line x1={PAD.left} x2={W - PAD.right} y1={y(t)} y2={y(t)} stroke="var(--color-line)" />
-            <text x={PAD.left - 6} y={y(t)} textAnchor="end" dominantBaseline="middle" fontSize="11" fill="currentColor" opacity="0.7">
+            <text x={PAD.left - 6} y={y(t)} textAnchor="end" dominantBaseline="middle" fontSize="11" fill="currentColor">
               {tick(t)}
             </text>
           </g>
         ))}
         {m.points.map((p, i) => (
-          <text key={p.date} x={x(i)} y={H - 6} textAnchor="middle" fontSize="11" fill="currentColor" opacity="0.7">
+          <text key={p.date} x={x(i)} y={H - 6} textAnchor="middle" fontSize="11" fill="currentColor">
             {weekday(p.date)}
           </text>
         ))}
@@ -112,7 +112,7 @@ export default function TrendChart({ title, color, metrics }: { title: string; c
         ))}
         {m.goal !== null && <li>Goal: {fmt(m.goal)}</li>}
       </ul>
-      {logged.length === 0 && <p className="text-sm text-moss">No {m.label.toLowerCase()} logged in the last 7 days.</p>}
+      {logged.length === 0 && <p className="text-sm text-moss">All seven days were days off for {m.label.toLowerCase()}.</p>}
     </figure>
   );
 }

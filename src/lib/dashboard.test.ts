@@ -72,7 +72,7 @@ describe('weekly rhythm', () => {
       rhythmText({ daysThisWeek: 1, fullWeek: false, weeksInRow: 2, loggedToday: true }),
       rhythmText({ daysThisWeek: 0, fullWeek: false, weeksInRow: 0, loggedToday: false }),
     ];
-    expect(texts[0]).toEqual({ title: 'A full week', body: 'You logged 5 days in the last seven. That is 3 full weeks in a row.' });
+    expect(texts[0]).toEqual({ title: 'A full week', body: 'You logged 5 days in the last seven.' });
     expect(texts[1]).toEqual({ title: '3 days this week', body: 'One more day makes a full week, whenever it suits you. The week before was a full one.' });
     expect(texts[2].body).toBe('3 more days make a full week, whenever it suits you. The 2 weeks before were full ones.');
     expect(texts[3]).toEqual({ title: 'A fresh week', body: 'Log whenever you are ready.' });
