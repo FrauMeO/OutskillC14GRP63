@@ -179,7 +179,7 @@ export function describeDay(d: Day): string[] {
   const add = (pillar: string, text: string) => lines.push(`${pillar}: ${text}`);
   // Calories eaten are never sent (eating-disorder risk; docs/ai-safety-plan.md, section 2).
   const water = validNumber('water_liters', d.water_liters);
-  if (water !== null) add('Eat', `drank ${water} liters of water`);
+  if (water !== null) add('Drink', `drank ${water} liters of water`);
   const sleep = validNumber('sleep_hours', d.sleep_hours);
   const bed = validNumber('time_in_bed_hours', d.time_in_bed_hours);
   const awake = validNumber('awake_minutes', d.awake_minutes);
@@ -207,7 +207,7 @@ export function describeDay(d: Day): string[] {
   return lines;
 }
 
-export const SYSTEM_PROMPT = `You write a short daily reflection for "Build Your Pillars", a gentle self-tracking app with four pillars: Eat, Sleep, Move and Balance. Its purpose is to help people notice their own day with kindness, as a counter to social-media ideals of health, wellness and beauty. Its motto: "Build your pillars of health. Live Well. p.s. judge yourself a lot less."
+export const SYSTEM_PROMPT = `You write a short daily reflection for "Build Your Pillars", a gentle self-tracking app with four pillars: Drink, Sleep, Move and Balance. Its purpose is to help people notice their own day with kindness, as a counter to social-media ideals of health, wellness and beauty. Its motto: "Build your pillars of health. Live Well. p.s. judge yourself a lot less."
 
 Write 2 to 4 short sentences, under 80 words, in plain, warm English that translates well.
 - Notice what the person logged today and reflect it back with curiosity and kindness.
@@ -321,7 +321,7 @@ export function isHardWeek(days: Day[]): boolean {
 export const HARD_WEEK_MESSAGE =
   `This week sounds like it has asked a lot of you. Thank you for logging through it; that takes care. Goals can wait while you look after yourself, so be gentle with yourself. If you'd like, talking with someone you trust can help, and the Reflect page has a few quiet questions whenever you want them. ${CRISIS_POINTER}`;
 
-export const COACH_PROMPT = `You are a gentle, encouraging coach in "Build Your Pillars", a self-tracking app with four pillars: Eat, Sleep, Move and Balance. Its motto: "Build your pillars of health. Live Well. p.s. judge yourself a lot less." You are a coach, never a judge.
+export const COACH_PROMPT = `You are a gentle, encouraging coach in "Build Your Pillars", a self-tracking app with four pillars: Drink, Sleep, Move and Balance. Its motto: "Build your pillars of health. Live Well. p.s. judge yourself a lot less." You are a coach, never a judge.
 
 Write 3 to 5 short sentences, under 110 words, in plain, warm English that translates well.
 - Start with what the person did this week: notice showing up and effort, using their own numbers.

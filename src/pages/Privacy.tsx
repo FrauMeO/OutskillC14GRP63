@@ -141,7 +141,7 @@ export default function Privacy() {
 
         <Section id="health" title="Health information and your consent">
           <p>
-            What you log about your sleep, movement, eating, mood, energy, stress, feelings and check-ins is health information. Privacy
+            What you log about your water, sleep, movement, mood, energy, stress, feelings and check-ins is health information. Privacy
             laws treat it as especially sensitive. We keep it only with your clear, explicit agreement, which you give by ticking a box
             when you create your account (it is not hidden inside these pages). Sharing it with another person, and AI help, each ask for
             a separate yes of their own. You can take your agreement back at any time by deleting entries or your whole account (see

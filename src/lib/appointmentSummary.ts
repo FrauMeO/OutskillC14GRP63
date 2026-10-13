@@ -88,7 +88,7 @@ export type AppointmentSummary = {
   to: string;
   periodDays: number;
   loggedDays: number; // days with at least one value in any pillar
-  pillars: PillarSummary[]; // always Eat, Sleep, Move, Balance
+  pillars: PillarSummary[]; // always Drink, Sleep, Move, Balance
   checkIns: number; // days with at least one of mood, energy, stress
 };
 
