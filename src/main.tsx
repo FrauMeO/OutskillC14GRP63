@@ -1,5 +1,5 @@
 import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import App from './App';
@@ -11,7 +11,7 @@ import './index.css';
 // Uploads days saved while offline, when the app starts and whenever the connection returns.
 startOfflineSync();
 
-createRoot(document.getElementById('root')!).render(
+const app = (
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
@@ -20,8 +20,14 @@ createRoot(document.getElementById('root')!).render(
         <PendingUploadPill />
       </AuthProvider>
     </BrowserRouter>
-  </StrictMode>,
+  </StrictMode>
 );
+
+// The public pages arrive as real HTML (scripts/prerender.mjs), so the app hydrates on top of that text.
+// Every other route arrives as the empty shell and renders as before.
+const rootElement = document.getElementById('root')!;
+if (rootElement.hasChildNodes()) hydrateRoot(rootElement, app);
+else createRoot(rootElement).render(app);
 
 // Offline shell. Production web only (public/sw.js caches static files, never data; the Capacitor
 // apps already ship their files on the device).

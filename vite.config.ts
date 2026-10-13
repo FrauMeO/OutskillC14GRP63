@@ -25,6 +25,29 @@ function stampServiceWorker(): Plugin {
   };
 }
 
+// `vite preview` serves a folder's index.html only for a trailing-slash address, but Vercel serves it for
+// "/sharing" too. This makes the local preview behave like the host, so the prerendered public pages
+// (scripts/prerender.mjs writes dist/<route>/index.html) can be checked with plain curl, and app
+// routes get the empty shell (dist/app-shell.html) the way the vercel.json rewrite sends them.
+function servePrerenderedPages(): Plugin {
+  return {
+    name: 'serve-prerendered-pages',
+    apply: 'serve',
+    configurePreviewServer(server) {
+      const dist = join(server.config.root, server.config.build.outDir);
+      server.middlewares.use((req, _res, next) => {
+        const [path, query = ''] = (req.url ?? '').split('?');
+        if (path.length > 1 && !path.endsWith('/') && !path.includes('..') && existsSync(join(dist, path, 'index.html'))) {
+          req.url = `${path}/index.html${query ? `?${query}` : ''}`;
+        } else if (path !== '/' && !path.endsWith('/') && !/\.[A-Za-z0-9]+$/.test(path) && !existsSync(join(dist, path))) {
+          req.url = '/app-shell.html'; // an app route: the empty shell, as vercel.json rewrites it
+        }
+        next();
+      });
+    },
+  };
+}
+
 // Vendor code is split into long-lived chunks (React, the router, Supabase) that the browser and
 // the service worker keep across deploys, because their hashes change only when the library does.
 function vendorChunk(id: string): string | undefined {
@@ -36,7 +59,7 @@ function vendorChunk(id: string): string | undefined {
 }
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), stampServiceWorker()],
+  plugins: [react(), tailwindcss(), stampServiceWorker(), servePrerenderedPages()],
   resolve: {
     alias: {
       // Unused by this app; about 24 KB gzip saved on every first visit. Guarded by src/lib/supabaseStubs.test.ts.

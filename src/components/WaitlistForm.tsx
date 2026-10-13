@@ -1,10 +1,10 @@
-import { useId, useState, type FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import { supabase } from '../lib/supabase';
 import { validateWaitlist, WAITLIST_PRIVACY, WAITLIST_SUCCESS } from '../lib/waitlist';
 
 // App Store / Google Play waiting list. Works signed out. Nothing is kept in the browser.
 export default function WaitlistForm({ compact = false }: { compact?: boolean }) {
-  const id = useId();
+  const id = 'waitlist'; // fixed, not useId(): the page is prerendered, and useId differs between the build and the browser. One form per page.
   const [email, setEmail] = useState('');
   const [ios, setIos] = useState(false);
   const [android, setAndroid] = useState(false);
