@@ -4,6 +4,7 @@ import PageHeader from '../components/PageHeader';
 import BirthPrompt from '../components/BirthPrompt';
 import { isNativeApp, planView } from '../lib/billing';
 import { openBillingPortal, startCheckout, useBilling } from '../lib/billingClient';
+import Notice from '../components/Notice';
 
 // Route /plan, "Your plan". Plain words, no countdowns, no pressure.
 const bigBtn =
@@ -90,9 +91,9 @@ export default function Plan() {
           </p>
         )}
         {problem && (
-          <p role="alert" className="mt-4 text-lg text-ember">
+          <Notice kind="error" className="mt-4 text-lg">
             {problem}
-          </p>
+          </Notice>
         )}
       </section>
 

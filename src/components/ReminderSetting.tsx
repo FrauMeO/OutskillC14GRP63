@@ -7,6 +7,7 @@ import {
   formatTime,
   parseTime,
 } from '../lib/native/reminderLogic';
+import Notice from './Notice';
 
 type Message = { kind: 'ok' | 'error'; text: string };
 
@@ -187,9 +188,9 @@ export default function ReminderSetting() {
         </p>
       )}
       {status.state === 'needs-permission' && (
-        <p role="alert" className="mt-3 text-sm text-alert">
+        <Notice kind="error" className="mt-3 text-sm">
           A reminder was set, but notifications are now turned off in your phone’s Settings, so it cannot appear.
-        </p>
+        </Notice>
       )}
 
       {message?.kind === 'ok' && (
@@ -198,9 +199,9 @@ export default function ReminderSetting() {
         </p>
       )}
       {message?.kind === 'error' && (
-        <p role="alert" className="mt-3 text-sm text-alert">
+        <Notice kind="error" className="mt-3 text-sm">
           {message.text}
-        </p>
+        </Notice>
       )}
     </section>
   );

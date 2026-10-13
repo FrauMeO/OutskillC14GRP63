@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { caregiverCardView, isNativeApp } from '../lib/billing';
 import { startCheckout, useBilling } from '../lib/billingClient';
+import Notice from './Notice';
 
 // Supporter side. Mount it at the top of src/pages/FollowingPerson.tsx (and optionally on the Following
 // list row) for a person whose share is active. `name` is the owner's display name.
@@ -39,9 +40,9 @@ export default function CaregiverPlanCard({ name }: { name: string | null | unde
         </button>
       )}
       {error && (
-        <p role="alert" className="mt-3 text-lg text-ember">
+        <Notice kind="error" className="mt-3 text-lg">
           {error}
-        </p>
+        </Notice>
       )}
     </section>
   );

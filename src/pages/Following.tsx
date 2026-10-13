@@ -5,6 +5,7 @@ import PageHeader from '../components/PageHeader';
 import { flagsOf, pillarSummary } from '../lib/careShares';
 import { friendlyError, levelOf, viewerLevelText } from '../lib/careShareLevels';
 import { notifyFollowedChanged, useFollowedPeople } from '../lib/useFollowedPeople';
+import Notice from '../components/Notice';
 
 type Flash = { kind: 'ok' | 'error'; text: string } | null;
 
@@ -41,14 +42,14 @@ export default function Following() {
       <PageHeader title="Following">People who chose to share their pillars with you, as a read-only view.</PageHeader>
 
       {flash && (
-        <p role={flash.kind === 'error' ? 'alert' : 'status'} className={`mb-4 max-w-xl text-lg ${flash.kind === 'error' ? 'text-alert' : 'text-current'}`}>
+        <Notice kind={flash.kind} className="mb-4 max-w-xl text-lg">
           {flash.text}
-        </p>
+        </Notice>
       )}
       {failed && (
-        <p role="alert" className="mb-4 max-w-xl text-lg text-alert">
+        <Notice kind="error" className="mb-4 max-w-xl text-lg">
           Could not load this page: {failed}
-        </p>
+        </Notice>
       )}
       {loading && <p role="status" className="text-lg text-moss">Loading…</p>}
 

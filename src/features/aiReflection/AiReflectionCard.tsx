@@ -14,6 +14,7 @@ import { FALLBACK_MESSAGE, checkReply } from '../../lib/replySafety';
 import { useAiConsent } from './useAiConsent';
 import { useDataSaver } from '../../lib/useDataSaver';
 import { REFLECTION_DATA_NOTE } from '../../lib/dataSaver';
+import Notice from '../../components/Notice';
 
 export const AI_REFLECTION_ENABLED = import.meta.env.VITE_AI_REFLECTION === 'on';
 
@@ -212,9 +213,9 @@ export default function AiReflectionCard({ date, today, auto: autoSetting }: Pro
         </>
       )}
       {error && (
-        <p role="alert" className="mt-2 text-sm text-alert">
+        <Notice kind="error" className="mt-2 text-sm">
           {error}
-        </p>
+        </Notice>
       )}
     </section>
   );

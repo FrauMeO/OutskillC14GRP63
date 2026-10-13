@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import AuthShell from '../components/AuthShell';
 import FullPageStatus from '../components/FullPageStatus';
+import Notice from '../components/Notice';
 
 const inputClass =
   'mt-1.5 block w-full rounded-md border border-line bg-white px-3 py-2.5 text-spruce placeholder:text-moss focus:border-current focus:outline-none';
@@ -77,9 +78,9 @@ export default function ResetPassword() {
           />
         </label>
         {error && (
-          <p role="alert" className="rounded-md bg-alert/10 px-3 py-2 text-sm text-alert">
+          <Notice kind="error" className="rounded-md bg-alert/10 px-3 py-2 text-sm">
             {error}
-          </p>
+          </Notice>
         )}
         <button
           type="submit"

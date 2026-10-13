@@ -17,6 +17,7 @@ import AiConsentSetting from '../components/AiConsentSetting';
 import ReminderSetting from '../components/ReminderSetting';
 import HealthImport from '../components/HealthImport';
 import { AI_REFLECTION_ENABLED } from '../features/aiReflection/AiReflectionCard';
+import Notice from '../components/Notice';
 
 export default function Settings() {
   const { user, signOut } = useAuth();
@@ -211,12 +212,9 @@ export default function Settings() {
           <CityPicker label={homeCity ? 'Change home city' : 'Home city'} onPick={saveHome} />
         </div>
         {homeStatus && (
-          <p
-            role={homeStatus.kind === 'error' ? 'alert' : 'status'}
-            className={`mt-3 text-sm ${homeStatus.kind === 'error' ? 'text-alert' : 'text-current'}`}
-          >
+          <Notice kind={homeStatus.kind} className="mt-3 text-sm">
             {homeStatus.text}
-          </p>
+          </Notice>
         )}
       </section>
 
@@ -242,9 +240,9 @@ export default function Settings() {
               : 'Off: the reflection is written only when you ask for it on the Dashboard.'}
           </p>
           {autoStatus && (
-            <p role={autoStatus.kind === 'error' ? 'alert' : 'status'} className={`mt-3 text-sm ${autoStatus.kind === 'error' ? 'text-alert' : 'text-current'}`}>
+            <Notice kind={autoStatus.kind} className="mt-3 text-sm">
               {autoStatus.text}
-            </p>
+            </Notice>
           )}
         </section>
       )}
@@ -285,9 +283,9 @@ export default function Settings() {
           </button>
         )}
         {reflectStatus && (
-          <p role={reflectStatus.kind === 'error' ? 'alert' : 'status'} className={`mt-3 text-sm ${reflectStatus.kind === 'error' ? 'text-alert' : 'text-current'}`}>
+          <Notice kind={reflectStatus.kind} className="mt-3 text-sm">
             {reflectStatus.text}
-          </p>
+          </Notice>
         )}
       </section>
 
@@ -318,9 +316,9 @@ export default function Settings() {
           </button>
         </div>
         {downloadStatus && (
-          <p role={downloadStatus.kind === 'error' ? 'alert' : 'status'} className={`mt-3 text-sm ${downloadStatus.kind === 'error' ? 'text-alert' : 'text-current'}`}>
+          <Notice kind={downloadStatus.kind} className="mt-3 text-sm">
             {downloadStatus.text}
-          </p>
+          </Notice>
         )}
       </section>
 

@@ -30,6 +30,7 @@ import {
   weeklyRhythm,
   type Rhythm,
 } from '../lib/dashboard';
+import Notice from '../components/Notice';
 
 type Row = Record<string, unknown> & { log_date: string };
 
@@ -273,12 +274,12 @@ export default function Dashboard() {
     return (
       <>
         {header}
-        <div role="alert" className="max-w-2xl rounded-md bg-alert/10 px-4 py-3 text-alert">
+        <Notice kind="error" as="div" className="max-w-2xl rounded-md bg-alert/10 px-4 py-3">
           Could not load your dashboard: {error}{' '}
           <button type="button" onClick={load} className="ml-1 min-h-11 font-semibold underline underline-offset-4">
             Try again
           </button>
-        </div>
+        </Notice>
       </>
     );
   }
