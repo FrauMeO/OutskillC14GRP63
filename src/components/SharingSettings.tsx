@@ -38,6 +38,7 @@ import {
   type ShareViewRow,
 } from '../lib/careShareLevels';
 import { CATEGORY_FIELDS, addDays } from '../lib/dashboard';
+import Notice from './Notice';
 
 type Flash = { kind: 'ok' | 'error'; text: string } | null;
 type OwnRow = Record<string, unknown> & { log_date: string };
@@ -102,9 +103,9 @@ function LevelChoice({ value, onChange, idPrefix }: { value: ShareLevel; onChang
 function Message({ flash }: { flash: Flash }) {
   if (!flash) return null;
   return (
-    <p role={flash.kind === 'error' ? 'alert' : 'status'} className={`mt-3 text-base ${flash.kind === 'error' ? 'text-alert' : 'text-current'}`}>
+    <Notice kind={flash.kind} className="mt-3 text-base">
       {flash.text}
-    </p>
+    </Notice>
   );
 }
 
@@ -166,7 +167,7 @@ function Preview({ who, flags, level, paused, own, idPrefix }: { who: string; fl
           <p className="text-base text-moss">
             This is what {who} would see, worked out here from your own entries. Nothing is sent, and your notes, feelings and places are never part of it.
           </p>
-          {own.error && <p role="alert" className="mt-2 text-base text-alert">{own.error}</p>}
+          {own.error && <Notice kind="error" className="mt-2 text-base">{own.error}</Notice>}
           {!own.error && !own.rows && <p role="status" className="mt-2 text-base text-moss">Loading…</p>}
           {own.rows && !hasAnyPillar(flags) && <p className="mt-2 text-base">Tick at least one pillar to see a preview.</p>}
           {own.rows && hasAnyPillar(flags) && paused && <p className="mt-2 text-base">Sharing is paused, so they would see nothing right now.</p>}
@@ -447,9 +448,9 @@ export default function SharingSettings() {
 
       <h3 className="mt-8 font-display text-lg font-bold">People you share with</h3>
       {loadError && (
-        <p role="alert" className="mt-2 text-base text-alert">
+        <Notice kind="error" className="mt-2 text-base">
           Could not load your shares: {loadError}
-        </p>
+        </Notice>
       )}
       {!loadError && shares.length === 0 && <p className="mt-2 text-base text-moss">You are not sharing with anyone.</p>}
       <ul className="mt-2 space-y-4">

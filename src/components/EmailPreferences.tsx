@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { CONSENT_CHANGED, setConsent } from '../lib/consentApi';
+import Notice from './Notice';
 
 // Email choices (GDPR opt-in): news about Build Your Pillars is off unless the person turns it on.
 export default function EmailPreferences() {
@@ -62,9 +63,9 @@ export default function EmailPreferences() {
         Email me occasional news about Build Your Pillars
       </label>
       {message && (
-        <p role={message.kind === 'error' ? 'alert' : 'status'} className={`mt-2 text-sm ${message.kind === 'error' ? 'text-alert' : 'text-current'}`}>
+        <Notice kind={message.kind} className="mt-2 text-sm">
           {message.text}
-        </p>
+        </Notice>
       )}
     </section>
   );

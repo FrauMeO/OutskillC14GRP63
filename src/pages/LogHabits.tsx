@@ -25,6 +25,7 @@ import { queueHabitLog } from '../lib/offlineSync';
 import MonthCalendar from '../components/MonthCalendar';
 import { setUnsaved } from '../lib/unsaved';
 import { celebrationText, dayNumbers, encouragementLine, isCelebrationEntry, isEncouragementEntry } from '../lib/milestones';
+import Notice from '../components/Notice';
 
 type Flash = { kind: 'ok' | 'error'; text: string } | null;
 
@@ -372,14 +373,9 @@ export default function LogHabits() {
       )}
 
       {flash && (
-        <p
-          role={flash.kind === 'error' ? 'alert' : 'status'}
-          className={`mb-6 max-w-2xl rounded-md px-4 py-3 text-sm ${
-            flash.kind === 'error' ? 'bg-alert/10 text-alert' : 'bg-current/10 text-current'
-          }`}
-        >
+        <Notice kind={flash.kind} className="mb-6 max-w-2xl rounded-md border border-current/40 px-4 py-3 text-sm">
           {flash.text}
-        </p>
+        </Notice>
       )}
 
       {pendingDate && (
@@ -535,11 +531,13 @@ export default function LogHabits() {
         </section>
 
         {errors.length > 0 && (
-          <ul role="alert" className="space-y-1 rounded-md bg-alert/10 px-4 py-3 text-sm text-alert">
-            {errors.map((err) => (
-              <li key={err}>{err}</li>
-            ))}
-          </ul>
+          <Notice kind="error" as="div" className="rounded-md bg-alert/10 px-4 py-3 text-sm">
+            <ul className="mt-1 space-y-1">
+              {errors.map((err) => (
+                <li key={err}>{err}</li>
+              ))}
+            </ul>
+          </Notice>
         )}
 
         <div className="flex flex-wrap items-center gap-3">

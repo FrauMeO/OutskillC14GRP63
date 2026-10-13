@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabase';
 import type { Goal } from '../lib/database.types';
 import { GOAL_TYPES, formatTarget, goalConfig, validateTarget, type GoalType } from '../lib/goals';
 import PageHeader from '../components/PageHeader';
+import Notice from '../components/Notice';
 
 type Pending = { existing: Goal; newValue: number };
 type Flash = { kind: 'ok' | 'error'; text: string } | null;
@@ -143,14 +144,9 @@ export default function Goals() {
       </PageHeader>
 
       {flash && (
-        <p
-          role={flash.kind === 'error' ? 'alert' : 'status'}
-          className={`mb-6 rounded-md px-4 py-3 text-sm ${
-            flash.kind === 'error' ? 'bg-alert/10 text-alert' : 'bg-current/10 text-current'
-          }`}
-        >
+        <Notice kind={flash.kind} className="mb-6 rounded-md border border-current/40 px-4 py-3 text-sm">
           {flash.text}
-        </p>
+        </Notice>
       )}
 
       {/* ---------- Create ---------- */}
@@ -202,9 +198,9 @@ export default function Goals() {
         </form>
 
         {formError && (
-          <p role="alert" className="mt-3 text-sm text-alert">
+          <Notice kind="error" className="mt-3 text-sm">
             {formError}
-          </p>
+          </Notice>
         )}
 
         {pending && (
@@ -269,9 +265,9 @@ export default function Goals() {
                         />
                       </label>
                       {editError && (
-                        <p role="alert" className="mt-2 text-sm text-alert">
+                        <Notice kind="error" className="mt-2 text-sm">
                           {editError}
-                        </p>
+                        </Notice>
                       )}
                       <div className="mt-3 flex gap-2">
                         <button type="button" onClick={() => saveEdit(goal)} disabled={busy} className={primaryBtn}>

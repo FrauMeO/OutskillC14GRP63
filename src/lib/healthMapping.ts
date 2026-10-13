@@ -23,7 +23,7 @@ export type Mapping = {
 };
 
 export const MAPPINGS: Mapping[] = [
-  // ---------- Eat: food and water ----------
+  // ---------- Drink: water (and food calories) ----------
   {
     pillar: 'nutrition', column: 'water_liters', label: 'Water', unit: 'L',
     apple: { type: 'HKQuantityTypeIdentifierDietaryWater', daily: 'sum of the day, mL or L converted to liters' },

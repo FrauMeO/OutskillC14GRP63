@@ -1,6 +1,7 @@
 import { useId, useState, type FormEvent } from 'react';
 import { supabase } from '../lib/supabase';
 import { validateWaitlist, WAITLIST_PRIVACY, WAITLIST_SUCCESS } from '../lib/waitlist';
+import Notice from './Notice';
 
 // App Store / Google Play waiting list. Works signed out. Nothing is kept in the browser.
 export default function WaitlistForm({ compact = false }: { compact?: boolean }) {
@@ -71,9 +72,9 @@ export default function WaitlistForm({ compact = false }: { compact?: boolean })
       </label>
 
       {error && (
-        <p role="alert" className="mt-3 rounded-md bg-alert/10 px-3 py-2 text-alert">
+        <Notice kind="error" className="mt-3 rounded-md bg-alert/10 px-3 py-2">
           {error}
-        </p>
+        </Notice>
       )}
 
       <button

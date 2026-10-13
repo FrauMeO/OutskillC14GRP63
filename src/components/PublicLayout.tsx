@@ -1,6 +1,7 @@
 import { useEffect, type ReactNode } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { PILLAR_PS } from '../lib/pillars';
 import { copyrightLine } from '../lib/company';
 
 const linkClass =
@@ -84,6 +85,8 @@ export default function PublicLayout({ title, children }: { title: string; child
             </Link>
           </p>
           <p className="mt-4 text-base text-moss">{copyrightLine()}</p>
+          {/* The fixed signature: lowercase, always last, never a heading. */}
+          <p className="mt-2 text-base italic text-moss">{PILLAR_PS}</p>
         </div>
       </footer>
     </div>

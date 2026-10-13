@@ -19,6 +19,7 @@ import {
   type Answer,
   type Resource,
 } from '../lib/reflection';
+import Notice from '../components/Notice';
 
 type Step = 'intro' | 'short' | 'short-done' | 'full' | 'done';
 
@@ -155,9 +156,9 @@ export default function Reflect() {
   );
   const footer = <p className="mt-8 border-t border-line pt-4 text-sm text-moss">{FOOTER}</p>;
   const errorNote = error && (
-    <p role="alert" className="mb-4 rounded-md bg-alert/10 px-4 py-3 text-sm text-alert">
+    <Notice kind="error" className="mb-4 rounded-md bg-alert/10 px-4 py-3 text-sm">
       {error}
-    </p>
+    </Notice>
   );
 
   if (step === 'intro') {
@@ -165,7 +166,7 @@ export default function Reflect() {
       <div className="max-w-2xl">
         {header}
         <p className="text-moss">
-          There are no right or wrong answers. Answer the way things have actually been, not the way you think they should be.
+          There are no right or wrong answers. Answer with how things have actually been.
         </p>
         <div className="mt-6 flex flex-wrap gap-2">
           <button type="button" className={primaryBtn} onClick={() => setStep('short')}>

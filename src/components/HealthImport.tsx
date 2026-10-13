@@ -8,6 +8,7 @@ import {
 } from '../lib/native/healthImport';
 import { platform } from '../lib/native/platform';
 import type { ImportPlan, UpsertRow } from '../lib/native/healthImportLogic';
+import Notice from './Notice';
 
 type Stage =
   | { kind: 'idle' }
@@ -174,9 +175,9 @@ export default function HealthImport() {
       )}
 
       {stage.kind === 'problem' && (
-        <p role="alert" className="mt-4 text-sm text-alert">
+        <Notice kind="error" className="mt-4 text-sm">
           {stage.text}
-        </p>
+        </Notice>
       )}
     </section>
   );

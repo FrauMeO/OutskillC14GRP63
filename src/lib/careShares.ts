@@ -89,7 +89,7 @@ const FLAG_ORDER: { flag: keyof PillarFlags; name: string }[] = [
   { flag: 'balance', name: PILLARS.wellbeing.name },
 ];
 
-/** Shared pillar names in display order: Eat, Sleep, Move, Balance. */
+/** Shared pillar names in display order: Drink, Sleep, Move, Balance. */
 export function sharedPillarNames(f: PillarFlags): string[] {
   return FLAG_ORDER.filter((p) => f[p.flag]).map((p) => p.name);
 }
@@ -98,7 +98,7 @@ export function hasAnyPillar(f: PillarFlags): boolean {
   return FLAG_ORDER.some((p) => f[p.flag]);
 }
 
-/** 'Eat, Sleep and Move', 'Eat and Balance', 'Sleep', or 'Nothing yet' when none. */
+/** 'Drink, Sleep and Move', 'Drink and Balance', 'Sleep', or 'Nothing yet' when none. */
 export function pillarSummary(f: PillarFlags): string {
   const names = sharedPillarNames(f);
   if (names.length === 0) return 'Nothing yet';

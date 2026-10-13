@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import { MONTHS, birthYearOptions, validateBirth } from '../lib/signup';
+import Notice from './Notice';
 
 // For accounts made before sign-up asked for birth month and year. Month and year ONLY, never a day.
 // Mount it where profile_birth_needed() is true (see docs/billing.md, "Mount points").
@@ -79,9 +80,9 @@ export default function BirthPrompt({ onSaved }: { onSaved?: () => void }) {
         </label>
       </div>
       {message && (
-        <p role="alert" className="mt-3 text-lg text-ember">
+        <Notice kind="error" className="mt-3 text-lg">
           {message}
-        </p>
+        </Notice>
       )}
       <button
         type="submit"

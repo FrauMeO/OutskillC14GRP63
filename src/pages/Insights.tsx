@@ -15,6 +15,7 @@ import {
 import { invitations, lastFourWeeks, weekVsUsual, type Invitation, type Overview, type WeekLine } from '../lib/insights/overview';
 import { PILLARS } from '../lib/pillars';
 import { toISODate } from '../lib/dates';
+import Notice from '../components/Notice';
 
 const GROUP_ORDER: FactorGroup[] = [...new Set(FACTORS.map((f) => f.group))];
 
@@ -200,12 +201,12 @@ export default function Insights() {
       </PageHeader>
 
       {error && (
-        <div role="alert" className="mb-6 max-w-2xl rounded-md bg-alert/10 px-4 py-3 text-sm text-alert">
+        <Notice kind="error" as="div" className="mb-6 max-w-2xl rounded-md bg-alert/10 px-4 py-3 text-sm">
           {error}{' '}
           <button type="button" onClick={load} className="ml-2 font-semibold underline underline-offset-4">
             Try again
           </button>
-        </div>
+        </Notice>
       )}
 
       {!result && !error && (
