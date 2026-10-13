@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import PublicLayout from '../components/PublicLayout';
+import { routeTitle } from '../lib/siteMeta';
 import { CONTACT_EMAIL } from '../lib/waitlist';
 import { COMPANY, postalAddress } from '../lib/company';
 
@@ -45,7 +46,7 @@ const mail = (
 
 export default function Privacy() {
   return (
-    <PublicLayout title="Privacy Policy | Build Your Pillars">
+    <PublicLayout title={routeTitle('/privacy')}>
       <article className="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-16">
         <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">Privacy Policy</h1>
         <p className="mt-3 text-moss">Last updated {PRIVACY_UPDATED}</p>

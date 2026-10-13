@@ -47,7 +47,8 @@ export default function InstallButton() {
     );
   }
 
-  const hint = installHint(detectInstallPlatform(navigator.userAgent, navigator.maxTouchPoints));
+  // Only read when the hint is opened, so this component also renders where there is no `navigator` (the build-time prerender).
+  const hint = showHint ? installHint(detectInstallPlatform(navigator.userAgent, navigator.maxTouchPoints)) : '';
 
   return (
     <div>

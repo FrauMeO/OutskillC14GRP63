@@ -1,8 +1,9 @@
 import { useEffect, type ReactNode } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { PILLAR_PS } from '../lib/pillars';
-import { copyrightLine } from '../lib/company';
+import { copyrightLine, postalAddress } from '../lib/company';
+import { foundersLine } from '../lib/about';
+import { CANONICAL_DESCRIPTION, SIGNATURE } from '../lib/brandCopy';
 
 const linkClass =
   'inline-flex min-h-11 items-center rounded-md px-3 font-semibold text-spruce underline-offset-4 hover:underline';
@@ -13,6 +14,8 @@ export default function PublicLayout({ title, children }: { title: string; child
 
   useEffect(() => {
     document.title = title;
+    // Keep the description tag in step when a person moves between public pages without a reload.
+    document.querySelector('meta[name="description"]')?.setAttribute('content', CANONICAL_DESCRIPTION);
   }, [title]);
 
   return (
@@ -30,6 +33,9 @@ export default function PublicLayout({ title, children }: { title: string; child
             Build Your Pillars
           </Link>
           <nav aria-label="Main" className="flex flex-wrap items-center">
+            <NavLink to="/sharing" className={linkClass}>
+              How sharing works
+            </NavLink>
             <NavLink to="/why" className={linkClass}>
               Why we built it
             </NavLink>
@@ -65,6 +71,9 @@ export default function PublicLayout({ title, children }: { title: string; child
             Build Your Pillars is for reflection. It is not medical advice and it does not diagnose anything.
           </p>
           <p className="mt-3 flex flex-wrap gap-x-2 text-base">
+            <Link to="/sharing" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+              How sharing works
+            </Link>
             <Link to="/why" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
               Why we built it
             </Link>
@@ -84,9 +93,11 @@ export default function PublicLayout({ title, children }: { title: string; child
               Terms
             </Link>
           </p>
-          <p className="mt-4 text-base text-moss">{copyrightLine()}</p>
-          {/* The fixed signature: lowercase, always last, never a heading. */}
-          <p className="mt-2 text-base italic text-moss">{PILLAR_PS}</p>
+          <p className="mt-4 text-base text-moss">Made by {foundersLine()}.</p>
+          <p className="text-base text-moss">{postalAddress()}</p>
+          <p className="text-base text-moss">{copyrightLine()}</p>
+          {/* The fixed signature: always last, never a heading. */}
+          <p className="mt-4 text-base italic text-moss">{SIGNATURE}</p>
         </div>
       </footer>
     </div>

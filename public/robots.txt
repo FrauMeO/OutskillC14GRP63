@@ -1,0 +1,42 @@
+# Build Your Pillars: search engines and answer engines are welcome on the public pages.
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /habits
+Disallow: /goals
+Disallow: /insights
+Disallow: /reflect
+Disallow: /settings
+Disallow: /following
+Disallow: /plan
+Disallow: /appointment-summary
+Disallow: /reset-password
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+Sitemap: https://buildyourpillars.com/sitemap.xml

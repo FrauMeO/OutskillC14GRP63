@@ -1,7 +1,10 @@
-export const FOUNDERS = ['Miah Shull Olmsted', 'Bob Olmsted'] as const;
+import { OFFER_LINE } from './brandCopy';
+
+// Credit line: "Bob Olmsted and Miah Shull Olmsted."
+export const FOUNDERS = ['Bob Olmsted', 'Miah Shull Olmsted'] as const;
 
 export const ABOUT_STORY =
-  'Build Your Pillars was started by a husband and wife who wanted a simple way to share their health journey, without confusion or pressure. It is not tied to any insurer or medical provider, and it has no ads. It is free for everyone 60 and over.';
+  'Build Your Pillars was started by a husband and wife who wanted a simple way to share their health journey, without confusion or pressure. It is not tied to any insurer or medical provider, and it has no ads. ' + OFFER_LINE;
 
 export function foundersLine(names: readonly string[] = FOUNDERS): string {
   if (names.length <= 1) return names[0] ?? '';

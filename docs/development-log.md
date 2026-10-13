@@ -359,3 +359,19 @@ decision below should be read in that light.
 ### 18. Demo year extended to today (2026-10-12)
 - Miah approved extending the Demo account. The year had ended on 2026-09-26, so the Dashboard showed "Not logged" for the current week. Added 16 days (2026-09-27 to 2026-10-12), now 381 days in all, all in Philadelphia (where the year ends), with real Open-Meteo weather for each day fetched by the app's own `fetchConditionRange`. Habit values are copies of the first 16 days of the year (the same rotation idea as the original build), notes left empty. Additive only; nothing was deleted or changed. The 10-12 weather row is a forecast (`is_final` false) and refreshes by the app's normal rule.
 - Not reproducible from `scripts/build-travel-demo.ts` (that builds a 365-day year ending 2026-09-26); if the year is rebuilt, set its `LAST_DAY`.
+
+### Public pages for people and machines, and the "asks first" copy (2026-10-13, branch feat/brand-asks-first)
+- **Prerender.** `npm run build` now ends with `node scripts/prerender.mjs`. It renders `/`, `/sharing`, `/why`,
+  `/privacy`, `/terms` and `/health-data-privacy` to real HTML in `dist/` with `react-dom/server` (no new dependency),
+  with each page's title, description, canonical, Open Graph tags and JSON-LD. The app hydrates on top of that text.
+  The Supabase client is swapped for a stub that throws if called, so a public page can never need a session or the network.
+  The empty shell is kept as `dist/app-shell.html`, and `vercel.json` sends every other route there.
+- **Static files.** `public/llms.txt`, `public/sitemap.xml` (public routes only) and `public/robots.txt` are real files, so they
+  are no longer swallowed by the SPA fallback. `vite preview` now behaves like Vercel for `/sharing` and app routes (see `vite.config.ts`).
+- **Copy.** Lead claim, hero line, offer wording, the credit line and the canonical description live in `src/lib/brandCopy.ts`.
+  The six `/sharing` questions live in `src/lib/siteMeta.ts` and feed both the page and the FAQPage markup. No dollar figures
+  anywhere public (the Terms price section now uses the offer wording). `src/lib/publicCopy.test.ts` scans the pages, `index.html`,
+  `llms.txt` and the manifest for the banned and safety words.
+- **Not done here.** The welcome-back lines exist as `src/lib/welcomeBack.ts` with tests but nothing in the app calls them yet.
+  Billing code still holds the old prices (`src/lib/billing.ts`) because it is not public copy; Miah to decide.
+

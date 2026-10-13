@@ -64,7 +64,7 @@ Build Your Pillars (formerly Personal Health Manager) is a web app for gentle, r
 3. Copy `.env.example` to `.env.local` and fill in `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` from Supabase > PersonalHealthManager > Project Settings > API.
 4. `npm run dev`, then open http://localhost:5173
 5. Data pipeline test: `npm run test:import` (expect `PASS: 59 days match exactly` and `Positive control ... CAUGHT`).
-6. Type-check and production build: `npm run build`.
+6. Type-check and production build: `npm run build` (also prerenders the public pages to static HTML, see `scripts/prerender.mjs`).
 
 Supabase Authentication settings that the chat could not change through the connector: add `http://localhost:5173` (and the Vercel URL once deployed) under Authentication > URL Configuration, and decide whether email confirmation stays on.
 

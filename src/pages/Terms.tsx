@@ -1,7 +1,9 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import PublicLayout from '../components/PublicLayout';
+import { routeTitle } from '../lib/siteMeta';
 import { CONTACT_EMAIL } from '../lib/waitlist';
+import { OFFER_LINE } from '../lib/brandCopy';
 
 // Short plain-English terms of use (route /terms).
 // LEGAL REVIEW needed before launch: the whole page, especially "Limits on our responsibility",
@@ -22,7 +24,7 @@ function Section({ id, title, children }: { id: string; title: string; children:
 
 export default function Terms() {
   return (
-    <PublicLayout title="Terms of Use | Build Your Pillars">
+    <PublicLayout title={routeTitle('/terms')}>
       <article className="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-16">
         <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">Terms of Use</h1>
         <p className="mt-3 text-moss">Last updated {TERMS_UPDATED}</p>
@@ -54,9 +56,8 @@ export default function Terms() {
 
         <Section id="price" title="What it costs">
           <p>
-            Build Your Pillars is free for everyone aged 60 and over. For everyone else it is $2.99 a month. A caregiver can follow an older
-            person for $34.99 a year, and only when that older person has said yes to sharing. While we are in beta, everything is free. We will
-            tell you before any charge begins, and you can cancel any time. {/* LEGAL REVIEW: refunds, cancellation, taxes, and how age is confirmed (self-declared month and year of birth). */}
+            {OFFER_LINE} We will tell you before any charge begins, and you can cancel any time.
+            {/* LEGAL REVIEW: refunds, cancellation, taxes, and how age is confirmed (self-declared month and year of birth). */}
           </p>
         </Section>
 
@@ -87,7 +88,7 @@ export default function Terms() {
 
         <Section id="liability" title="Limits on our responsibility">
           <p>
-            We try hard to keep the app working and your data safe, but we offer it &ldquo;as is&rdquo;, without a promise that it will
+            We try hard to keep the app working and your data secure, but we offer it &ldquo;as is&rdquo;, without a promise that it will
             always be available or free of mistakes. To the extent the law allows, we are not responsible for losses that come from using
             the app, or from relying on it instead of professional advice. Nothing here limits any right you have by law that cannot be
             limited. {/* LEGAL REVIEW: this paragraph needs a lawyer for each target country. */}
