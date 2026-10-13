@@ -29,7 +29,7 @@ Layout, top to bottom (single column, max width 56rem, generous spacing):
 13. Section "Your information stays yours": three short points: "You choose what to enter." "You can download or delete everything." "Sharing with someone you trust is your choice, and you can stop at any time." Link "Read how we handle your information" to `/privacy`.
 14. Section "What it costs": three plain cards. "Free for people 60 and older." "$2.99 a month for everyone else." "Caregiver plan, $34.99 a year, only with the older person's clear permission." Cards are text only, no buy buttons.
 15. Section "Get the app" (heading exactly "Get the app"): two placeholder badge boxes side by side, labelled "App Store (coming soon)" and "Google Play (coming soon)", each rendered as a bordered, non-clickable box 44px or taller with a visible word label, plus a text link "Use it on the web: buildyourpillars.com" (opens in a new tab; the link text states it opens in a new tab). Add a small note: "Badges are placeholders in this demo."
-16. Section "Who made it": "Built by Robert "Bob" Olmsted and Miah Shull Olmsted, a husband and wife who wanted a gentle way to share and understand a health journey together." Two photo placeholders labelled "Photo of Bob (placeholder)" and "Photo of Miah (placeholder)".
+16. Section "Who made it": "Built by Bob Olmsted and Miah Shull Olmsted, a husband and wife who wanted a gentle way to share and understand a health journey together." Two photo placeholders labelled "Photo of Bob (placeholder)" and "Photo of Miah (placeholder)".
 17. Global footer (requirement 4).
 
 States: the text-size control changes all text; at 200% zoom the hero stacks and badges wrap to two rows.

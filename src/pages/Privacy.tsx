@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import PublicLayout from '../components/PublicLayout';
 import { CONTACT_EMAIL } from '../lib/waitlist';
+import { COMPANY, postalAddress } from '../lib/company';
 
 // Public Privacy Policy (route /privacy). Plain words, 18px text from PublicLayout.
 // Every statement here was checked against the code; the evidence is in docs/gdpr-compliance.md.
@@ -93,11 +94,11 @@ export default function Privacy() {
 
         <Section id="who" title="Who we are">
           <p>
-            Build Your Pillars is run by Miah Shull Olmsted and Robert Olmsted, a husband and wife. We decide why and how your
+            Build Your Pillars is owned and run by {COMPANY.legalName}, founded by Miah Shull Olmsted and Bob Olmsted. We decide why and how your
             information is used, which makes us the &ldquo;controller&rdquo; of your data under privacy laws such as the EU&rsquo;s GDPR.
           </p>
           <p>
-            You can reach us at {mail}. {/* LEGAL REVIEW: add the legal entity name and a postal address here. */}
+            You can reach us at {mail}, or by post at {postalAddress()}. {/* LEGAL REVIEW: entity name and address supplied by Miah 2026-10-12; counsel has not reviewed them. */}
           </p>
         </Section>
 
