@@ -30,3 +30,5 @@ GoogleService-Info.plist
 *.aab
 *.ipa
 *.xcarchive
+.test-accounts/
+.env*.local
