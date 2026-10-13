@@ -107,12 +107,12 @@ export default function TrendChart({ title, color, metrics }: { title: string; c
       <ul className="sr-only">
         {m.points.map((p) => (
           <li key={p.date}>
-            {weekday(p.date)}: {p.value === null ? 'not logged' : fmt(p.value)}
+            {weekday(p.date)}: {p.value === null ? 'Day off' : fmt(p.value)}
           </li>
         ))}
         {m.goal !== null && <li>Goal: {fmt(m.goal)}</li>}
       </ul>
-      {logged.length === 0 && <p className="text-sm text-spruce/70">No {m.label.toLowerCase()} logged in the last 7 days.</p>}
+      {logged.length === 0 && <p className="text-sm text-moss">No {m.label.toLowerCase()} logged in the last 7 days.</p>}
     </figure>
   );
 }

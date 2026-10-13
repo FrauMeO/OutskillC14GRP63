@@ -21,25 +21,25 @@ function MeasureBlock({ m }: { m: MeasureSummary }) {
       <h3 className="text-lg font-semibold">{m.label}</h3>
       <dl className="summary-small mt-2 grid grid-cols-2 gap-x-4 gap-y-2 text-lg sm:grid-cols-4">
         <div>
-          <dt className="text-base text-spruce/75">Days logged</dt>
+          <dt className="text-base text-moss">Days logged</dt>
           <dd>{m.days}</dd>
         </div>
         <div>
-          <dt className="text-base text-spruce/75">Average</dt>
+          <dt className="text-base text-moss">Average</dt>
           <dd>{formatMeasure(m.average!, m)}</dd>
         </div>
         <div>
-          <dt className="text-base text-spruce/75">Lowest</dt>
+          <dt className="text-base text-moss">Lowest</dt>
           <dd>
             {formatMeasure(m.low!.value, m)}
-            <span className="block text-base text-spruce/75">{formatDate(m.low!.date)}</span>
+            <span className="block text-base text-moss">{formatDate(m.low!.date)}</span>
           </dd>
         </div>
         <div>
-          <dt className="text-base text-spruce/75">Highest</dt>
+          <dt className="text-base text-moss">Highest</dt>
           <dd>
             {formatMeasure(m.high!.value, m)}
-            <span className="block text-base text-spruce/75">{formatDate(m.high!.date)}</span>
+            <span className="block text-base text-moss">{formatDate(m.high!.date)}</span>
           </dd>
         </div>
       </dl>
@@ -90,7 +90,7 @@ export default function AppointmentSummary() {
     <div className="summary-page text-lg">
       <div className="summary-no-print mb-6 space-y-5">
         <h1 className="font-display text-4xl font-bold tracking-tight md:text-5xl">Summary for my appointment</h1>
-        <p className="max-w-prose text-lg text-spruce/75">
+        <p className="max-w-prose text-lg text-moss">
           A one-page look at what you logged, to bring to a visit. It is built on this device from your own days.
           Nothing is sent anywhere.
         </p>
@@ -107,7 +107,7 @@ export default function AppointmentSummary() {
             autoComplete="off"
             placeholder="Shown at the top of the page"
           />
-          <p className="mt-1 text-base text-spruce/75">Not saved. It is only on this page.</p>
+          <p className="mt-1 text-base text-moss">Not saved. It is only on this page.</p>
         </div>
 
         <fieldset>
@@ -135,7 +135,7 @@ export default function AppointmentSummary() {
         >
           Print or save as PDF
         </button>
-        <p className="text-base text-spruce/75">
+        <p className="text-base text-moss">
           In the print window, choose "Save as PDF" as the printer if you want a file to share.
         </p>
       </div>
@@ -170,17 +170,17 @@ export default function AppointmentSummary() {
               <section key={p.key} className="summary-section space-y-3" aria-labelledby={`pillar-${p.key}`}>
                 <h2 id={`pillar-${p.key}`} className="summary-block font-display text-2xl font-bold" style={{ color: PILLARS[p.key].color }}>
                   {p.name}
-                  <span className="ml-2 text-lg font-normal text-spruce/75">
+                  <span className="ml-2 text-lg font-normal text-moss">
                     {p.daysLogged === 1 ? '1 day logged' : `${p.daysLogged} days logged`}
                   </span>
                 </h2>
                 {p.measures.length === 0 ? (
-                  <p className="summary-block text-spruce/75">Nothing logged here in this time.</p>
+                  <p className="summary-block text-moss">Days off in this time.</p>
                 ) : (
                   p.measures.map((m) => <MeasureBlock key={m.key} m={m} />)
                 )}
                 {p.key === 'wellbeing' && p.measures.length > 0 && (
-                  <p className="summary-block text-base text-spruce/75">
+                  <p className="summary-block text-base text-moss">
                     Mood, energy and stress are your own 1 to 5 check-ins, on {summary.checkIns}{' '}
                     {summary.checkIns === 1 ? 'day' : 'days'}.
                   </p>
@@ -202,7 +202,7 @@ export default function AppointmentSummary() {
               <p className="summary-print-only mt-2 min-h-32 whitespace-pre-wrap border border-line p-3">{mention}</p>
             </section>
 
-            <footer className="summary-block border-t border-line pt-3 text-base text-spruce/75">
+            <footer className="summary-block border-t border-line pt-3 text-base text-moss">
               <p className="summary-small">{SUMMARY_FOOTER}</p>
             </footer>
           </article>

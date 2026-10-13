@@ -59,7 +59,7 @@ export default function PublicLayout({ title, children }: { title: string; child
             </Link>
             .
           </p>
-          <p className="max-w-2xl text-base text-spruce/85">
+          <p className="max-w-2xl text-base text-moss">
             Build Your Pillars is for reflection. It is not medical advice and it does not diagnose anything.
           </p>
           <p className="mt-3 flex flex-wrap gap-x-2 text-base">

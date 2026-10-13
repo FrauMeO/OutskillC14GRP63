@@ -279,7 +279,7 @@ describe('the Shared with line', () => {
     expect(sharingLine([s('ben@x.ca', 'active', ALL, '2026-10-01T00:00:00Z')])).toBe('Paused: ben@x.ca');
     expect(sharingLine([s('cy@x.ca', 'pending', ALL)])).toBe('Invited: cy@x.ca');
     expect(sharingLine([s('anna@x.ca', 'active', ALL), s('cy@x.ca', 'pending', ALL)])).toBe(
-      'Shared with: anna@x.ca (Eat, Sleep, Move, Balance), invited: cy@x.ca',
+      'Shared with: anna@x.ca (Drink, Sleep, Move, Balance), invited: cy@x.ca',
     );
   });
   it('a paused person is not listed as shared with', () => {

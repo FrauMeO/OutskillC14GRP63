@@ -130,7 +130,7 @@ export default function PrivacyCenter() {
       <h2 id="privacy-center" className="font-display text-2xl font-bold">
         Privacy and consent
       </h2>
-      <p className="mt-2 text-spruce/80">
+      <p className="mt-2 text-moss">
         You are in charge of your information. Taking a choice back is as easy as giving it. Read the{' '}
         <a href="/health-data-privacy" className="font-semibold underline underline-offset-4">
           Consumer Health Data Privacy Policy
@@ -141,7 +141,7 @@ export default function PrivacyCenter() {
       <h3 className="mt-6 font-display text-xl font-bold">Your choices</h3>
       <ul className="mt-3 space-y-3">
         <Row kind="collect_use">
-          <p className="text-spruce/80">
+          <p className="text-moss">
             {state(core.on)}. {core.summary}
           </p>
           {core.on === false ? (
@@ -172,7 +172,7 @@ export default function PrivacyCenter() {
         </Row>
 
         <Row kind="email_marketing">
-          <p className="text-spruce/80">
+          <p className="text-moss">
             {state(mail.on)}. {mail.summary}
           </p>
           <button
@@ -194,7 +194,7 @@ export default function PrivacyCenter() {
         )}
 
         <Row kind="share_caregiver">
-          <p className="text-spruce/80">{share.summary}</p>
+          <p className="text-moss">{share.summary}</p>
           <button type="button" className={`${quiet} mt-2`} onClick={() => goTo('sharing')}>
             Go to Sharing
           </button>
@@ -202,13 +202,13 @@ export default function PrivacyCenter() {
       </ul>
       <Say flash={flash} />
       {!historyOk && (
-        <p role="status" className="mt-3 text-spruce/70">
+        <p role="status" className="mt-3 text-moss">
           The list of your past choices is not available right now. Your current choices above are still right.
         </p>
       )}
 
       <h3 className="mt-8 font-display text-xl font-bold">Who has my data</h3>
-      <p className="mt-2 text-spruce/80">
+      <p className="mt-2 text-moss">
         This is everyone who can receive your health information, and what they get. It matches our Consumer Health Data Privacy Policy.
       </p>
       <ul className="mt-3 space-y-3">
@@ -227,7 +227,7 @@ export default function PrivacyCenter() {
           </li>
         ))}
       </ul>
-      <p className="mt-3 text-spruce/80">
+      <p className="mt-3 text-moss">
         Want this in an email? Write to{' '}
         <a href={`mailto:${CONTACT_EMAIL}`} className="font-semibold underline underline-offset-4">
           {CONTACT_EMAIL}
@@ -236,13 +236,13 @@ export default function PrivacyCenter() {
       </p>
 
       <h3 className="mt-8 font-display text-xl font-bold">Download my data</h3>
-      <p className="mt-2 text-spruce/80">You can download everything you have logged, any time, in the Your data section above.</p>
+      <p className="mt-2 text-moss">You can download everything you have logged, any time, in the Your data section above.</p>
       <button type="button" className={`${quiet} mt-2`} onClick={() => goTo('your-data')}>
         Go to Your data
       </button>
 
       <h3 className="mt-8 font-display text-xl font-bold">Ask us about your data</h3>
-      <p className="mt-2 text-spruce/80">
+      <p className="mt-2 text-moss">
         Send us a request here. We answer within {RESPONSE_DAYS} days, and we show you the date.
       </p>
       <form onSubmit={sendRequest} className="mt-3 space-y-3" noValidate>
@@ -261,7 +261,7 @@ export default function PrivacyCenter() {
             ))}
           </select>
         </label>
-        <p id="request-hint" className="text-spruce/75">
+        <p id="request-hint" className="text-moss">
           {selected?.hint}
         </p>
         <label className="block font-medium">
@@ -280,13 +280,13 @@ export default function PrivacyCenter() {
       </form>
 
       <h4 className="mt-6 font-display text-lg font-bold">Your requests</h4>
-      {!requestsOk && <p className="mt-2 text-spruce/70">Your requests are not available right now.</p>}
-      {requestsOk && requests.length === 0 && <p className="mt-2 text-spruce/70">You have not sent any requests.</p>}
+      {!requestsOk && <p className="mt-2 text-moss">Your requests are not available right now.</p>}
+      {requestsOk && requests.length === 0 && <p className="mt-2 text-moss">You have not sent any requests.</p>}
       <ul className="mt-2 space-y-3">
         {requests.map((r) => (
           <li key={r.id} className="rounded-md border border-line p-4">
             <p className="font-semibold">{typeLabel(r.request_type)}</p>
-            <p className="text-spruce/75">Sent {formatDay(r.created_at)}</p>
+            <p className="text-moss">Sent {formatDay(r.created_at)}</p>
             <p>{requestStatusText(r, new Date())}</p>
           </li>
         ))}

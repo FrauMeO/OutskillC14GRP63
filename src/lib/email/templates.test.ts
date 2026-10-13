@@ -142,7 +142,7 @@ describe('tone and safety of every email', () => {
     const summary = renderEmail(samples[4], APP);
     expect(summary.text).toContain('Sleep: a little lower than their usual.');
     expect(summary.text).toContain('Move: about the usual for them.');
-    expect(summary.text).not.toContain('Eat'); // not_enough_days is left out, not reported
+    expect(summary.text).not.toContain('Drink'); // not_enough_days is left out, not reported
     expect(summary.text).not.toMatch(/\d+(\.\d+)?\s*(hours|steps|litres|liters|minutes)/i);
     // presence level must not show pillar lines even if some are passed
     const leak = renderEmail({ kind: 'weekly_digest', ownerName: 'Anna', level: 'presence', daysLogged: 4, unsubscribeToken: TOKEN, pillars: [{ pillar: 'sleep', trend: 'a_little_lower' }] }, APP);

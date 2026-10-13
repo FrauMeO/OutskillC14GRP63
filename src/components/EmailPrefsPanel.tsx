@@ -72,7 +72,7 @@ export default function EmailPrefsPanel() {
       <h2 id="email-prefs-heading" className="font-display text-2xl font-bold">
         Emails about sharing
       </h2>
-      <p className="mt-1 text-lg text-spruce/80">Everything here is off until you turn it on. You can turn it off any time, and nobody is told.</p>
+      <p className="mt-1 text-lg text-moss">Everything here is off until you turn it on. You can turn it off any time, and nobody is told.</p>
 
       {owned.length > 0 && (
         <div className="mt-4 space-y-3">
@@ -88,7 +88,7 @@ export default function EmailPrefsPanel() {
               />
               <span>
                 Let {s.viewer_email} send me a gentle note
-                <span className="block text-base text-spruce/70">One of two short messages, at most once a day. You never have to reply.</span>
+                <span className="block text-base text-moss">One of two short messages, at most once a day. You never have to reply.</span>
               </span>
             </label>
           ))}
@@ -109,7 +109,7 @@ export default function EmailPrefsPanel() {
               />
               <span>
                 Email me a weekly summary about {f.owner_name}
-                <span className="block text-base text-spruce/70">Only what {f.owner_name} chooses to share. No numbers, no notes.</span>
+                <span className="block text-base text-moss">Only what {f.owner_name} chooses to share. No numbers, no notes.</span>
               </span>
             </label>
           ))}

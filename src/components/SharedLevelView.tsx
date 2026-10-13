@@ -45,7 +45,7 @@ function MetricCard({ s }: { s: MetricSeries }) {
     <section aria-label={metric.label} className="rounded-lg border border-line bg-white p-4">
       <h3 className="font-display text-xl font-bold">{metric.label}</h3>
       {hasGoal && (
-        <p className="text-lg text-spruce/80">
+        <p className="text-lg text-moss">
           Their goal: {formatValue(goal)} {metric.unit}
         </p>
       )}
@@ -54,7 +54,7 @@ function MetricCard({ s }: { s: MetricSeries }) {
           const fill = d.value === null ? null : hasGoal ? barFill(d.value, goal) : Math.min(1, d.value / top);
           return (
             <li key={d.date} className="flex min-w-0 flex-col items-center text-center">
-              <span className="text-sm text-spruce/70" aria-hidden="true">
+              <span className="text-sm text-moss" aria-hidden="true">
                 {weekdayLabel(d.date).slice(0, 3)}
               </span>
               <div className="relative mt-1 flex h-16 w-full items-end justify-center">
@@ -67,7 +67,7 @@ function MetricCard({ s }: { s: MetricSeries }) {
                 {d.value === null ? (
                   <>
                     <span aria-hidden="true">·</span>
-                    <span className="sr-only">{weekdayLabel(d.date)} {dateLabel(d.date)}: no entry</span>
+                    <span className="sr-only">{weekdayLabel(d.date)} {dateLabel(d.date)}: Day off</span>
                   </>
                 ) : (
                   <>
@@ -83,7 +83,7 @@ function MetricCard({ s }: { s: MetricSeries }) {
           );
         })}
       </ol>
-      <p className="mt-2 text-lg text-spruce/70">{metric.unit === 'of 5' ? 'Ratings from 1 to 5.' : `Measured in ${metric.unit}.`} A dot means no entry that day.</p>
+      <p className="mt-2 text-lg text-moss">{metric.unit === 'of 5' ? 'Ratings from 1 to 5.' : `Measured in ${metric.unit}.`} A dot means a Day off.</p>
     </section>
   );
 }
@@ -94,13 +94,13 @@ function RhythmList({ weeks, weeksInRow, name }: { weeks: WeekSummary[]; weeksIn
       <h2 id="rhythm" className="font-display text-2xl font-bold">
         The last four weeks
       </h2>
-      <p className="mt-1 text-lg text-spruce/80">Days {name} logged each week. Any four days in seven makes a full week.</p>
+      <p className="mt-1 text-lg text-moss">Days {name} logged each week. Any four days in seven makes a full week.</p>
       <ul className="mt-3 divide-y divide-line">
         {[...weeks].reverse().map((w, i) => (
           <li key={w.end} className="flex flex-wrap items-baseline justify-between gap-x-4 py-2">
             <span className="text-lg font-medium">
               {weekLabel(i)}
-              <span className="text-spruce/70">
+              <span className="text-moss">
                 {' '}
                 · {dateLabel(w.start)} to {dateLabel(w.end)}
               </span>
@@ -109,7 +109,7 @@ function RhythmList({ weeks, weeksInRow, name }: { weeks: WeekSummary[]; weeksIn
           </li>
         ))}
       </ul>
-      {weeksInRow >= 2 && <p className="mt-3 text-lg text-spruce/80">{weeksInRow} full weeks in a row.</p>}
+      {weeksInRow >= 2 && <p className="mt-3 text-lg text-moss">{weeksInRow} full weeks in a row.</p>}
     </section>
   );
 }
@@ -147,7 +147,7 @@ export default function SharedLevelView({
             The last seven days
           </h2>
           <p className="mt-2 text-lg font-semibold">{presenceText(presence.last7)}</p>
-          <p className="mt-1 text-lg text-spruce/80">This is all that is shared at this level: just that a day was logged.</p>
+          <p className="mt-1 text-lg text-moss">This is all that is shared at this level: just that a day was logged.</p>
         </section>
         <div className="mt-6">
           <RhythmList weeks={presence.weeks} weeksInRow={presence.weeksInRow} name={name} />
@@ -162,7 +162,7 @@ export default function SharedLevelView({
         <h2 id="weeksummary" className="font-display text-2xl font-bold">
           This week, in words
         </h2>
-        <p className="mt-1 text-lg text-spruce/80">Compared with {name === 'you' ? 'your' : `${name}’s`} own usual. No numbers are shared.</p>
+        <p className="mt-1 text-lg text-moss">Compared with {name === 'you' ? 'your' : `${name}’s`} own usual. No numbers are shared.</p>
         {weekRows.length === 0 ? (
           <p className="mt-3 text-lg">Nothing to show yet.</p>
         ) : (
@@ -170,7 +170,7 @@ export default function SharedLevelView({
             {weekRows.map((w) => (
               <li key={w.pillar} className="py-2">
                 <p className="text-lg font-semibold">{pillarWeekLine(w, name)}</p>
-                <p className="text-lg text-spruce/70">
+                <p className="text-lg text-moss">
                   Logged on {w.days_logged} of the last 7 days.
                 </p>
               </li>

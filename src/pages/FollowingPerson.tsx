@@ -63,14 +63,14 @@ export default function FollowingPerson() {
 
   const flags = useMemo(() => (person ? flagsOf(person) : { eat: false, sleep: false, move: false, balance: false }), [person]);
 
-  if (loading) return <p role="status" className="text-lg text-spruce/70">Loading…</p>;
+  if (loading) return <p role="status" className="text-lg text-moss">Loading…</p>;
 
   if (!person) {
     return (
       <>
         <PageHeader title="Following" />
         {failed && <p role="alert" className="mb-3 text-lg text-alert">Could not load this page: {failed}</p>}
-        <p className="max-w-xl text-lg text-spruce/80">You are not following this person. This may have ended, or the invitation is still waiting.</p>
+        <p className="max-w-xl text-lg text-moss">You are not following this person. This may have ended, or the invitation is still waiting.</p>
         <Link to="/following" className="mt-4 inline-flex min-h-11 items-center text-lg font-semibold underline underline-offset-4">
           Back to Following
         </Link>
@@ -105,7 +105,7 @@ export default function FollowingPerson() {
           {error === NOT_AVAILABLE_YET ? error : `Could not load ${name}’s days: ${error}`}
         </p>
       )}
-      {!paused && !error && !ready && <p role="status" className="text-lg text-spruce/70">Loading…</p>}
+      {!paused && !error && !ready && <p role="status" className="text-lg text-moss">Loading…</p>}
 
       {!paused && ready && (
         <SharedLevelView level={level} name={name} flags={flags} days={days} weekRows={weekRows} goals={goals} todayIso={todayIso} />

@@ -67,13 +67,13 @@ export default function NudgeButtons({ shareId, ownerName }: { shareId: string; 
             type="button"
             disabled={block !== null}
             onClick={() => send(preset)}
-            className="min-h-11 rounded-full border border-spruce px-5 py-2 text-lg font-semibold text-spruce hover:bg-mist disabled:cursor-not-allowed disabled:border-line disabled:text-spruce/50"
+            className="min-h-11 rounded-full border border-spruce px-5 py-2 text-lg font-semibold text-spruce hover:bg-mist disabled:cursor-not-allowed disabled:border-line disabled:text-moss"
           >
             {preset}
           </button>
         ))}
       </div>
-      {reason && block !== 'busy' && <p className="mt-3 text-lg text-spruce/80">{reason}</p>}
+      {reason && block !== 'busy' && <p className="mt-3 text-lg text-moss">{reason}</p>}
       {done && (
         <p role="status" className="mt-3 text-lg">
           {done}

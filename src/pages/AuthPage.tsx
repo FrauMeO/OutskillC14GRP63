@@ -19,7 +19,7 @@ const COPY: Record<Mode, { title: string; action: string; busy: string }> = {
 };
 
 const inputClass =
-  'mt-1.5 block w-full rounded-md border border-line bg-white px-3 py-2.5 text-spruce placeholder:text-sage focus:border-current focus:outline-none';
+  'mt-1.5 block w-full rounded-md border border-line bg-white px-3 py-2.5 text-spruce placeholder:text-moss focus:border-current focus:outline-none';
 
 export default function AuthPage({ mode }: { mode: Mode }) {
   const navigate = useNavigate();
@@ -30,6 +30,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
   const [home, setHome] = useState<(HomeCity & { label: string }) | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<AuthProblem | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -126,7 +127,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
               onChange={(e) => setFullName(e.target.value)}
               aria-describedby="name-help"
             />
-            <span id="name-help" className="mt-1.5 block text-xs text-spruce/60">
+            <span id="name-help" className="mt-1.5 block text-xs text-moss">
               One name only, like Sam. It does not need to be your real name, and please do not use your full name.
             </span>
           </label>
@@ -165,7 +166,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
                 ))}
               </select>
             </div>
-            <span className="mt-1.5 block text-xs text-spruce/60">
+            <span className="mt-1.5 block text-xs text-moss">
               You must be {MIN_AGE} or older. Only the month and year, never the day. We use it to work out your plan, nothing else.
             </span>
           </fieldset>
@@ -177,7 +178,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
               <span className="font-medium">Home city</span>
               <p className="mt-1.5 flex items-center justify-between rounded-md border border-line bg-white px-3 py-2.5">
                 {home.label}
-                <button type="button" className="text-spruce/70 underline underline-offset-4" onClick={() => setHome(null)}>
+                <button type="button" className="text-moss underline underline-offset-4" onClick={() => setHome(null)}>
                   Change
                 </button>
               </p>
@@ -185,7 +186,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
           ) : (
             <div>
               <CityPicker label="Home city (optional)" onPick={setHome} />
-              <span className="mt-1.5 block text-xs text-spruce/60">
+              <span className="mt-1.5 block text-xs text-moss">
                 Used for local weather on days you do not share your location. You can add it later in Settings.
               </span>
             </div>
@@ -207,7 +208,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
           Password
           <input
             className={inputClass}
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
             minLength={mode === 'signup' ? 8 : undefined}
             required
@@ -215,8 +216,17 @@ export default function AuthPage({ mode }: { mode: Mode }) {
             onChange={(e) => setPassword(e.target.value)}
           />
           {mode === 'signup' && (
-            <span className="mt-1.5 block text-xs text-spruce/60">At least 8 characters.</span>
+            <span className="mt-1.5 block text-xs text-moss">At least 8 characters.</span>
           )}
+        </label>
+        <label className="flex min-h-11 items-center gap-3 text-base">
+          <input
+            type="checkbox"
+            className="h-5 w-5 accent-spruce"
+            checked={showPassword}
+            onChange={(e) => setShowPassword(e.target.checked)}
+          />
+          Show password
         </label>
         {mode === 'signup' && (
           <fieldset className="space-y-4 text-lg">
@@ -255,7 +265,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
                   {EMAIL_MARKETING.label}
                 </span>
               </label>
-              <p className="mt-1 pl-9 text-base text-spruce/75">{EMAIL_MARKETING.note}</p>
+              <p className="mt-1 pl-9 text-base text-moss">{EMAIL_MARKETING.note}</p>
             </div>
           </fieldset>
         )}
@@ -307,7 +317,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
         </button>
       </form>
 
-      <p className="mt-6 text-sm text-spruce/75">
+      <p className="mt-6 text-sm text-moss">
         {mode === 'login' ? (
           <>
             New here?{' '}

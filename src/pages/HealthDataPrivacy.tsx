@@ -89,7 +89,7 @@ export default function HealthDataPrivacy() {
     <PublicLayout title="Consumer Health Data Privacy Policy | Build Your Pillars">
       <article className="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-16">
         <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">Consumer Health Data Privacy Policy</h1>
-        <p className="mt-3 text-spruce/85">Last updated {HEALTH_PRIVACY_UPDATED}</p>
+        <p className="mt-3 text-moss">Last updated {HEALTH_PRIVACY_UPDATED}</p>
         <p className="mt-6">
           This page is only about your health information: what Build Your Pillars keeps, why, who else receives it, and how you stay in
           control. Our general{' '}
@@ -231,7 +231,7 @@ export default function HealthDataPrivacy() {
             items={[
               <>
                 <strong>The person you invite</strong> (for example a partner or a caregiver), only after you say yes for that person: they
-                see your first name and the pillars you tick (Eat, Sleep, Move, Balance). You choose how much they see: only that you
+                see your first name and the pillars you tick (Drink, Sleep, Move, Balance). You choose how much they see: only that you
                 logged a day, a weekly summary in words, or day-by-day detail. Balance is mood, energy and stress, and is off unless you
                 tick it. They never see your notes, your feelings list, your places or your check-in answers. They cannot change
                 anything. You can pause or end the sharing at any time and it stops at once, and you can see on which days they looked.

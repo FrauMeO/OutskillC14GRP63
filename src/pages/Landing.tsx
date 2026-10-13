@@ -20,7 +20,7 @@ const FEATURES = [
   },
   {
     title: 'Goals that are yours',
-    body: 'Set a goal, change it, or skip goals altogether. Nothing is graded, and a day you did not log is just a gap, never a mark against you.',
+    body: 'Set a goal, change it, or skip goals altogether. Nothing is graded, and a Day off is just a Day off, never a mark against you.',
   },
 ];
 
@@ -48,7 +48,7 @@ export default function Landing() {
           <p className="mt-6 max-w-xl text-xl text-mist">{PILLAR_TAGLINE}</p>
           <p className="mt-1 max-w-xl italic text-mist/90">{PILLAR_PS}</p>
           <p className="mt-6 max-w-2xl text-mist">
-            A gentle place to notice how you are eating, sleeping, moving and feeling, and to share that with the people who care about you.
+            A gentle place to notice your drink, sleep, movement and balance, and to share that with the people who care about you.
             No scores, no shame.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2">

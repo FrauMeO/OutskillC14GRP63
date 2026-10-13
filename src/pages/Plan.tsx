@@ -70,7 +70,7 @@ export default function Plan() {
           {view.headline}
         </h2>
         <p className="mt-3 text-lg">{view.detail}</p>
-        {view.note && <p className="mt-3 text-lg text-spruce/75">{view.note}</p>}
+        {view.note && <p className="mt-3 text-lg text-moss">{view.note}</p>}
 
         {view.cta === 'subscribe_standard' && view.ctaLabel && (
           <button type="button" className={`${bigBtn} mt-5`} disabled={busy} onClick={() => go(() => startCheckout('standard_monthly'))}>
@@ -102,7 +102,7 @@ export default function Plan() {
         </div>
       )}
 
-      <p className="mt-6 max-w-prose text-lg text-spruce/75">
+      <p className="mt-6 max-w-prose text-lg text-moss">
         Build Your Pillars is free for everyone aged 60 and over. A caregiver who follows someone with their permission has a separate caregiver plan.
       </p>
     </div>

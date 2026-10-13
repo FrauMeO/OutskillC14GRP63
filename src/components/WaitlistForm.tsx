@@ -83,7 +83,7 @@ export default function WaitlistForm({ compact = false }: { compact?: boolean })
       >
         {busy ? 'Sending…' : 'Tell me when it is ready'}
       </button>
-      <p className="mt-3 text-base text-spruce/85">{WAITLIST_PRIVACY}</p>
+      <p className="mt-3 text-base text-moss">{WAITLIST_PRIVACY}</p>
     </form>
   );
 }

@@ -69,7 +69,7 @@ export default function TodayWeather({ userId, todayIso }: { userId: string; tod
   if (state.status === 'skipped') {
     return (
       <section aria-labelledby="today-weather" className="mb-6 rounded-lg border border-line bg-white px-5 py-4">
-        <p id="today-weather" className="text-spruce/80">
+        <p id="today-weather" className="text-moss">
           {WEATHER_SKIPPED_TEXT.replace(TAP_TO_LOAD, '').trim()}{' '}
           <button
             type="button"
@@ -86,7 +86,7 @@ export default function TodayWeather({ userId, todayIso }: { userId: string; tod
   return (
     <section aria-labelledby="today-weather" className="mb-6 rounded-lg border border-line bg-white px-5 py-4">
       {state.status === 'no-city' ? (
-        <p className="text-spruce/80">
+        <p className="text-moss">
           <span id="today-weather" className="font-semibold">
             Today's weather
           </span>{' '}
@@ -103,7 +103,7 @@ export default function TodayWeather({ userId, todayIso }: { userId: string; tod
             </span>{' '}
             {state.parts.join(', ')}.
           </p>
-          <p className="mt-1 text-sm text-spruce/70">
+          <p className="mt-1 text-sm text-moss">
             <Link to="/insights" className="font-semibold underline underline-offset-4">
               See how weather and your days go together
             </Link>

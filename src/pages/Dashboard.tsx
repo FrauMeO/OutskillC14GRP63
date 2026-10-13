@@ -48,7 +48,7 @@ function Card({ title, subtitle, accent, children }: { title: string; subtitle?:
     <section aria-label={title} className="relative overflow-hidden rounded-lg border border-line bg-white p-5 pl-6">
       <span className="absolute inset-y-0 left-0 w-1.5" style={{ background: accent }} aria-hidden />
       <h2 className="font-display text-xl font-bold">{title}</h2>
-      {subtitle && <p className="text-sm text-spruce/65">{subtitle}</p>}
+      {subtitle && <p className="text-sm text-moss">{subtitle}</p>}
       <div className="mt-3 space-y-4">{children}</div>
     </section>
   );
@@ -65,12 +65,12 @@ function GoalMetric({ cfg, row, goal, color }: { cfg: GoalConfig; row: Row | und
         <span className="text-sm font-medium">{cfg.label}</span>
         <span className="text-sm">
           {value === null ? (
-            <span className="text-spruce/60">Not logged</span>
+            <span className="text-moss">Day off</span>
           ) : (
             <>
               <strong className="tabular-nums">{fmtNumber(value, decimals)}</strong> {cfg.short}
               {goal !== null && (
-                <span className="text-spruce/60">
+                <span className="text-moss">
                   {' '}
                   of {fmtNumber(goal, decimals)}
                 </span>
@@ -102,7 +102,7 @@ function Value({ label, value, unit, decimals = 0 }: { label: string; value: num
     <div className="flex items-baseline justify-between gap-2 text-sm">
       <span className="font-medium">{label}</span>
       {value === null ? (
-        <span className="text-spruce/60">Not logged</span>
+        <span className="text-moss">Day off</span>
       ) : (
         <span>
           <strong className="tabular-nums">{fmtNumber(value, decimals)}</strong> {unit}
@@ -121,8 +121,8 @@ function RhythmBanner({ rhythm }: { rhythm: Rhythm }) {
       <h2 id="rhythm" className="font-display text-2xl font-bold">
         {title}
       </h2>
-      <p className="mt-1 text-spruce/75">{body}</p>
-      <p className="mt-1 text-sm text-spruce/60">
+      <p className="mt-1 text-moss">{body}</p>
+      <p className="mt-1 text-sm text-moss">
         Rest days are part of the rhythm: any {FULL_WEEK_DAYS} logged days in seven make a full week.
       </p>
       {!rhythm.loggedToday && (
@@ -288,8 +288,8 @@ export default function Dashboard() {
       <>
         {header}
         <section className="max-w-xl rounded-lg border border-line bg-white p-6">
-          <h2 className="font-display text-2xl font-bold">Welcome! Let's log your first day.</h2>
-          <p className="mt-2 text-spruce/75">
+          <h2 className="font-display text-2xl font-bold">Welcome. Let's log your first day.</h2>
+          <p className="mt-2 text-moss">
             Your cards, charts and weekly rhythm fill in as you log. It takes about a minute.
           </p>
           <Link to="/habits" className="mt-4 inline-flex min-h-11 items-center rounded-md bg-spruce px-5 font-semibold text-mist hover:bg-spruce-soft">
@@ -329,7 +329,7 @@ export default function Dashboard() {
     <>
       {header}
       {offlineSavedAt && (
-        <p role="status" className="mb-6 rounded-md border border-line bg-white px-4 py-3 text-sm text-spruce/80">
+        <p role="status" className="mb-6 rounded-md border border-line bg-white px-4 py-3 text-sm text-moss">
           You are offline. This is the view saved on this device on {new Date(offlineSavedAt).toLocaleString()}. You can
           still log a day; it will upload when you are back online.
         </p>
@@ -389,7 +389,7 @@ export default function Dashboard() {
 
         <Card title={PILLARS.wellbeing.name} subtitle={PILLARS.wellbeing.subtitle} accent={COLORS.wellbeing}>
           {mood === null ? (
-            <p className="text-sm text-spruce/60">Mood not logged today.</p>
+            <p className="text-sm text-moss">Mood: day off today.</p>
           ) : (
             <p className="flex items-center gap-3">
               <span className="text-4xl" aria-hidden>
@@ -406,7 +406,7 @@ export default function Dashboard() {
             return (
               <div key={scale.key} className="flex items-baseline justify-between text-sm">
                 <span className="font-medium">{scale.label}</span>
-                {v === null ? <span className="text-spruce/60">Not logged</span> : <span className="font-semibold">{scale.levels[v - 1]}</span>}
+                {v === null ? <span className="text-moss">Day off</span> : <span className="font-semibold">{scale.levels[v - 1]}</span>}
               </div>
             );
           })}

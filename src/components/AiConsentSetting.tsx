@@ -25,7 +25,7 @@ export default function AiConsentSetting() {
         <p id="ai-consent-label" className="text-lg font-semibold">
           Use AI help for reflections
         </p>
-        <p id="ai-consent-hint" className="text-lg text-spruce/75">
+        <p id="ai-consent-hint" className="text-lg text-moss">
           {on
             ? 'On. Your logged words and numbers, and your goals, are sent to Claude (Anthropic, United States) when you ask for a reflection. Nothing is saved by us.'
             : 'Off. Nothing is sent to an AI. The rest of the app works the same.'}

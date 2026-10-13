@@ -48,7 +48,7 @@ export default function EmailPreferences() {
       <h2 id="email-prefs" className="font-display text-xl font-bold">
         Email
       </h2>
-      <p className="mt-2 text-sm text-spruce/80">
+      <p className="mt-2 text-sm text-moss">
         We email you about your account when needed, such as a password reset. News and updates only if you say yes.
       </p>
       <label className="mt-3 flex min-h-11 items-center gap-3 text-sm">

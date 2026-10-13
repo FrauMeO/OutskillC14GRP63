@@ -29,10 +29,10 @@ const day = (offset: number, extra: Partial<SharedDay> = {}): SharedDay => ({
 
 describe('pillar summary', () => {
   it('names the shared pillars in order, in plain words', () => {
-    expect(pillarSummary(flags(true, true, true, false))).toBe('Eat, Sleep and Move');
-    expect(pillarSummary(flags(true, false, false, true))).toBe('Eat and Balance');
+    expect(pillarSummary(flags(true, true, true, false))).toBe('Drink, Sleep and Move');
+    expect(pillarSummary(flags(true, false, false, true))).toBe('Drink and Balance');
     expect(pillarSummary(flags(false, true, false, false))).toBe('Sleep');
-    expect(pillarSummary(flags(true, true, true, true))).toBe('Eat, Sleep, Move and Balance');
+    expect(pillarSummary(flags(true, true, true, true))).toBe('Drink, Sleep, Move and Balance');
     // control: none is not an empty string and not a pillar name
     expect(pillarSummary(flags(false, false, false, false))).toBe('Nothing yet');
     expect(pillarSummary(flags(true, true, true, false))).not.toContain('Balance');
@@ -124,7 +124,7 @@ describe('shared summary', () => {
   });
 
   it('includes only the shared pillars, and ignores stray values for unshared ones', () => {
-    // The rows carry mood and steps although only Eat and Sleep are shared (control for a leak).
+    // The rows carry mood and steps although only Drink and Sleep are shared (control for a leak).
     const rows = [day(0, { water_liters: 2, mood: 4, steps: 9000 }), day(1, { mood: 2 })];
     const s = summariseShared(rows, eatSleep, [], today);
     const fields = s.metrics.map((m) => m.metric.field);
@@ -152,7 +152,7 @@ describe('shared summary', () => {
     expect(Object.keys(s)).toEqual(['weeks', 'weeksInRow', 'metrics']);
     expect(Object.keys(s.weeks[0]).sort()).toEqual(['daysLogged', 'end', 'fullWeek', 'start']);
     for (const w of s.weeks) expect(weekText(w)).not.toMatch(/miss|only|streak|lost|zero|behind/i);
-    expect(weekText({ start: '', end: '', daysLogged: 0, fullWeek: false })).toBe('Nothing logged');
+    expect(weekText({ start: '', end: '', daysLogged: 0, fullWeek: false })).toBe('Days off');
     expect(weekText({ start: '', end: '', daysLogged: 1, fullWeek: false })).toBe('1 day logged');
     expect(weekText({ start: '', end: '', daysLogged: 5, fullWeek: true })).toBe('5 days logged, a full week');
   });

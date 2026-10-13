@@ -165,7 +165,7 @@ export default function Settings() {
 
       <section className="max-w-md rounded-lg border border-line bg-white p-6">
         <h2 className="font-display text-xl font-bold">Profile</h2>
-        <p className="mt-1 text-sm text-spruce/70">
+        <p className="mt-1 text-sm text-moss">
           Signed in as {user?.email} ·{' '}
           <Link to="/reset-password" className="font-semibold underline underline-offset-4">
             Change password
@@ -182,7 +182,7 @@ export default function Settings() {
               autoComplete="nickname"
               maxLength={40}
             />
-            <span className="mt-1.5 block text-xs text-spruce/60">One name only. It does not need to be your real name.</span>
+            <span className="mt-1.5 block text-xs text-moss">One name only. It does not need to be your real name.</span>
           </label>
           <button
             type="submit"
@@ -203,7 +203,7 @@ export default function Settings() {
         <h2 id="home-city" className="font-display text-xl font-bold">
           Home city
         </h2>
-        <p className="mt-1 text-sm text-spruce/70">
+        <p className="mt-1 text-sm text-moss">
           {homeCity ? `Currently ${homeCity}.` : 'Not set.'} Used for the weather on days you do not share your device
           location. Only the city and a location rounded to about 11 km are stored.
         </p>
@@ -225,7 +225,7 @@ export default function Settings() {
           <h2 id="ai-settings" className="font-display text-xl font-bold">
             Daily reflection
           </h2>
-          <p className="mt-1 text-sm text-spruce/70">
+          <p className="mt-1 text-sm text-moss">
             Choose when the few gentle sentences about your day are written. Either way, only today’s numbers, ratings and
             feelings are sent to Claude (Anthropic), never your name, email, location or notes, and nothing is saved.
           </p>
@@ -236,7 +236,7 @@ export default function Settings() {
             <input type="checkbox" className="h-5 w-5" checked={autoOn} onChange={(e) => toggleAuto(e.target.checked)} />
             <span className="font-medium">Write my daily reflection automatically after I log</span>
           </label>
-          <p className="mt-1 text-sm text-spruce/70">
+          <p className="mt-1 text-sm text-moss">
             {autoOn
               ? 'On: each time you log or change today, a fresh reflection is waiting on your Dashboard.'
               : 'Off: the reflection is written only when you ask for it on the Dashboard.'}
@@ -253,7 +253,7 @@ export default function Settings() {
         <h2 id="reflection" className="font-display text-xl font-bold">
           Gentle check-ins
         </h2>
-        <p className="mt-1 text-sm text-spruce/70">
+        <p className="mt-1 text-sm text-moss">
           After more than 10 days in a row of check-ins, if many of them felt harder, the app may offer a short, optional
           moment to reflect on the last two weeks. At most once every 14 days. Only you can see your answers.
         </p>
@@ -295,7 +295,7 @@ export default function Settings() {
         <h2 id="your-data" className="font-display text-xl font-bold">
           Your data
         </h2>
-        <p className="mt-1 text-sm text-spruce/70">
+        <p className="mt-1 text-sm text-moss">
           Everything you have logged belongs to you. Download it any time: your days, notes, goals, the weather for each
           day, and your settings. Nothing is sent anywhere else; the file is saved straight to this device.
         </p>
@@ -330,7 +330,7 @@ export default function Settings() {
         <h2 id="plan" className="font-display text-xl font-bold">
           Your plan
         </h2>
-        <p className="mt-2 text-sm text-spruce/80">See what you pay, if anything. Free for everyone 60 and over.</p>
+        <p className="mt-2 text-sm text-moss">See what you pay, if anything. Free for everyone 60 and over.</p>
         <Link to="/plan" className="mt-3 inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
           See my plan
         </Link>
@@ -340,7 +340,7 @@ export default function Settings() {
         <h2 id="appt" className="font-display text-xl font-bold">
           For a doctor visit
         </h2>
-        <p className="mt-2 text-sm text-spruce/80">A one-page summary of your last 30 or 90 days that you can print or save. It uses only what you logged, and it never leaves your device.</p>
+        <p className="mt-2 text-sm text-moss">A one-page summary of your last 30 or 90 days that you can print or save. It uses only what you logged, and it never leaves your device.</p>
         <Link to="/appointment-summary" className="mt-3 inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
           Summary for my appointment
         </Link>
@@ -360,8 +360,8 @@ export default function Settings() {
         <h2 id="about" className="font-display text-xl font-bold">
           About Build Your Pillars
         </h2>
-        <p className="mt-2 text-sm text-spruce/80">{ABOUT_STORY}</p>
-        <p className="mt-2 text-sm text-spruce/80">Founders: {foundersLine()}.</p>
+        <p className="mt-2 text-sm text-moss">{ABOUT_STORY}</p>
+        <p className="mt-2 text-sm text-moss">Founders: {foundersLine()}.</p>
       </section>
 
       <button

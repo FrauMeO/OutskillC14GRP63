@@ -6,8 +6,8 @@ import { MAPPINGS, valenceToMood } from './healthMapping';
 import { PILLARS, PILLAR_ORDER } from './pillars';
 
 describe('pillars', () => {
-  it('are Eat, Sleep, Move, Balance, in that order, each with a subtitle', () => {
-    expect(PILLAR_ORDER.map((k) => PILLARS[k].name)).toEqual(['Eat', 'Sleep', 'Move', 'Balance']);
+  it('are Drink, Sleep, Move, Balance, in that order, each with a subtitle', () => {
+    expect(PILLAR_ORDER.map((k) => PILLARS[k].name)).toEqual(['Drink', 'Sleep', 'Move', 'Balance']);
     expect(PILLARS.nutrition.subtitle).toMatch(/water/i);
   });
 });

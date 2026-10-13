@@ -42,7 +42,7 @@ export const PRESET_TEXT: Record<string, string> = {
   'Want to take a walk?': 'Want to take a walk?',
 };
 
-const PILLAR_NAME: Record<DigestPillar, string> = { eat: 'Eat', sleep: 'Sleep', move: 'Move', balance: 'Balance' };
+const PILLAR_NAME: Record<DigestPillar, string> = { eat: 'Drink', sleep: 'Sleep', move: 'Move', balance: 'Balance' };
 const TREND_WORDS: Record<Exclude<DigestTrend, 'not_enough_days'>, string> = {
   about_usual: 'about the usual for them',
   a_little_lower: 'a little lower than their usual',

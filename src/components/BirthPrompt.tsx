@@ -51,7 +51,7 @@ export default function BirthPrompt({ onSaved }: { onSaved?: () => void }) {
       <h2 id="birth-title" className="font-display text-2xl font-bold">
         When were you born?
       </h2>
-      <p className="mt-2 max-w-prose text-lg text-spruce/80">
+      <p className="mt-2 max-w-prose text-lg text-moss">
         Please choose your birth month and year. We use them only to work out your plan, and we never ask for the day.
       </p>
       <div className="mt-4 grid max-w-md grid-cols-2 gap-3">

@@ -29,7 +29,7 @@ export default function DeleteAccount() {
       <h2 id="delete-account" className="font-display text-xl font-bold">
         Delete my account
       </h2>
-      <p className="mt-2 text-sm text-spruce/80">
+      <p className="mt-2 text-sm text-moss">
         This permanently deletes your sign-in and everything saved: your logs, goals, check-ins and sharing. It cannot be undone. You can
         download your data first, above.
       </p>

@@ -138,7 +138,7 @@ export default function AiReflectionCard({ date, today, auto: autoSetting }: Pro
           <p className="mt-2 text-lg leading-relaxed" aria-live="polite">
             {result.text}
           </p>
-          <p className="mt-2 text-xs text-spruce/60">
+          <p className="mt-2 text-xs text-moss">
             {result.source === 'ai'
               ? `Written by AI (Claude, by Anthropic) from ${result.mode === 'week' ? 'this week’s entries and your goals' : 'today’s entry'}${autoDay ? ', automatically after you logged' : ''}. `
               : 'A kind message from the app. '}
@@ -164,7 +164,7 @@ export default function AiReflectionCard({ date, today, auto: autoSetting }: Pro
         </>
       ) : (
         <>
-          <p className="mt-1 text-spruce/75">
+          <p className="mt-1 text-moss">
             {auto && hasEntry
               ? busy === 'day'
                 ? 'Writing today’s reflection…'
@@ -199,9 +199,9 @@ export default function AiReflectionCard({ date, today, auto: autoSetting }: Pro
               {busy === 'week' ? 'Looking at your week…' : 'Coach me on my week'}
             </button>
           </div>
-          {saveData && <p className="mt-2 text-xs text-spruce/60">{REFLECTION_DATA_NOTE}</p>}
+          {saveData && <p className="mt-2 text-xs text-moss">{REFLECTION_DATA_NOTE}</p>}
           {!autoSetting && (
-            <p className="mt-2 text-xs text-spruce/60">
+            <p className="mt-2 text-xs text-moss">
               Prefer it written automatically after each log?{' '}
               <Link to="/settings" className="underline underline-offset-4">
                 Turn it on in Settings

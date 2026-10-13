@@ -54,7 +54,7 @@ export default function MonthCalendar({
           ›
         </button>
       </div>
-      <div className="mt-2 grid grid-cols-7 gap-1 text-center text-xs text-spruce/60" aria-hidden>
+      <div className="mt-2 grid grid-cols-7 gap-1 text-center text-xs text-moss" aria-hidden>
         {weekdays.map((w, i) => (
           <span key={i}>{w}</span>
         ))}
@@ -70,7 +70,7 @@ export default function MonthCalendar({
           const marked = isMarkedDay(n);
           const future = date > todayIso;
           const label = `${new Date(view.y, view.m, day).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}: ${
-            n ? (marked ? `logged, your ${n}th completed day` : 'logged') : 'no entry'
+            n ? (marked ? `logged, your ${n}th completed day` : 'logged') : 'Day off'
           }`;
           return (
             <li key={date}>
@@ -93,7 +93,7 @@ export default function MonthCalendar({
           );
         })}
       </ol>
-      <p className="mt-3 text-sm text-spruce/70">
+      <p className="mt-3 text-sm text-moss">
         {logged} {logged === 1 ? 'day' : 'days'} logged this month. <span className="text-sun">★</span> marks every {MARK_EVERY}th day you
         have logged.
       </p>

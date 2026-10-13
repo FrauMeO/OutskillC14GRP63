@@ -27,7 +27,7 @@ describe('no data, one day, one pillar', () => {
     const s = buildSummary([], [], end, 30);
     expect(s.loggedDays).toBe(0);
     expect(s.checkIns).toBe(0);
-    expect(s.pillars.map((p) => p.name)).toEqual(['Eat', 'Sleep', 'Move', 'Balance']);
+    expect(s.pillars.map((p) => p.name)).toEqual(['Drink', 'Sleep', 'Move', 'Balance']);
     for (const p of s.pillars) {
       expect(p.daysLogged).toBe(0);
       expect(p.measures).toEqual([]);
@@ -43,7 +43,7 @@ describe('no data, one day, one pillar', () => {
     expect(m.low).toEqual({ value: 6.5, date: addDays(end, -2) });
     expect(m.high).toEqual({ value: 6.5, date: addDays(end, -2) });
     expect(m.trend).toBeNull();
-    expect(measure(s, 'Eat', 'water_liters')).toBeUndefined();
+    expect(measure(s, 'Drink', 'water_liters')).toBeUndefined();
   });
 
   it('all days in one pillar: the others stay at 0 days and loggedDays is the union', () => {
@@ -78,7 +78,7 @@ describe('null is never 0', () => {
   });
   it('numeric strings from the database are read as numbers; empty strings are gaps', () => {
     const rows = [day(0, { water_liters: '1.5' as unknown as number }), day(-1, { water_liters: '' as unknown as number })];
-    const m = measure(buildSummary(rows, [], end, 30), 'Eat', 'water_liters')!;
+    const m = measure(buildSummary(rows, [], end, 30), 'Drink', 'water_liters')!;
     expect(m.days).toBe(1);
     expect(m.average).toBe(1.5);
   });
@@ -192,7 +192,7 @@ describe('goals sit beside the average', () => {
   });
   it('no goal means null', () => {
     expect(measure(s, 'Move', 'steps')!.goal).toBeNull();
-    expect(measure(s, 'Eat', 'water_liters')!.goal).toBeNull();
+    expect(measure(s, 'Drink', 'water_liters')!.goal).toBeNull();
   });
   it('carries no pass or fail field, whatever the numbers (sleep 4 vs goal 8, exercise 90 vs 30)', () => {
     expect(JSON.stringify(s)).not.toMatch(/met|pass|fail|reached|achiev|onTrack|status|color|colour/i);
@@ -248,7 +248,7 @@ describe('words', () => {
   it('the few-days note matches the agreed wording and disappears with enough days', () => {
     expect(fewDaysNote(3)).toBe('You logged 3 days in this time. The summary will be more useful with more days, but you can still print it.');
     expect(fewDaysNote(1)).toContain('You logged 1 day in this time.');
-    expect(fewDaysNote(0)).toContain('not logged any days');
+    expect(fewDaysNote(0)).toContain('all days off');
     expect(fewDaysNote(5)).toBeNull();
     expect(fewDaysNote(30)).toBeNull();
   });

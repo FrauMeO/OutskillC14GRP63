@@ -239,7 +239,7 @@ export function daysLoggedText(loggedDays: number, periodDays: number): string {
 export function fewDaysNote(loggedDays: number): string | null {
   if (loggedDays >= FEW_DAYS) return null;
   if (loggedDays === 0) {
-    return 'You have not logged any days in this time. Once you log some, they will show up here. You can still print this page and use the box below to write what you want to say.';
+    return 'These were all days off. Once you log some days, they will show up here. You can still print this page and use the box below to write what you want to say.';
   }
   const days = loggedDays === 1 ? '1 day' : `${loggedDays} days`;
   return `You logged ${days} in this time. The summary will be more useful with more days, but you can still print it.`;

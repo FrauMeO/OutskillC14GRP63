@@ -2,7 +2,7 @@ import { useId, useState } from 'react';
 import { searchCities, type CityMatch, type HomeCity } from '../lib/location';
 
 const input =
-  'block w-full rounded-md border border-line bg-white px-3 py-2.5 text-spruce placeholder:text-sage focus:border-current focus:outline-none';
+  'block w-full rounded-md border border-line bg-white px-3 py-2.5 text-spruce placeholder:text-moss focus:border-current focus:outline-none';
 
 // Search a city by name (Open-Meteo Geocoding) and pick one match. Used at sign-up, in Settings,
 // and on Log Habits when no home city is set.

@@ -228,7 +228,7 @@ export function presenceSummary(rows: { log_date: string }[], todayIso: string, 
 
 /** 'Logged on 5 of the last 7 days.' Calm for zero too; never lists the days that were not logged. */
 export function presenceText(last7: number): string {
-  if (last7 === 0) return 'Nothing logged in the last 7 days. That is fine: rest is part of the rhythm.';
+  if (last7 === 0) return 'Days off for the last 7 days. That is fine: rest is part of the rhythm.';
   return `Logged on ${last7} of the last 7 days.`;
 }
 

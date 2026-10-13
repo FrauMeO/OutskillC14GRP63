@@ -47,7 +47,7 @@ export default function Privacy() {
     <PublicLayout title="Privacy Policy | Build Your Pillars">
       <article className="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-16">
         <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">Privacy Policy</h1>
-        <p className="mt-3 text-spruce/85">Last updated {PRIVACY_UPDATED}</p>
+        <p className="mt-3 text-moss">Last updated {PRIVACY_UPDATED}</p>
         <p className="mt-6">
           This page explains, in plain words, what Build Your Pillars keeps about you, why, who else handles it, and what you can do
           about it. Your health information is private to you unless you choose to share it.

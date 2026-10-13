@@ -15,7 +15,7 @@ export default function DataSaverSetting() {
   return (
     <fieldset className="max-w-2xl">
       <legend className="font-display text-xl font-bold">Data saver</legend>
-      <p className="mt-1 text-sm text-spruce/75">
+      <p className="mt-1 text-sm text-moss">
         When on, the app does not load weather or write an AI reflection by itself. You can still tap to get
         them. {saveData ? 'Data saver is on right now.' : 'Data saver is off right now.'}
       </p>
@@ -40,7 +40,7 @@ export default function DataSaverSetting() {
           </label>
         ))}
       </div>
-      <p className="mt-2 text-sm text-spruce/65">{OPTIONS.find((o) => o.value === setting)?.hint}</p>
+      <p className="mt-2 text-sm text-moss">{OPTIONS.find((o) => o.value === setting)?.hint}</p>
     </fieldset>
   );
 }

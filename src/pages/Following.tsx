@@ -50,10 +50,10 @@ export default function Following() {
           Could not load this page: {failed}
         </p>
       )}
-      {loading && <p role="status" className="text-lg text-spruce/70">Loading…</p>}
+      {loading && <p role="status" className="text-lg text-moss">Loading…</p>}
 
       {!loading && !failed && people.length === 0 && (
-        <p className="max-w-xl text-lg text-spruce/80">
+        <p className="max-w-xl text-lg text-moss">
           No one is sharing with you right now. When someone invites you, the invitation will wait here.
         </p>
       )}
@@ -67,7 +67,7 @@ export default function Following() {
             {pending.map((p) => (
               <li key={p.share_id} className="rounded-md border border-line p-4">
                 <p className="text-lg font-semibold">{p.owner_name} would like you to follow along.</p>
-                <p className="mt-1 text-lg text-spruce/80">
+                <p className="mt-1 text-lg text-moss">
                   You would see {viewerLevelText(levelOf(p), flagsOf(p))}, as a read-only view. Their notes, feelings and places are never shared.
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2">
@@ -94,9 +94,9 @@ export default function Following() {
               <li key={p.share_id} className="rounded-md border border-line p-4">
                 <p className="text-lg font-semibold">{p.owner_name}</p>
                 {p.paused ? (
-                  <p className="text-lg text-spruce/80">{p.owner_name} has paused sharing for now.</p>
+                  <p className="text-lg text-moss">{p.owner_name} has paused sharing for now.</p>
                 ) : (
-                  <p className="text-lg text-spruce/80">Shares {pillarSummary(flagsOf(p))}</p>
+                  <p className="text-lg text-moss">Shares {pillarSummary(flagsOf(p))}</p>
                 )}
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   {!p.paused && (

@@ -6,7 +6,7 @@ import AuthShell from '../components/AuthShell';
 import FullPageStatus from '../components/FullPageStatus';
 
 const inputClass =
-  'mt-1.5 block w-full rounded-md border border-line bg-white px-3 py-2.5 text-spruce placeholder:text-sage focus:border-current focus:outline-none';
+  'mt-1.5 block w-full rounded-md border border-line bg-white px-3 py-2.5 text-spruce placeholder:text-moss focus:border-current focus:outline-none';
 
 // Step 2: the emailed link signs the person in for a moment, and here they choose a new password.
 // Also used from Settings to change a password while signed in.
@@ -23,7 +23,7 @@ export default function ResetPassword() {
   if (!session) {
     return (
       <AuthShell title="This link has expired">
-        <p className="mt-6 text-spruce/75">
+        <p className="mt-6 text-moss">
           Reset links work once and for a limited time. Request a new one, and use the newest email.
         </p>
         <p className="mt-6 text-sm">
@@ -50,7 +50,7 @@ export default function ResetPassword() {
   return (
     <AuthShell title="Choose a new password">
       <form onSubmit={handleSubmit} className="mt-8 space-y-5">
-        <p className="text-spruce/75">For {session.user.email}.</p>
+        <p className="text-moss">For {session.user.email}.</p>
         <label className="block text-sm font-medium">
           New password
           <input
@@ -62,7 +62,7 @@ export default function ResetPassword() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <span className="mt-1.5 block text-xs text-spruce/60">At least 6 characters.</span>
+          <span className="mt-1.5 block text-xs text-moss">At least 6 characters.</span>
         </label>
         <label className="block text-sm font-medium">
           New password again

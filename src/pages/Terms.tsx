@@ -25,7 +25,7 @@ export default function Terms() {
     <PublicLayout title="Terms of Use | Build Your Pillars">
       <article className="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-16">
         <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">Terms of Use</h1>
-        <p className="mt-3 text-spruce/85">Last updated {TERMS_UPDATED}</p>
+        <p className="mt-3 text-moss">Last updated {TERMS_UPDATED}</p>
         <p className="mt-6">
           These are the simple rules for using Build Your Pillars. By creating an account or using the app, you agree to them. How we
           handle your information is explained in our{' '}

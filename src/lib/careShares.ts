@@ -246,7 +246,7 @@ export function summariseShared(rows: SharedDay[], flags: PillarFlags, goals: Sh
 
 /** '3 days logged', '1 day logged'. A week with none says so gently, never "missed". */
 export function weekText(w: WeekSummary): string {
-  if (w.daysLogged === 0) return 'Nothing logged';
+  if (w.daysLogged === 0) return 'Days off';
   const d = `${w.daysLogged} ${w.daysLogged === 1 ? 'day' : 'days'} logged`;
   return w.fullWeek ? `${d}, a full week` : d;
 }

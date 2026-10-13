@@ -23,7 +23,7 @@ function Grouped({ items, tone }: { items: Comparison[]; tone: 'likely' | 'explo
     <div className="mt-4 space-y-5">
       {GROUP_ORDER.filter((g) => items.some((c) => c.factor.group === g)).map((group) => (
         <div key={group}>
-          <h3 className="text-sm font-semibold uppercase tracking-wide text-spruce/60">{group}</h3>
+          <h3 className="text-sm font-semibold uppercase tracking-wide text-moss">{group}</h3>
           <ul className="mt-2 space-y-2">
             {items
               .filter((c) => c.factor.group === group)
@@ -34,7 +34,7 @@ function Grouped({ items, tone }: { items: Comparison[]; tone: 'likely' | 'explo
                 >
                   <p>{c.sentence}</p>
                   {tone === 'explore' && (
-                    <p className="mt-1 text-sm text-spruce/65">Early hint. This may disappear as you log more days.</p>
+                    <p className="mt-1 text-sm text-moss">Early hint. This may disappear as you log more days.</p>
                   )}
                 </li>
               ))}
@@ -56,7 +56,7 @@ function OverviewSection({ summary }: { summary: Summary }) {
         <h2 id="overview" className="font-display text-2xl font-bold">
           Your last four weeks
         </h2>
-        <p className="mt-1 text-spruce/80">
+        <p className="mt-1 text-moss">
           You logged {overview.loggedDays} {overview.loggedDays === 1 ? 'day' : 'days'}. Every one of them counts.
         </p>
         <ul className="mt-3 flex flex-wrap gap-2">
@@ -74,7 +74,7 @@ function OverviewSection({ summary }: { summary: Summary }) {
 
       <div>
         <h3 className="font-display text-xl font-bold">This week and your usual</h3>
-        <p className="mt-1 text-sm text-spruce/70">
+        <p className="mt-1 text-sm text-moss">
           This week's middle value compared with your own eight weeks before it. Only you, never anyone else.
         </p>
         {week.length ? (
@@ -90,7 +90,7 @@ function OverviewSection({ summary }: { summary: Summary }) {
             ))}
           </ul>
         ) : (
-          <p className="mt-3 text-spruce/80">
+          <p className="mt-3 text-moss">
             This appears once you have a few days this week and a week or two before it to compare with.
           </p>
         )}
@@ -99,7 +99,7 @@ function OverviewSection({ summary }: { summary: Summary }) {
       {invites.length > 0 && (
         <div>
           <h3 className="font-display text-xl font-bold">Something to try, if you like</h3>
-          <p className="mt-1 text-sm text-spruce/70">
+          <p className="mt-1 text-sm text-moss">
             Small ideas from what has gone together in your own days. Not advice, and not a cause.
           </p>
           <ul className="mt-3 space-y-2">
@@ -107,10 +107,10 @@ function OverviewSection({ summary }: { summary: Summary }) {
               <li key={i.key} className="rounded-lg border border-dashed border-line bg-white p-4">
                 <p>{i.text}</p>
                 <details className="mt-2 text-sm">
-                  <summary className="cursor-pointer font-semibold text-spruce/80 underline underline-offset-4">
+                  <summary className="cursor-pointer font-semibold text-moss underline underline-offset-4">
                     Why am I seeing this?
                   </summary>
-                  <p className="mt-2 text-spruce/75">{i.why}</p>
+                  <p className="mt-2 text-moss">{i.why}</p>
                 </details>
               </li>
             ))}
@@ -128,7 +128,7 @@ function WhatWeLookAt() {
   return (
     <details className="max-w-3xl rounded-lg border border-line bg-white p-5">
       <summary className="cursor-pointer font-display text-xl font-bold">What Insights looks at ({total} weather factors)</summary>
-      <p className="mt-2 text-sm text-spruce/70">
+      <p className="mt-2 text-sm text-moss">
         Each logged day is paired with its real weather. Insights compares every factor below with your own days, checks all
         the comparisons together so chance findings are not shown as facts, and only ever says what went together, never
         what caused what.
@@ -136,12 +136,12 @@ function WhatWeLookAt() {
       <div className="mt-4 grid gap-5 sm:grid-cols-2">
         {catalog.map((g) => (
           <div key={g.group}>
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-spruce/60">{g.group}</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-moss">{g.group}</h3>
             <ul className="mt-2 space-y-1.5 text-sm">
               {g.items.map((i) => (
                 <li key={i.key}>
                   {i.label}
-                  <span className="block text-xs text-spruce/60">Compared with {i.comparedWith}</span>
+                  <span className="block text-xs text-moss">Compared with {i.comparedWith}</span>
                 </li>
               ))}
             </ul>
@@ -209,7 +209,7 @@ export default function Insights() {
       )}
 
       {!result && !error && (
-        <p role="status" className="text-sage">
+        <p role="status" className="text-moss">
           Looking for patterns…
         </p>
       )}
@@ -235,7 +235,7 @@ export default function Insights() {
           >
             <div className="h-full bg-current" style={{ width: `${(result.loggedDays / MIN_LOGGED_DAYS) * 100}%` }} />
           </div>
-          <p className="mt-3 text-spruce/75">
+          <p className="mt-3 text-moss">
             Insights appear after {MIN_LOGGED_DAYS} logged days. Keep logging, and they will show up here.
           </p>
         </section>
@@ -253,13 +253,13 @@ export default function Insights() {
             <h2 id="likely" className="font-display text-2xl font-bold">
               Likely patterns
             </h2>
-            <p className="mt-1 text-sm text-spruce/70">
+            <p className="mt-1 text-sm text-moss">
               These held up after checking every comparison together, with at least {MIN_PAIRED_LIKELY} days of data.
             </p>
             {result.likely.length ? (
               <Grouped items={result.likely} tone="likely" />
             ) : (
-              <p className="mt-4 text-spruce/80">
+              <p className="mt-4 text-moss">
                 Nothing has held up yet across all {result.tested} comparisons, and that is normal early on. A pattern only
                 shows here once it is strong enough that chance is an unlikely explanation. Early hints are below.
               </p>
@@ -270,19 +270,19 @@ export default function Insights() {
             <h2 id="explore" className="font-display text-2xl font-bold">
               Worth exploring
             </h2>
-            <p className="mt-1 text-sm text-spruce/70">
+            <p className="mt-1 text-sm text-moss">
               Early hints that stand out on their own but did not hold up once every comparison was checked together.
             </p>
             {result.explore.length ? (
               <Grouped items={result.explore} tone="explore" />
             ) : (
-              <p className="mt-4 text-spruce/80">Nothing to explore yet.</p>
+              <p className="mt-4 text-moss">Nothing to explore yet.</p>
             )}
           </section>
 
           <WhatWeLookAt />
 
-          <footer className="border-t border-line pt-4 text-sm text-spruce/65">
+          <footer className="border-t border-line pt-4 text-sm text-moss">
             <p>
               Based on {result.loggedDays} logged days and {result.tested} comparisons. Pollen shows only in Europe; elsewhere it
               is not available in your area.

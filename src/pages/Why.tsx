@@ -7,7 +7,7 @@ export default function Why() {
     <PublicLayout title="Why we built it | Build Your Pillars">
       <article className="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-16">
         <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">Why we built it</h1>
-        <p className="mt-3 text-spruce/85">By {foundersLine()}</p>
+        <p className="mt-3 text-moss">By {foundersLine()}</p>
 
         <div className="mt-8 space-y-5">
           <p>
@@ -15,11 +15,11 @@ export default function Why() {
             without confusion and without pressure.
           </p>
           <p>
-            We looked around, and many health tools felt like a report card. Numbers turned into verdicts. Missed days turned into red marks.
+            We looked around, and many health tools felt like a report card. Numbers turned into verdicts. Days without an entry turned into red marks.
             That is not how we wanted to look after ourselves, or each other.
           </p>
           <p>
-            So we made something different. Build Your Pillars is built on four everyday pillars: Eat, Sleep, Move and Balance, which is
+            So we made something different. Build Your Pillars is built on four everyday pillars: Drink, Sleep, Move and Balance, which is
             our word for mental health. You log what you choose, you set goals only if you want them, and you look back with curiosity
             instead of judgment.
           </p>

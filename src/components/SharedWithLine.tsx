@@ -30,7 +30,7 @@ export default function SharedWithLine() {
 
   if (!line) return null;
   return (
-    <p className="-mt-3 mb-5 flex flex-wrap items-center gap-x-3 text-base text-spruce/80">
+    <p className="-mt-3 mb-5 flex flex-wrap items-center gap-x-3 text-base text-moss">
       <span>{line}</span>
       <Link to="/settings" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
         Change in Settings

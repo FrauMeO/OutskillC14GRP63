@@ -45,7 +45,7 @@ type OwnRow = Record<string, unknown> & { log_date: string };
 const NO_PILLARS: PillarFlags = { eat: false, sleep: false, move: false, balance: false };
 
 const PILLAR_BOXES: { key: keyof PillarFlags; name: string }[] = [
-  { key: 'eat', name: 'Eat' },
+  { key: 'eat', name: 'Drink' },
   { key: 'sleep', name: 'Sleep' },
   { key: 'move', name: 'Move' },
   { key: 'balance', name: 'Balance' },
@@ -90,7 +90,7 @@ function LevelChoice({ value, onChange, idPrefix }: { value: ShareLevel; onChang
             />
             <span>
               <span className="block text-base font-medium">{l.label}</span>
-              <span className="block text-base text-spruce/70">{l.hint}</span>
+              <span className="block text-base text-moss">{l.hint}</span>
             </span>
           </label>
         ))}
@@ -163,11 +163,11 @@ function Preview({ who, flags, level, paused, own, idPrefix }: { who: string; fl
       {open && (
         <div id={panelId} className="mt-3 rounded-md border border-dashed border-spruce/40 bg-mist p-3">
           <p className="text-base font-semibold">Preview only</p>
-          <p className="text-base text-spruce/80">
+          <p className="text-base text-moss">
             This is what {who} would see, worked out here from your own entries. Nothing is sent, and your notes, feelings and places are never part of it.
           </p>
           {own.error && <p role="alert" className="mt-2 text-base text-alert">{own.error}</p>}
-          {!own.error && !own.rows && <p role="status" className="mt-2 text-base text-spruce/70">Loading…</p>}
+          {!own.error && !own.rows && <p role="status" className="mt-2 text-base text-moss">Loading…</p>}
           {own.rows && !hasAnyPillar(flags) && <p className="mt-2 text-base">Tick at least one pillar to see a preview.</p>}
           {own.rows && hasAnyPillar(flags) && paused && <p className="mt-2 text-base">Sharing is paused, so they would see nothing right now.</p>}
           {own.rows && hasAnyPillar(flags) && !paused && (
@@ -374,7 +374,7 @@ export default function SharingSettings() {
       <h2 id="sharing" className="font-display text-xl font-bold">
         Sharing
       </h2>
-      <p className="mt-2 text-base text-spruce/80">
+      <p className="mt-2 text-base text-moss">
         You choose who can follow along, and how much. They get a read-only view, you can pause or end it any time, and it stops at once.
         Your notes, feelings and places are never shared.
       </p>
@@ -384,7 +384,7 @@ export default function SharingSettings() {
           {due.map((r) => (
             <div key={r.id} className="rounded-md border border-sage bg-mist p-4">
               <p className="text-base font-semibold">{reconfirmQuestion(r.viewer_email)}</p>
-              <p className="text-base text-spruce/80">It has been a while, so this is just a gentle check. Nothing changes unless you say so.</p>
+              <p className="text-base text-moss">It has been a while, so this is just a gentle check. Nothing changes unless you say so.</p>
               <div className="mt-2 flex flex-wrap gap-2">
                 <button type="button" onClick={() => confirmShare(r)} disabled={busyId === r.id} aria-label={`Yes, keep sharing with ${r.viewer_email}`} className={primaryBtn}>
                   Yes
@@ -415,14 +415,14 @@ export default function SharingSettings() {
             aria-describedby="sharing-email-help"
           />
         </label>
-        <p id="sharing-email-help" className="text-base text-spruce/70">
+        <p id="sharing-email-help" className="text-base text-moss">
           They need to create an account or log in with this exact email address to accept. We do not send email yet, so
           let them know yourself.
         </p>
         <fieldset>
           <legend className="text-base font-medium">Which pillars?</legend>
           <PillarBoxes value={invite} onChange={setInvite} idPrefix="invite" />
-          <p className="text-base text-spruce/70">Nothing is shared until you tick it. Balance is mood, energy and stress.</p>
+          <p className="text-base text-moss">Nothing is shared until you tick it. Balance is mood, energy and stress.</p>
         </fieldset>
         <LevelChoice value={inviteLevel} onChange={setInviteLevel} idPrefix="invite" />
         <Preview who={validateEmail(email) === null ? normaliseEmail(email) : 'them'} flags={invite} level={inviteLevel} paused={false} own={own} idPrefix="invite" />
@@ -451,7 +451,7 @@ export default function SharingSettings() {
           Could not load your shares: {loadError}
         </p>
       )}
-      {!loadError && shares.length === 0 && <p className="mt-2 text-base text-spruce/70">You are not sharing with anyone.</p>}
+      {!loadError && shares.length === 0 && <p className="mt-2 text-base text-moss">You are not sharing with anyone.</p>}
       <ul className="mt-2 space-y-4">
         {shares.map((r) => {
           const d = drafts[r.id] ?? { flags: flagsOf(r), level: levelOf(r) };
@@ -464,11 +464,11 @@ export default function SharingSettings() {
               <p id={`share-${r.id}`} tabIndex={-1} className="break-words text-base font-semibold outline-offset-4">
                 {r.viewer_email}
               </p>
-              <p className="text-base text-spruce/80">
+              <p className="text-base text-moss">
                 {paused ? 'Paused' : statusLabel(r.status)} · {pillarSummary(flagsOf(r))}
               </p>
-              {r.level && <p className="text-base text-spruce/80">{levelLabel}</p>}
-              {r.status === 'active' && viewsAvailable && <p className="text-base text-spruce/80">{accessText(r.viewer_email, lookDays)}</p>}
+              {r.level && <p className="text-base text-moss">{levelLabel}</p>}
+              {r.status === 'active' && viewsAvailable && <p className="text-base text-moss">{accessText(r.viewer_email, lookDays)}</p>}
 
               <fieldset className="mt-2">
                 <legend className="text-base font-medium">Change what they see</legend>

@@ -66,7 +66,7 @@ function RatingGroup({
       <div className="flex items-baseline justify-between">
         <legend className="text-sm font-semibold">{scale.label}</legend>
         {value !== null && (
-          <button type="button" className="text-sm text-spruce/70 underline underline-offset-4" onClick={() => onChange(null)}>
+          <button type="button" className="text-sm text-moss underline underline-offset-4" onClick={() => onChange(null)}>
             Clear {scale.label.toLowerCase()}
           </button>
         )}
@@ -352,7 +352,7 @@ export default function LogHabits() {
           <h2 id="home-city" className="font-semibold">
             Add your home city
           </h2>
-          <p className="mt-1 text-sm text-spruce/75">
+          <p className="mt-1 text-sm text-moss">
             It is used for the weather when you do not share your device location. You can still save without it.
           </p>
           <div className="mt-3">
@@ -367,7 +367,7 @@ export default function LogHabits() {
             <span aria-hidden className="text-sun">★ </span>
             {celebration}
           </p>
-          <p className="mt-1 text-spruce/80">Thank you for making time for yourself.</p>
+          <p className="mt-1 text-moss">Thank you for making time for yourself.</p>
         </div>
       )}
 
@@ -387,7 +387,7 @@ export default function LogHabits() {
           <p id="unsaved-title" className="font-semibold">
             You have unsaved changes for {longDate(date)}.
           </p>
-          <p className="mt-1 text-sm text-spruce/75">Save them before opening {longDate(pendingDate)}, or they will be lost.</p>
+          <p className="mt-1 text-sm text-moss">Save them before opening {longDate(pendingDate)}, or they will be lost.</p>
           <div className="mt-3 flex flex-wrap gap-2">
             <button type="button" onClick={saveThenSwitch} className={primaryBtn}>
               Save, then open {longDate(pendingDate)}
@@ -424,7 +424,7 @@ export default function LogHabits() {
               onChange={(e) => e.target.value && requestDate(e.target.value)}
             />
           </label>
-          <p className="mt-2 text-sm text-spruce/70" role="status">
+          <p className="mt-2 text-sm text-moss" role="status">
             {loadingDay ? 'Loading…' : isExisting ? `Editing your entry for ${longDate(date)}.` : `New entry for ${longDate(date)}.`}
           </p>
           {!loadingDay && (
@@ -548,7 +548,7 @@ export default function LogHabits() {
           </button>
           {dirty && !saving && <p className="text-sm font-medium text-sun">Unsaved changes</p>}
           {date === todayIso && (
-            <p className="text-sm text-spruce/70">Your browser may ask to share your location for the weather. Saying no is fine.</p>
+            <p className="text-sm text-moss">Your browser may ask to share your location for the weather. Saying no is fine.</p>
           )}
         </div>
         </fieldset>
@@ -568,7 +568,7 @@ export default function LogHabits() {
                   type="button"
                   onClick={() => requestDate(d)}
                   aria-current={d === date ? 'date' : undefined}
-                  aria-label={`${longDate(d)}: ${logged ? 'logged' : 'not logged'}`}
+                  aria-label={`${longDate(d)}: ${logged ? 'logged' : 'day off'}`}
                   className={`flex min-h-11 w-full flex-col items-center rounded-md border bg-white px-1 py-2 text-xs hover:bg-mist ${
                     d === date ? 'border-spruce' : 'border-line'
                   }`}
@@ -583,7 +583,7 @@ export default function LogHabits() {
             );
           })}
         </ul>
-        <p className="mt-2 text-sm text-spruce/70">A check mark means that day has an entry. Choose a day to open it.</p>
+        <p className="mt-2 text-sm text-moss">A check mark means that day has an entry. Choose a day to open it.</p>
         <div className="mt-6">
           <MonthCalendar dayNumbers={dayNumbers(allDates)} todayIso={todayIso} selected={date} onSelect={requestDate} />
         </div>

@@ -27,7 +27,7 @@ export default function CaregiverPlanCard({ name }: { name: string | null | unde
   return (
     <section aria-label="Caregiver plan" className="rounded-lg border border-line bg-white p-5">
       <p className="max-w-prose text-lg">{view.text}</p>
-      {view.note && <p className="mt-2 max-w-prose text-lg text-spruce/75">{view.note}</p>}
+      {view.note && <p className="mt-2 max-w-prose text-lg text-moss">{view.note}</p>}
       {view.cta === 'subscribe_caregiver' && view.ctaLabel && (
         <button
           type="button"

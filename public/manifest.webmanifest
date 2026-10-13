@@ -1,7 +1,7 @@
 {
   "name": "Build Your Pillars",
   "short_name": "Pillars",
-  "description": "Build your pillars of health: Eat, Sleep, Move, Balance. Gentle, private self-tracking.",
+  "description": "Build your pillars of health: Drink. Sleep. Move. Balance. Gentle, private self-tracking.",
   "id": "/",
   "start_url": "/dashboard",
   "scope": "/",

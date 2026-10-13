@@ -44,7 +44,7 @@ export default function HardDaySupport() {
               r.name
             )}
           </p>
-          <p className="text-sm text-spruce/80">{r.detail}</p>
+          <p className="text-sm text-moss">{r.detail}</p>
         </li>
       ))}
     </ul>
