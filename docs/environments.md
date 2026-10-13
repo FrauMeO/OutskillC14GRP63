@@ -5,7 +5,7 @@
 | Supabase project | PersonalHealthManager, ref `gzsawayrorlcjmpssalc` | BuildYourPillars-Test, ref `gabumzdkjpeqwhsezzts` (created 2026-10-12, $10/month, Pro org OlmstedDataPlayground, US East) |
 | Used by | buildyourpillars.com (the live site) | Vercel preview and local dev, the next beta round (Robert's anonymised Apple Health data), and first runs of Stripe test mode and Resend |
 | Accounts today | 13, all test accounts | none yet |
-| Migrations applied | 0001-0016, 0018, 0019, 0020 (0017 email not applied) | 0001, 0002, 0004-0016, 0018, 0019, 0020 (0003 skipped on purpose: it revokes `public.rls_auto_enable()`, which only exists on the production project; 0017 email not applied) |
+| Migrations applied | 0001-0020 (0017 email applied 2026-10-13 with Miah's approval; additive, tested on TEST first) | 0001, 0002, 0004-0020 (0003 skipped on purpose: it revokes `public.rls_auto_enable()`, which only exists on the production project; 0017 applied 2026-10-13 and its rolled-back test passed) |
 
 Parity check on 2026-10-12: tables and columns, row-level-security policies, table and function grants for anon/authenticated, and trigger counts are identical. The 30 shared functions are identical after removing comments and whitespace. Production has one extra function, `rls_auto_enable()`.
 
