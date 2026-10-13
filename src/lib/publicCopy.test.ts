@@ -83,7 +83,7 @@ describe('the public and product copy', () => {
     });
   }
 
-  for (const rel of ['src/components/PublicLayout.tsx', 'src/lib/brandCopy.ts', 'src/lib/siteMeta.ts']) {
+  for (const rel of ['src/components/PublicLayout.tsx', 'src/lib/brandCopy.ts', 'src/lib/siteMeta.ts', 'src/lib/welcomeBack.ts']) {
     it(`${rel} uses no banned word`, () => {
       expect(visibleStrings(read(rel)).flatMap(findBannedWords)).toEqual([]);
     });
@@ -101,6 +101,11 @@ describe('the public and product copy', () => {
     expect(landing).toContain('Sharing, on your terms');
     const terms = visibleStrings(readFileSync(join(pagesDir, 'Terms.tsx'), 'utf8')).join(' ');
     expect(terms).toContain('keep the app working and your data secure');
+  });
+
+  it('control: the welcome-back exception is exact, so a variant of it is still caught', () => {
+    expect(findBannedWords('We missed you. Welcome back.')).toEqual([]);
+    expect(findBannedWords('We missed you for five days. Welcome back.')).toEqual(['missed']);
   });
 
   it('control: the scan does catch a banned word placed in a page-shaped string', () => {

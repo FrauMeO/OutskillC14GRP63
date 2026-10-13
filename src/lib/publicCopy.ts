@@ -34,6 +34,7 @@ const TEST_COUNT_RE = /(?<![\d,.])(\d[\d,]*)\s+(?:automated\s+|unit\s+)?tests?\b
 /** Exact strings that are allowed to contain a banned word, each with the reason. Remove one only on Miah's say-so. */
 export const ALLOWED_EXCEPTIONS: readonly { text: string; why: string }[] = [
   { text: 'Is this for keeping someone safe?', why: 'The /sharing question Miah specified; the answer is no, and it is the FAQPage question.' },
+  { text: 'We missed you. Welcome back.', why: 'Approved welcome-back line (Miah, 2026-10-13): "missed" here is about the person, never about a day they did not log.' },
   // The demo video's deliberate "other apps say" line goes here if it is ever added to the code.
 ];
 
