@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Build Your Pillars</string>
+    <string name="title_activity_main">Build Your Pillars</string>
+    <string name="package_name">com.buildyourpillars.app</string>
+    <string name="custom_url_scheme">com.buildyourpillars.app</string>
+    <!-- Shown by Health Connect when the person taps "Privacy policy" in its permission screen.
+         Must be the same policy as the Play Store listing (Google Play Health Connect rule). -->
+    <string name="health_connect_privacy_policy_url">https://buildyourpillars.com/privacy</string>
+</resources>

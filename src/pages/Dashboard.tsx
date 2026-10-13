@@ -6,12 +6,15 @@ import { toISODate } from '../lib/dates';
 import PageHeader from '../components/PageHeader';
 import ProgressIndicator from '../components/ProgressIndicator';
 import TrendChart, { type TrendMetric } from '../components/TrendChart';
+import { isNetworkError, overlayPending } from '../lib/offlineQueue';
+import { loadDashboardCache, pendingEntries, saveDashboardCache } from '../lib/offlineSync';
 import { FEELINGS, RATING_SCALES } from '../lib/checkin';
 import type { GoalConfig } from '../lib/goals';
 import { OFFER_TEXT, checkinState, type DayRow } from '../lib/reflection';
 import { PILLARS } from '../lib/pillars';
 import AiReflectionCard from '../features/aiReflection/AiReflectionCard';
 import TodayWeather from '../components/TodayWeather';
+import SharedWithLine from '../components/SharedWithLine';
 import {
   CATEGORY_FIELDS,
   FULL_WEEK_DAYS,
@@ -45,7 +48,7 @@ function Card({ title, subtitle, accent, children }: { title: string; subtitle?:
     <section aria-label={title} className="relative overflow-hidden rounded-lg border border-line bg-white p-5 pl-6">
       <span className="absolute inset-y-0 left-0 w-1.5" style={{ background: accent }} aria-hidden />
       <h2 className="font-display text-xl font-bold">{title}</h2>
-      {subtitle && <p className="text-sm text-spruce/65">{subtitle}</p>}
+      {subtitle && <p className="text-sm text-moss">{subtitle}</p>}
       <div className="mt-3 space-y-4">{children}</div>
     </section>
   );
@@ -62,12 +65,12 @@ function GoalMetric({ cfg, row, goal, color }: { cfg: GoalConfig; row: Row | und
         <span className="text-sm font-medium">{cfg.label}</span>
         <span className="text-sm">
           {value === null ? (
-            <span className="text-spruce/60">Not logged</span>
+            <span className="text-moss">Day off</span>
           ) : (
             <>
               <strong className="tabular-nums">{fmtNumber(value, decimals)}</strong> {cfg.short}
               {goal !== null && (
-                <span className="text-spruce/60">
+                <span className="text-moss">
                   {' '}
                   of {fmtNumber(goal, decimals)}
                 </span>
@@ -99,7 +102,7 @@ function Value({ label, value, unit, decimals = 0 }: { label: string; value: num
     <div className="flex items-baseline justify-between gap-2 text-sm">
       <span className="font-medium">{label}</span>
       {value === null ? (
-        <span className="text-spruce/60">Not logged</span>
+        <span className="text-moss">Day off</span>
       ) : (
         <span>
           <strong className="tabular-nums">{fmtNumber(value, decimals)}</strong> {unit}
@@ -118,8 +121,8 @@ function RhythmBanner({ rhythm }: { rhythm: Rhythm }) {
       <h2 id="rhythm" className="font-display text-2xl font-bold">
         {title}
       </h2>
-      <p className="mt-1 text-spruce/75">{body}</p>
-      <p className="mt-1 text-sm text-spruce/60">
+      <p className="mt-1 text-moss">{body}</p>
+      <p className="mt-1 text-sm text-moss">
         Rest days are part of the rhythm: any {FULL_WEEK_DAYS} logged days in seven make a full week.
       </p>
       {!rhythm.loggedToday && (
@@ -153,15 +156,33 @@ export default function Dashboard() {
   const [goals, setGoals] = useState<{ goal_type: string; target_value: unknown }[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  // Set when the page shows the copy kept on this device (no connection): when it was saved.
+  const [offlineSavedAt, setOfflineSavedAt] = useState<string | null>(null);
   const [checkinOffer, setCheckinOffer] = useState<string | null>(null); // reflections row id
   const offerChecked = useRef(false);
 
   const todayIso = toISODate(new Date());
 
+  // Fills the page from the read-only copy kept on this device. False when there is none.
+  const showCached = useCallback(async (userId: string): Promise<boolean> => {
+    const cached = await loadDashboardCache(userId);
+    if (!cached) return false;
+    const waiting = await pendingEntries(userId); // days logged offline and not uploaded yet
+    setName(cached.name);
+    setAutoReflection(false);
+    setRows(overlayPending(cached.rows, waiting) as Row[]);
+    setStreakRows(overlayPending(cached.streakRows, waiting) as Row[]);
+    setGoals(cached.goals);
+    setOfflineSavedAt(cached.savedAt);
+    return true;
+  }, []);
+
   const load = useCallback(async () => {
     if (!user) return;
     setLoading(true);
     setError(null);
+    // With no connection at all, go straight to the copy on this device (no waiting for requests to fail).
+    if (!navigator.onLine && (await showCached(user.id))) return setLoading(false);
     const streakFields = ['log_date', ...Object.values(CATEGORY_FIELDS).flat()].join(', ');
     // RLS limits every query to the signed-in user's rows; no user_id filter is needed.
     const [profileRes, logsRes, streakRes, goalsRes] = await Promise.all([
@@ -173,16 +194,41 @@ export default function Dashboard() {
     ]);
     const firstError = profileRes.error ?? logsRes.error ?? streakRes.error ?? goalsRes.error;
     if (firstError) {
-      setError(firstError.message);
+      // No connection: show the read-only copy of this person's own last 30 days, if there is one.
+      const offline = !navigator.onLine || isNetworkError(firstError);
+      if (offline && (await showCached(user.id))) {
+        // shown below the header as "You are offline"
+      } else {
+        setError(
+          offline
+            ? 'You are offline, and nothing is saved on this device yet. Open the app once with a connection and your last days will be here next time.'
+            : firstError.message,
+        );
+      }
     } else {
+      setOfflineSavedAt(null);
       setName(profileRes.data?.full_name ?? null);
       setAutoReflection(profileRes.data?.auto_reflection ?? false);
-      setRows((logsRes.data ?? []) as unknown as Row[]);
-      setStreakRows((streakRes.data ?? []) as unknown as Row[]);
+      const freshRows = (logsRes.data ?? []) as unknown as Row[];
+      const freshStreak = (streakRes.data ?? []) as unknown as Row[];
+      setRows(freshRows);
+      setStreakRows(freshStreak);
       setGoals(goalsRes.data ?? []);
+      // Replace the on-device copy (own data only; see src/lib/offlineCache.ts).
+      void saveDashboardCache(
+        user.id,
+        {
+          name: profileRes.data?.full_name ?? null,
+          autoReflection: profileRes.data?.auto_reflection ?? false,
+          rows: freshRows,
+          streakRows: freshStreak,
+          goals: goalsRes.data ?? [],
+        },
+        todayIso,
+      );
     }
     setLoading(false);
-  }, [user, todayIso]);
+  }, [user, todayIso, showCached]);
 
   // Gentle check-in: decided by the rules in src/lib/reflection.ts (more than 10 sequential days of
   // check-ins, 7 of the last 14 harder, not offered in 14 days, setting on). Each offer is saved,
@@ -242,8 +288,8 @@ export default function Dashboard() {
       <>
         {header}
         <section className="max-w-xl rounded-lg border border-line bg-white p-6">
-          <h2 className="font-display text-2xl font-bold">Welcome! Let's log your first day.</h2>
-          <p className="mt-2 text-spruce/75">
+          <h2 className="font-display text-2xl font-bold">Welcome. Let's log your first day.</h2>
+          <p className="mt-2 text-moss">
             Your cards, charts and weekly rhythm fill in as you log. It takes about a minute.
           </p>
           <Link to="/habits" className="mt-4 inline-flex min-h-11 items-center rounded-md bg-spruce px-5 font-semibold text-mist hover:bg-spruce-soft">
@@ -282,6 +328,13 @@ export default function Dashboard() {
   return (
     <>
       {header}
+      {offlineSavedAt && (
+        <p role="status" className="mb-6 rounded-md border border-line bg-white px-4 py-3 text-sm text-moss">
+          You are offline. This is the view saved on this device on {new Date(offlineSavedAt).toLocaleString()}. You can
+          still log a day; it will upload when you are back online.
+        </p>
+      )}
+      <SharedWithLine />
       {checkinOffer && (
         <section aria-labelledby="gentle-checkin" className="mb-6 rounded-lg border border-bloom/40 bg-bloom/5 p-5">
           <h2 id="gentle-checkin" className="font-display text-xl font-bold">
@@ -336,7 +389,7 @@ export default function Dashboard() {
 
         <Card title={PILLARS.wellbeing.name} subtitle={PILLARS.wellbeing.subtitle} accent={COLORS.wellbeing}>
           {mood === null ? (
-            <p className="text-sm text-spruce/60">Mood not logged today.</p>
+            <p className="text-sm text-moss">Mood: day off today.</p>
           ) : (
             <p className="flex items-center gap-3">
               <span className="text-4xl" aria-hidden>
@@ -353,7 +406,7 @@ export default function Dashboard() {
             return (
               <div key={scale.key} className="flex items-baseline justify-between text-sm">
                 <span className="font-medium">{scale.label}</span>
-                {v === null ? <span className="text-spruce/60">Not logged</span> : <span className="font-semibold">{scale.levels[v - 1]}</span>}
+                {v === null ? <span className="text-moss">Day off</span> : <span className="font-semibold">{scale.levels[v - 1]}</span>}
               </div>
             );
           })}

@@ -190,7 +190,7 @@ export default function Goals() {
                 aria-describedby="target-unit"
                 aria-invalid={Boolean(formError)}
               />
-              <span id="target-unit" className="whitespace-nowrap text-sm text-spruce/70">
+              <span id="target-unit" className="whitespace-nowrap text-sm text-moss">
                 {cfg.unit}
               </span>
             </div>
@@ -233,11 +233,11 @@ export default function Goals() {
         </h2>
 
         {loading ? (
-          <p className="mt-4 text-sage" role="status">
+          <p className="mt-4 text-moss" role="status">
             Loading your goals…
           </p>
         ) : ordered.length === 0 ? (
-          <p className="mt-4 text-spruce/80">
+          <p className="mt-4 text-moss">
             No goals yet. Until you set one, the dashboard uses 30 minutes of exercise, 8 hours of sleep,
             and 2 liters of water.
           </p>
@@ -288,9 +288,9 @@ export default function Goals() {
                         <span className="font-display text-4xl font-bold tracking-tight">
                           {Number(goal.target_value)}
                         </span>{' '}
-                        <span className="text-spruce/70">{goal.unit}</span>
+                        <span className="text-moss">{goal.unit}</span>
                       </p>
-                      <p className="mt-1 text-sm text-spruce/60">
+                      <p className="mt-1 text-sm text-moss">
                         Set {new Date(goal.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                       </p>
 

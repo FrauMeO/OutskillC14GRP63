@@ -43,7 +43,7 @@ function Resources({ items }: { items: Resource[] }) {
               r.name
             )}
           </p>
-          <p className="text-sm text-spruce/80">{r.detail}</p>
+          <p className="text-sm text-moss">{r.detail}</p>
         </li>
       ))}
     </ul>
@@ -153,7 +153,7 @@ export default function Reflect() {
       A few questions about the last two weeks. It's optional, only you can see your answers, and you can stop at any time.
     </PageHeader>
   );
-  const footer = <p className="mt-8 border-t border-line pt-4 text-sm text-spruce/70">{FOOTER}</p>;
+  const footer = <p className="mt-8 border-t border-line pt-4 text-sm text-moss">{FOOTER}</p>;
   const errorNote = error && (
     <p role="alert" className="mb-4 rounded-md bg-alert/10 px-4 py-3 text-sm text-alert">
       {error}
@@ -164,7 +164,7 @@ export default function Reflect() {
     return (
       <div className="max-w-2xl">
         {header}
-        <p className="text-spruce/80">
+        <p className="text-moss">
           There are no right or wrong answers. Answer the way things have actually been, not the way you think they should be.
         </p>
         <div className="mt-6 flex flex-wrap gap-2">
@@ -222,7 +222,7 @@ export default function Reflect() {
         ) : (
           <section className="rounded-lg border border-line bg-white p-5">
             <p>{MESSAGES.short}</p>
-            <p className="mt-3 italic text-spruce/80">{encouragementFor(todayIso)}</p>
+            <p className="mt-3 italic text-moss">{encouragementFor(todayIso)}</p>
           </section>
         )}
         {footer}
@@ -266,7 +266,7 @@ export default function Reflect() {
       <section className="rounded-lg border border-line bg-white p-5">
         <p>{MESSAGES[tier]}</p>
         {res.tier.length > 0 && <Resources items={res.tier} />}
-        <p className="mt-4 italic text-spruce/80">{encouragementFor(todayIso)}</p>
+        <p className="mt-4 italic text-moss">{encouragementFor(todayIso)}</p>
       </section>
       <Link to="/dashboard" className={`${quietBtn} inline-flex items-center`}>
         Back to your dashboard

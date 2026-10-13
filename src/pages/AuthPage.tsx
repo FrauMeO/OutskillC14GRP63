@@ -3,7 +3,12 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import CityPicker from '../components/CityPicker';
 import AuthShell from '../components/AuthShell';
+import SignupWelcome from '../components/SignupWelcome';
+import WaitlistForm from '../components/WaitlistForm';
 import { authProblem, type AuthProblem } from '../lib/authErrors';
+import { birthYearOptions, MIN_AGE, MONTHS, validateBirth, validateDisplayName } from '../lib/signup';
+import { PENDING_KEY, pendingMetadata, SIGNUP_CONSENT_ERROR, type PendingConsent } from '../lib/consent';
+import { COLLECT_USE, consentHash, CURRENT_VERSION, EMAIL_MARKETING, LINK_TEXT } from '../lib/consentTexts';
 import type { HomeCity } from '../lib/location';
 
 type Mode = 'login' | 'signup';
@@ -14,7 +19,7 @@ const COPY: Record<Mode, { title: string; action: string; busy: string }> = {
 };
 
 const inputClass =
-  'mt-1.5 block w-full rounded-md border border-line bg-white px-3 py-2.5 text-spruce placeholder:text-sage focus:border-current focus:outline-none';
+  'mt-1.5 block w-full rounded-md border border-line bg-white px-3 py-2.5 text-spruce placeholder:text-moss focus:border-current focus:outline-none';
 
 export default function AuthPage({ mode }: { mode: Mode }) {
   const navigate = useNavigate();
@@ -25,9 +30,14 @@ export default function AuthPage({ mode }: { mode: Mode }) {
   const [home, setHome] = useState<(HomeCity & { label: string }) | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<AuthProblem | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [birthMonth, setBirthMonth] = useState('');
+  const [birthYear, setBirthYear] = useState('');
+  const [healthConsent, setHealthConsent] = useState(false);
+  const [marketing, setMarketing] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -43,13 +53,42 @@ export default function AuthPage({ mode }: { mode: Mode }) {
       return;
     }
 
+    const nameCheck = validateDisplayName(fullName);
+    if (!nameCheck.ok) {
+      setSubmitting(false);
+      return setError({ text: nameCheck.message, actions: [] });
+    }
+    const today = new Date();
+    const birth = validateBirth(birthMonth ? Number(birthMonth) : null, birthYear ? Number(birthYear) : null, today);
+    if (!birth.ok) {
+      setSubmitting(false);
+      return setError({ text: birth.message, actions: [] });
+    }
+
+    // Two separate, unticked choices (docs/privacy-consent-spec.md). The ledger cannot be written
+    // until there is a session, so the choices travel in the sign-up metadata and are recorded
+    // once, after the first sign-in (PendingConsentRecorder).
+    if (!healthConsent) {
+      setSubmitting(false);
+      return setError({ text: SIGNUP_CONSENT_ERROR, actions: [] });
+    }
+    const choices: PendingConsent[] = [{ kind: 'collect_use', version: CURRENT_VERSION.collect_use, hash: await consentHash('collect_use') }];
+    if (marketing) choices.push({ kind: 'email_marketing', version: CURRENT_VERSION.email_marketing, hash: await consentHash('email_marketing') });
+
     const { data, error: err } = await supabase.auth.signUp({
       email,
       password,
       options: {
         // The sign-up trigger copies these into profiles; the city is optional.
         data: {
-          full_name: fullName.trim(),
+          full_name: nameCheck.name,
+          birth_month: String(birth.month),
+          birth_year: String(birth.year),
+          // Consent is recorded by the sign-up trigger. Both are false unless ticked.
+          health_consent: healthConsent ? 'true' : 'false',
+          marketing_opt_in: marketing ? 'true' : 'false',
+          // What exactly was agreed to (version and wording hash), written to the consent ledger after sign-in.
+          [PENDING_KEY]: pendingMetadata(choices),
           ...(home && {
             home_city: home.city,
             home_country_code: home.countryCode,
@@ -74,19 +113,63 @@ export default function AuthPage({ mode }: { mode: Mode }) {
   const copy = COPY[mode];
 
   return (
-    <AuthShell title={copy.title}>
+    <AuthShell title={copy.title} intro={mode === 'signup' ? <SignupWelcome /> : undefined}>
       <form onSubmit={handleSubmit} className="mt-8 space-y-5" noValidate={false}>
         {mode === 'signup' && (
           <label className="block text-sm font-medium">
-            Full name
+            What should we call you?
             <input
               className={inputClass}
               type="text"
-              autoComplete="name"
+              autoComplete="nickname"
+              maxLength={40}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
+              aria-describedby="name-help"
             />
+            <span id="name-help" className="mt-1.5 block text-xs text-moss">
+              One name only, like Sam. It does not need to be your real name, and please do not use your full name.
+            </span>
           </label>
+        )}
+
+        {mode === 'signup' && (
+          <fieldset>
+            <legend className="text-sm font-medium">Month and year you were born</legend>
+            <div className="mt-1.5 grid grid-cols-2 gap-3">
+              <select
+                aria-label="Birth month"
+                className={inputClass.replace('mt-1.5', 'mt-0')}
+                value={birthMonth}
+                onChange={(e) => setBirthMonth(e.target.value)}
+                required
+              >
+                <option value="">Month</option>
+                {MONTHS.map((m, i) => (
+                  <option key={m} value={i + 1}>
+                    {m}
+                  </option>
+                ))}
+              </select>
+              <select
+                aria-label="Birth year"
+                className={inputClass.replace('mt-1.5', 'mt-0')}
+                value={birthYear}
+                onChange={(e) => setBirthYear(e.target.value)}
+                required
+              >
+                <option value="">Year</option>
+                {birthYearOptions(new Date()).map((y) => (
+                  <option key={y} value={y}>
+                    {y}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <span className="mt-1.5 block text-xs text-moss">
+              You must be {MIN_AGE} or older. Only the month and year, never the day. We use it to work out your plan, nothing else.
+            </span>
+          </fieldset>
         )}
 
         {mode === 'signup' &&
@@ -95,7 +178,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
               <span className="font-medium">Home city</span>
               <p className="mt-1.5 flex items-center justify-between rounded-md border border-line bg-white px-3 py-2.5">
                 {home.label}
-                <button type="button" className="text-spruce/70 underline underline-offset-4" onClick={() => setHome(null)}>
+                <button type="button" className="text-moss underline underline-offset-4" onClick={() => setHome(null)}>
                   Change
                 </button>
               </p>
@@ -103,7 +186,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
           ) : (
             <div>
               <CityPicker label="Home city (optional)" onPick={setHome} />
-              <span className="mt-1.5 block text-xs text-spruce/60">
+              <span className="mt-1.5 block text-xs text-moss">
                 Used for local weather on days you do not share your location. You can add it later in Settings.
               </span>
             </div>
@@ -125,17 +208,68 @@ export default function AuthPage({ mode }: { mode: Mode }) {
           Password
           <input
             className={inputClass}
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-            minLength={6}
+            minLength={mode === 'signup' ? 8 : undefined}
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           {mode === 'signup' && (
-            <span className="mt-1.5 block text-xs text-spruce/60">At least 6 characters.</span>
+            <span className="mt-1.5 block text-xs text-moss">At least 8 characters.</span>
           )}
         </label>
+        <label className="flex min-h-11 items-center gap-3 text-base">
+          <input
+            type="checkbox"
+            className="h-5 w-5 accent-spruce"
+            checked={showPassword}
+            onChange={(e) => setShowPassword(e.target.checked)}
+          />
+          Show password
+        </label>
+        {mode === 'signup' && (
+          <fieldset className="space-y-4 text-lg">
+            <legend className="sr-only">Your choices</legend>
+            {/* Two separate choices, both unticked. The words and their hash are recorded in the consent ledger. */}
+            <div className="rounded-md border border-line bg-white p-4">
+              <h2 className="font-display text-xl font-bold">{COLLECT_USE.heading}</h2>
+              <p className="mt-2">
+                {COLLECT_USE.body.split(LINK_TEXT)[0]}
+                <a href="/health-data-privacy" target="_blank" rel="noopener noreferrer" className="font-semibold underline underline-offset-4">
+                  {LINK_TEXT}
+                </a>
+                {COLLECT_USE.body.split(LINK_TEXT)[1]}
+              </p>
+              <label className="mt-3 flex min-h-11 items-start gap-3">
+                <input
+                  type="checkbox"
+                  required
+                  checked={healthConsent}
+                  onChange={(e) => setHealthConsent(e.target.checked)}
+                  className="mt-1 size-6 shrink-0 accent-spruce"
+                />
+                <span>{COLLECT_USE.label}</span>
+              </label>
+            </div>
+            <div className="rounded-md border border-line bg-white p-4">
+              <label className="flex min-h-11 items-start gap-3">
+                <input
+                  type="checkbox"
+                  checked={marketing}
+                  onChange={(e) => setMarketing(e.target.checked)}
+                  className="mt-1 size-6 shrink-0 accent-spruce"
+                />
+                <span>
+                  <span className="font-semibold">Optional. </span>
+                  {EMAIL_MARKETING.label}
+                </span>
+              </label>
+              <p className="mt-1 pl-9 text-base text-moss">{EMAIL_MARKETING.note}</p>
+            </div>
+          </fieldset>
+        )}
+
         {mode === 'login' && (
           <p className="-mt-2 text-sm">
             <Link to="/forgot-password" state={{ email }} className="font-semibold text-spruce underline underline-offset-4">
@@ -183,7 +317,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
         </button>
       </form>
 
-      <p className="mt-6 text-sm text-spruce/75">
+      <p className="mt-6 text-sm text-moss">
         {mode === 'login' ? (
           <>
             New here?{' '}
@@ -200,6 +334,12 @@ export default function AuthPage({ mode }: { mode: Mode }) {
           </>
         )}
       </p>
+
+      {mode === 'signup' && (
+        <div className="mt-10">
+          <WaitlistForm />
+        </div>
+      )}
     </AuthShell>
   );
 }

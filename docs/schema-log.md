@@ -160,3 +160,75 @@ Applied as migration `more_feelings` after Miah approved. Loosening only: the al
 ## Not schema, but touches the data
 
 - `sample-data/seed_habit_logs.sql` (built by `scripts/build-demo-seed.mjs` since Prompt 3A) inserts 59 days of sample rows, check-ins, locations and matching `daily_conditions` for `msolmsted+demo@gmail.com` using `on conflict (user_id, log_date) do update`. It was run on the new project on 2026-09-25 (59 rows).
+
+## 0010_care_shares and 0011_waitlist (2026-10-12)
+
+Both applied to PersonalHealthManager (`gzsawayrorlcjmpssalc`) as migrations `care_shares` and `waitlist` after Miah approved the design. Additive only; nothing existing changed.
+
+### What changed
+- New table `care_shares` (owner invites a viewer by email; pending, active or revoked; the owner picks Eat, Sleep, Move and Balance, with Balance off by default). RLS gives select to the owner and the viewer only, and the table has no write policies: every change goes through security-definer functions `create_care_share`, `update_care_share`, `accept_care_share`, `end_care_share`. Viewers read through `followed_people`, `shared_days` (permitted columns only, days with something shared logged, 93-day cap) and `shared_goals`; they never get select access to `habit_logs`, and notes, feelings and locations are never returned. Limits: 5 open shares per owner; accepting needs a confirmed email that matches the invite.
+- New table `waitlist` (email, want_ios, want_android) with RLS on and no policies; signed-out visitors join through `join_waitlist`, which returns nothing so it cannot reveal whether an address is already listed. Email and store choice are all that is kept.
+
+### Verified
+- `supabase/tests/care_shares_test_after_0010.sql` (rolled back): stranger sees 0 shares and 0 days and cannot accept or end; an unconfirmed or different account cannot accept; the viewer sees 0 days before accepting and 1 after (the mood-only day stays hidden until Balance is shared, then 2 days and mood 4); notes and feelings are not returnable; direct inserts and flag updates by the viewer are blocked; turning Move off removes steps and the steps goal; ending the share returns 0 days.
+- `supabase/tests/waitlist_test_after_0011.sql` (rolled back): anon can join, bad email and no-store are blocked, repeat joins merge the store flags into one row, anon and signed-in users read 0 rows and cannot insert directly.
+- Not yet verified: the security advisor result after these migrations (see the session report), and the screens (built by separate agents).
+
+## 0012_delete_my_account, 0013_email_consent, 0014_review_fixes (2026-10-12)
+
+All applied to PersonalHealthManager after Miah's go-ahead; each tested in a rolled-back block.
+- `delete_my_account()`: deletes the caller's auth user; every user table cascades (checked via pg_constraint). Test: other user's rows untouched, anon blocked.
+- Consent: `profiles.marketing_opt_in`, `marketing_opt_in_at`, `health_consent_at` (set by the sign-up trigger only when the form sends the string 'true'); `waitlist.consent_at`; `join_waitlist` now takes `p_consent` and refuses without it.
+- Review fixes (from `docs/security-review-2026-10-12.md`): invitations expire after 14 days and match the confirmed address on `auth.users` (not the token's email claim); viewers read pending invites through `followed_people()` only; per-owner advisory lock on the 5-share limit; names capped at 100; anon loses all privileges on the health tables and signed-in users lose TRUNCATE/REFERENCES/TRIGGER; a repeat waiting-list sign-up keeps the first consent time.
+- Known and left: no double opt-in on the waiting list (send one confirming email before any launch mail); consent columns are client-writable (acceptable for marketing, weak evidence for Art. 9 consent: confirm with a lawyer); delete needs no re-authentication; leaked-password protection is a Supabase Auth dashboard setting, still off.
+
+## 0015_care_sharing_v2 (2026-10-12)
+
+Written, not yet applied (Miah's main session applies and tests it). Contract: `docs/care-sharing-v2-contract.md`. Additive except that `followed_people()` is dropped and recreated (a function's return type cannot change in place).
+
+### What changed
+- `care_shares` gains `level` (`presence`, `summary` or `detail`; new shares start at `presence`), `paused_at` (set while paused) and `last_confirmed_at` (default now). Shares that already exist are set to `detail` once, which is what their viewers already see.
+- New table `care_share_views` (`share_id`, `viewed_on`, `views`; one row per share per day, the counter goes up on repeat looks). RLS lets only the owner of the share read it; clients cannot insert, update or delete. Index on `share_id`.
+- New functions `set_care_share_options(p_id, p_level, p_paused)` and `confirm_care_share(p_id)` (owner only; a null argument leaves that setting alone; nothing notifies anyone). The 90-day re-confirmation is stored and offered only; nothing is enforced server-side.
+- `shared_days` keeps its signature and columns but is now volatile (it records a view). Paused returns nothing; `presence` and `summary` return the logged days with every value null; `detail` is the old behaviour.
+- New `shared_week_summary(p_owner)` returns (`pillar`, `days_logged`, `trend`) with trend words only: `not_enough_days` under 4 logged days this week or 10 in the owner's own 56-day baseline, otherwise `about_usual`, `a_little_lower` or `a_little_higher` at 10% of the baseline mean. Uses the database's `current_date`. Empty if paused, not active, or `presence`.
+- `followed_people()` appends `level` and `paused`. `shared_goals` returns rows only at `detail` and not paused.
+
+### Verified
+- Not yet run. Test to run after applying: `supabase/tests/care_sharing_v2_test_after_0015.sql` (rolled back; expected result line in the comment at its end).
+
+## 0015_care_sharing_v2, 0016_signup_name_and_birth, 0018_billing (2026-10-12)
+All applied to PersonalHealthManager and tested in rolled-back blocks.
+- 0015: care_shares gains level (presence/summary/detail; existing shares carried over as detail), paused_at, last_confirmed_at; care_share_views (owner-readable access log, one row per share per day, written only by the viewer functions); set_care_share_options, confirm_care_share, shared_week_summary; shared_days / shared_goals / followed_people updated. Test `care_sharing_v2_test_after_0015.sql` matched its expected line.
+- 0016: profiles.birth_month / birth_year (both or neither; under 16 refused by the sign-up trigger); the sign-up name is one display name (40 characters).
+- 0018: app_settings (billing_enforced = false), customers, subscriptions, stripe_events, plan_from_birth, plan_for (server only), my_entitlement, viewer_may_view, profile_birth_needed. Verified live (rolled back): beta gives full access; with enforcement on, 60+ free, under-60 none until an active subscription, a legacy account is asked for its birth month and year, a caregiver subscription grants viewing; clients cannot write settings or subscriptions or call plan_for. NOT yet done: calling viewer_may_view inside shared_days / shared_week_summary / shared_goals (docs/billing.md), so flipping billing_enforced does not yet gate caregivers.
+
+## 0019_ai_consent (2026-10-12)
+
+Written, not yet applied (Miah's main session applies and tests it). Additive.
+- `profiles.ai_consent_at` and `ai_consent_version` (both null, or both set): proof the person said yes to the AI reflection wording `CONSENT_VERSION` (src/lib/aiConsent.ts). A guard trigger stops the browser editing them directly (the earlier consent columns in 0013 are client-writable; these are not).
+- `set_ai_consent(p_granted, p_version)`: the signed-in person records or withdraws (withdraw clears both). A repeat yes to the same version keeps the first time. Revoked from public and anon.
+- `ai_call_log` (RLS on, no policies, no grants) and `ai_consume_call(p_version)`: one call from the Edge Function with the person's own login answers `ok`, `no_consent` or `rate_limited` (20 calls in any hour) and records the call. A table rather than memory, because Edge Function instances are short-lived and side by side.
+- Edge Function `daily-reflection` now refuses with 403 (no consent) or 429 (rate limit) and the fixed message, and fails closed (503) if the check cannot run. Deploy it only after this migration is applied.
+- Test: `supabase/tests/ai_consent_test_after_0019.sql` (expected result line in its header). Run once against a scratch local Postgres with stubbed auth and profiles; not yet run on Supabase.
+
+## 0020_consent_ledger (2026-10-12)
+
+Written, not yet applied (Miah's main session applies it and runs `supabase/tests/consent_ledger_test_after_0020.sql`). Spec: `docs/privacy-consent-spec.md`. Additive, except that `handle_new_user()` is replaced.
+
+### What changed
+- New table `consents`: append-only ledger (identity id, user_id cascade, kind in `collect_use`, `share_caregiver`, `ai_processing`, `email_marketing`, version, granted, text_hash of 64 lower-case hex digits, share_id for `share_caregiver` only, details jsonb under 2000 characters, created_at). RLS: select own rows only. Clients have no insert, update, delete or truncate; a trigger also refuses updates and truncate for everyone. Rows leave only with the account (cascade). The spec sketch called this `consent_events`; Miah's brief named a `consents` ledger with a `record_consent(p_kind, p_version, p_granted, p_text_hash, p_share_id)` function, so that shape is built, plus an optional sixth argument `p_details` (what was agreed to: pillars, level, recipient).
+- `record_consent(...)`: security definer, uses `auth.uid()` only. Checks kind, version (1 to 1000), hash format, the share belongs to the caller (for `share_caregiver`), and a limit of 60 changes an hour. For `email_marketing` it also sets `profiles.marketing_opt_in` and its timestamp; for `collect_use` it sets or clears `profiles.health_consent_at`. Returns the new row id.
+- `my_consents()`: latest row per kind (per share for `share_caregiver`), runs as the caller.
+- New table `privacy_requests` (type access, delete, correct, restrict, object, withdraw, list_third_parties or appeal; status; `due_at` = created_at + 30 days; extension, answer and outcome fields; founders' `notes`). RLS: select own rows, and `notes` is not granted to clients (column grant). `create_privacy_request(p_type, p_details)` allows 5 open at a time. `my_privacy_requests()` returns the safe columns. Decision (earlier): the spec sketched a founders-only table with no client access; Miah asked for own-row access and a 30-day clock in the app, so clients can create and read their own.
+- On account deletion the consents cascade, but the `privacy_requests` rows stay (spec section 7: the request log is kept) with the person unlinked (`user_id` set null) and `details` cleared by a trigger on `auth.users`. Request log retention (24 months) still needs a job.
+- `handle_new_user()` replaced: minimum age 18 (was 16 in 0016). Everything else is copied unchanged from 0016. Accounts that already exist are not touched.
+
+### Reverses an earlier decision
+- Minimum age 16 (0016, Prompt "sign-up name and birth") becomes 18 everywhere, on Miah's decision of 2026-10-12 (India's DPDP Act treats under-18s as children). Existing 16 and 17 year old accounts, if any, are not removed; decide separately.
+
+### Verified
+- `consent_ledger_test_after_0020.sql` run against a scratch local PostgreSQL 17 (stub `auth` schema and roles, migrations 0001 to 0018 and 0020; not the live project): matched its expected line, including controls. Not yet run on PersonalHealthManager. Security advisor not yet run on it.
+
+### Not done (see the status table in the spec)
+- A `consent_texts` table checking the hash against stored wording; `has_consent` and the insert policies on `habit_logs`, `goals`, `reflections`; the AI gate in the edge function and `set_ai_consent` calling `record_consent`; a withdraw dialog that pauses saving; export of `consents` in the download; retention jobs.

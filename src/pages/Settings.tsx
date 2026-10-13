@@ -7,6 +7,15 @@ import CityPicker from '../components/CityPicker';
 import type { HomeCity } from '../lib/location';
 import { exportFileName, logsToCsv, toJson, type ExportData } from '../lib/export';
 import { toISODate } from '../lib/dates';
+import { ABOUT_STORY, foundersLine } from '../lib/about';
+import { validateDisplayName } from '../lib/signup';
+import SharingSettings from '../components/SharingSettings';
+import DeleteAccount from '../components/DeleteAccount';
+import PrivacyCenter from '../components/PrivacyCenter';
+import EmailPreferences from '../components/EmailPreferences';
+import AiConsentSetting from '../components/AiConsentSetting';
+import ReminderSetting from '../components/ReminderSetting';
+import HealthImport from '../components/HealthImport';
 import { AI_REFLECTION_ENABLED } from '../features/aiReflection/AiReflectionCard';
 
 export default function Settings() {
@@ -57,14 +66,15 @@ export default function Settings() {
     if (!user) return;
     setDownloading(kind);
     setDownloadStatus(null);
-    const [profile, logs, goals, conditions, reflections] = await Promise.all([
+    const [profile, logs, goals, conditions, reflections, shares] = await Promise.all([
       supabase.from('profiles').select('*').eq('id', user.id).maybeSingle(),
       supabase.from('habit_logs').select('*').order('log_date'),
       supabase.from('goals').select('*'),
       supabase.from('daily_conditions').select('*').order('date'),
       supabase.from('reflections').select('*').order('offered_on'),
+      supabase.from('care_shares').select('*').eq('owner_id', user.id).order('created_at'),
     ]);
-    const failed = profile.error ?? logs.error ?? goals.error ?? conditions.error ?? reflections.error;
+    const failed = profile.error ?? logs.error ?? goals.error ?? conditions.error ?? reflections.error ?? shares.error;
     if (failed) {
       setDownloading(null);
       setDownloadStatus({ kind: 'error', text: `Could not gather your data: ${failed.message}` });
@@ -76,6 +86,7 @@ export default function Settings() {
       goals: goals.data ?? [],
       daily_conditions: conditions.data ?? [],
       reflections: reflections.data ?? [],
+      care_shares: shares.data ?? [],
     };
     const text = kind === 'json' ? toJson(data, user.email ?? null, new Date().toISOString()) : logsToCsv(data.habit_logs);
     const url = URL.createObjectURL(new Blob([text], { type: kind === 'json' ? 'application/json' : 'text/csv' }));
@@ -135,9 +146,15 @@ export default function Settings() {
     if (!user) return;
     setSaving(true);
     setStatus(null);
+    const nameCheck = fullName.trim() ? validateDisplayName(fullName) : null;
+    if (nameCheck && !nameCheck.ok) {
+      setSaving(false);
+      setStatus({ kind: 'error', text: nameCheck.message });
+      return;
+    }
     const { error } = await supabase
       .from('profiles')
-      .upsert({ id: user.id, full_name: fullName.trim() || null });
+      .upsert({ id: user.id, full_name: nameCheck?.name ?? null });
     setSaving(false);
     setStatus(error ? { kind: 'error', text: error.message } : { kind: 'ok', text: 'Name saved.' });
   }
@@ -148,7 +165,7 @@ export default function Settings() {
 
       <section className="max-w-md rounded-lg border border-line bg-white p-6">
         <h2 className="font-display text-xl font-bold">Profile</h2>
-        <p className="mt-1 text-sm text-spruce/70">
+        <p className="mt-1 text-sm text-moss">
           Signed in as {user?.email} ·{' '}
           <Link to="/reset-password" className="font-semibold underline underline-offset-4">
             Change password
@@ -157,13 +174,15 @@ export default function Settings() {
 
         <form onSubmit={handleSave} className="mt-6 space-y-4">
           <label className="block text-sm font-medium">
-            Full name
+            What should we call you?
             <input
               className="mt-1.5 block w-full rounded-md border border-line px-3 py-2.5 focus:border-current focus:outline-none"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              autoComplete="name"
+              autoComplete="nickname"
+              maxLength={40}
             />
+            <span className="mt-1.5 block text-xs text-moss">One name only. It does not need to be your real name.</span>
           </label>
           <button
             type="submit"
@@ -184,7 +203,7 @@ export default function Settings() {
         <h2 id="home-city" className="font-display text-xl font-bold">
           Home city
         </h2>
-        <p className="mt-1 text-sm text-spruce/70">
+        <p className="mt-1 text-sm text-moss">
           {homeCity ? `Currently ${homeCity}.` : 'Not set.'} Used for the weather on days you do not share your device
           location. Only the city and a location rounded to about 11 km are stored.
         </p>
@@ -206,15 +225,18 @@ export default function Settings() {
           <h2 id="ai-settings" className="font-display text-xl font-bold">
             Daily reflection
           </h2>
-          <p className="mt-1 text-sm text-spruce/70">
+          <p className="mt-1 text-sm text-moss">
             Choose when the few gentle sentences about your day are written. Either way, only today’s numbers, ratings and
             feelings are sent to Claude (Anthropic), never your name, email, location or notes, and nothing is saved.
           </p>
+          <div className="mt-4">
+            <AiConsentSetting />
+          </div>
           <label className="mt-4 flex min-h-11 items-center gap-3">
             <input type="checkbox" className="h-5 w-5" checked={autoOn} onChange={(e) => toggleAuto(e.target.checked)} />
             <span className="font-medium">Write my daily reflection automatically after I log</span>
           </label>
-          <p className="mt-1 text-sm text-spruce/70">
+          <p className="mt-1 text-sm text-moss">
             {autoOn
               ? 'On: each time you log or change today, a fresh reflection is waiting on your Dashboard.'
               : 'Off: the reflection is written only when you ask for it on the Dashboard.'}
@@ -231,7 +253,7 @@ export default function Settings() {
         <h2 id="reflection" className="font-display text-xl font-bold">
           Gentle check-ins
         </h2>
-        <p className="mt-1 text-sm text-spruce/70">
+        <p className="mt-1 text-sm text-moss">
           After more than 10 days in a row of check-ins, if many of them felt harder, the app may offer a short, optional
           moment to reflect on the last two weeks. At most once every 14 days. Only you can see your answers.
         </p>
@@ -273,7 +295,7 @@ export default function Settings() {
         <h2 id="your-data" className="font-display text-xl font-bold">
           Your data
         </h2>
-        <p className="mt-1 text-sm text-spruce/70">
+        <p className="mt-1 text-sm text-moss">
           Everything you have logged belongs to you. Download it any time: your days, notes, goals, the weather for each
           day, and your settings. Nothing is sent anywhere else; the file is saved straight to this device.
         </p>
@@ -300,6 +322,46 @@ export default function Settings() {
             {downloadStatus.text}
           </p>
         )}
+      </section>
+
+      <PrivacyCenter />
+
+      <section aria-labelledby="plan" className="mt-6 max-w-md rounded-lg border border-line bg-white p-6">
+        <h2 id="plan" className="font-display text-xl font-bold">
+          Your plan
+        </h2>
+        <p className="mt-2 text-sm text-moss">See what you pay, if anything. Free for everyone 60 and over.</p>
+        <Link to="/plan" className="mt-3 inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+          See my plan
+        </Link>
+      </section>
+
+      <section aria-labelledby="appt" className="mt-6 max-w-md rounded-lg border border-line bg-white p-6">
+        <h2 id="appt" className="font-display text-xl font-bold">
+          For a doctor visit
+        </h2>
+        <p className="mt-2 text-sm text-moss">A one-page summary of your last 30 or 90 days that you can print or save. It uses only what you logged, and it never leaves your device.</p>
+        <Link to="/appointment-summary" className="mt-3 inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+          Summary for my appointment
+        </Link>
+      </section>
+
+      <SharingSettings />
+
+      <EmailPreferences />
+
+      <ReminderSetting />
+
+      <HealthImport />
+
+      <DeleteAccount />
+
+      <section aria-labelledby="about" className="mt-6 max-w-md rounded-lg border border-line bg-white p-6">
+        <h2 id="about" className="font-display text-xl font-bold">
+          About Build Your Pillars
+        </h2>
+        <p className="mt-2 text-sm text-moss">{ABOUT_STORY}</p>
+        <p className="mt-2 text-sm text-moss">Founders: {foundersLine()}.</p>
       </section>
 
       <button

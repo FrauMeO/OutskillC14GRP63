@@ -1,0 +1,99 @@
+# Compiles the iPhone app in the cloud WITHOUT signing (unsigned simulator build plus an unsigned
+# Release compile check). Run by hand only: macOS minutes cost about 10 times a Linux minute.
+#
+# What this proves: the code and plugins compile for iOS with the current Xcode.
+# What it does NOT give you: an installable iPhone app or a TestFlight build. That needs signing, which
+# needs an Apple Developer account and credentials stored as GitHub secrets. TODO (founders, after
+# Apple Developer enrolment). Names below are suggestions only; none exist yet and none are invented here:
+#   APPLE_TEAM_ID, APP_STORE_CONNECT_API_KEY_ID, APP_STORE_CONNECT_API_ISSUER_ID,
+#   APP_STORE_CONNECT_API_KEY_P8 (the .p8 key), IOS_DISTRIBUTION_CERT_P12, IOS_DISTRIBUTION_CERT_PASSWORD,
+#   IOS_PROVISIONING_PROFILE (with the HealthKit capability).
+name: Mobile iOS unsigned build
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: mobile-ios-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  ios-unsigned:
+    runs-on: macos-26 # default Xcode 26.x, which Apple requires for App Store uploads in 2026
+    timeout-minutes: 45
+    permissions:
+      contents: read # checkout only
+    env:
+      VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+      VITE_HEALTH_IMPORT: ${{ vars.VITE_HEALTH_IMPORT }}
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Check the build variables are set
+        run: |
+          if [ -z "$VITE_SUPABASE_URL" ] || [ -z "$VITE_SUPABASE_PUBLISHABLE_KEY" ]; then
+            echo "::error::Set the repository variables VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY first."
+            exit 1
+          fi
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install web dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build the web app
+        run: npm run build
+
+      - name: Copy the web app into the iOS project
+        run: npx cap sync ios
+
+      - name: Show the Xcode version
+        run: xcodebuild -version
+
+      - name: Build for the iOS Simulator (unsigned)
+        run: |
+          xcodebuild build \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build/sim \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Compile the Release build for a real iPhone (unsigned, compile check only)
+        run: |
+          xcodebuild build \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build/device \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Zip the simulator app
+        run: |
+          cd build/sim/Build/Products/Debug-iphonesimulator
+          zip -r -q "$GITHUB_WORKSPACE/BuildYourPillars-simulator.zip" App.app
+
+      - name: Upload the simulator app
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: build-your-pillars-ios-simulator-app
+          path: BuildYourPillars-simulator.zip
+          if-no-files-found: error
+          retention-days: 14

@@ -9,3 +9,26 @@ dist
 
 # macOS
 .DS_Store
+
+# Mobile apps (Capacitor). Never commit signing keys or build output.
+*.keystore
+*.jks
+*.p12
+*.mobileprovision
+*.cer
+keystore.properties
+local.properties
+google-services.json
+GoogleService-Info.plist
+/android/app/build/
+/android/.gradle/
+/android/build/
+/ios/App/build/
+/ios/App/Pods/
+/ios/DerivedData/
+*.apk
+*.aab
+*.ipa
+*.xcarchive
+.test-accounts/
+.env*.local

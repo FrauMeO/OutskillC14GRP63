@@ -23,9 +23,9 @@ describe('the last four weeks', () => {
   it('counts logged days and days per pillar, and ignores older days (control)', () => {
     const o = lastFourWeeks([...rows, day(-40, { sleep_hours: 7 })], today);
     expect(o.loggedDays).toBe(25); // days -27..0; the day 40 days back is left out
-    expect(o.byPillar.map((p) => p.name)).toEqual(['Eat', 'Sleep', 'Move', 'Balance']);
+    expect(o.byPillar.map((p) => p.name)).toEqual(['Drink', 'Sleep', 'Move', 'Balance']);
     expect(o.byPillar.find((p) => p.name === 'Sleep')!.days).toBe(o.loggedDays);
-    expect(o.byPillar.find((p) => p.name === 'Eat')!.days).toBe(0);
+    expect(o.byPillar.find((p) => p.name === 'Drink')!.days).toBe(0);
   });
 });
 

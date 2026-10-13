@@ -126,8 +126,7 @@ export function weeklyRhythm(rows: (Row & { log_date: string })[], todayIso: str
 export function rhythmText(r: Rhythm): { title: string; body: string } {
   const days = (n: number) => `${n} ${n === 1 ? 'day' : 'days'}`;
   if (r.fullWeek) {
-    const run = r.weeksInRow >= 2 ? ` That is ${r.weeksInRow} full weeks in a row.` : '';
-    return { title: 'A full week', body: `You logged ${days(r.daysThisWeek)} in the last seven.${run}` };
+    return { title: 'A full week', body: `You logged ${days(r.daysThisWeek)} in the last seven.` };
   }
   // Weeks before this one that were full, said as something to be glad of.
   const before =

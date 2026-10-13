@@ -19,6 +19,9 @@ import {
 } from '../lib/checkin';
 import { chooseLocation, cityNameFor, deviceCoordinates, type HomeCity, type LoggedLocation } from '../lib/location';
 import { ensureConditions } from '../lib/conditions';
+import { useDataSaver } from '../lib/useDataSaver';
+import { UPLOAD_PENDING_TEXT, isNetworkError } from '../lib/offlineQueue';
+import { queueHabitLog } from '../lib/offlineSync';
 import MonthCalendar from '../components/MonthCalendar';
 import { setUnsaved } from '../lib/unsaved';
 import { celebrationText, dayNumbers, encouragementLine, isCelebrationEntry, isEncouragementEntry } from '../lib/milestones';
@@ -63,7 +66,7 @@ function RatingGroup({
       <div className="flex items-baseline justify-between">
         <legend className="text-sm font-semibold">{scale.label}</legend>
         {value !== null && (
-          <button type="button" className="text-sm text-spruce/70 underline underline-offset-4" onClick={() => onChange(null)}>
+          <button type="button" className="text-sm text-moss underline underline-offset-4" onClick={() => onChange(null)}>
             Clear {scale.label.toLowerCase()}
           </button>
         )}
@@ -96,6 +99,7 @@ function RatingGroup({
 
 export default function LogHabits() {
   const { user } = useAuth();
+  const { saveData } = useDataSaver();
   const todayIso = toISODate(new Date());
 
   const [date, setDate] = useState(todayIso);
@@ -257,23 +261,47 @@ export default function LogHabits() {
     let device = null;
     if (isToday) {
       const coords = await deviceCoordinates();
-      if (coords) device = { ...coords, name: await cityNameFor(coords.latitude, coords.longitude) };
+      // The city-name lookup is an extra request to another service: skipped offline and with Data saver on.
+      if (coords) device = { ...coords, name: saveData || !navigator.onLine ? null : await cityNameFor(coords.latitude, coords.longitude) };
     }
     const place = chooseLocation({ isToday, device, existing: existingLocation, home });
 
-    const { error } = await supabase.from('habit_logs').upsert(
-      {
-        log_date: date,
-        ...fields,
-        // Entered or changed by hand, so the dashboard shows bars rather than Apple Health rings.
-        source: 'manual',
-        location_name: place?.name ?? null,
-        latitude: place?.latitude ?? null,
-        longitude: place?.longitude ?? null,
-        location_source: place?.source ?? null,
-      },
-      { onConflict: 'user_id,log_date' },
-    );
+    const row = {
+      log_date: date,
+      ...fields,
+      // Entered or changed by hand, so the dashboard shows bars rather than Apple Health rings.
+      source: 'manual',
+      location_name: place?.name ?? null,
+      latitude: place?.latitude ?? null,
+      longitude: place?.longitude ?? null,
+      location_source: place?.source ?? null,
+    };
+    // No connection, or a request that fails the way a weak signal does: keep the day on this device
+    // (src/lib/offlineQueue.ts) and upload it later. Other errors (the server said no) show as before.
+    let error: { message: string } | null = null;
+    if (navigator.onLine) {
+      try {
+        ({ error } = await supabase.from('habit_logs').upsert(row, { onConflict: 'user_id,log_date' }));
+      } catch (e) {
+        error = { message: e instanceof Error ? e.message : String(e) };
+      }
+    } else {
+      error = { message: 'Failed to fetch' };
+    }
+    if (error && (!navigator.onLine || isNetworkError(error))) {
+      const kept = user ? await queueHabitLog(user.id, row) : false;
+      setSaving(false);
+      if (!kept) {
+        setFlash({ kind: 'error', text: 'Could not save: there is no connection, and this device could not keep the day.' });
+        return false;
+      }
+      setBaseline(saved);
+      setIsExisting(true);
+      setExistingLocation(place);
+      setAllDates((d) => (d.includes(date) ? d : [...d, date].sort()));
+      setFlash({ kind: 'ok', text: UPLOAD_PENDING_TEXT });
+      return true;
+    }
     if (error) {
       setSaving(false);
       setFlash({ kind: 'error', text: `Could not save: ${error.message}` });
@@ -289,6 +317,8 @@ export default function LogHabits() {
     let weatherNote = '';
     if (!place) {
       weatherNote = ' Add a home city to include the weather.';
+    } else if (saveData) {
+      weatherNote = ' Weather skipped to save data.';
     } else {
       const result = await ensureConditions(place, date, todayIso);
       if (result === 'failed') {
@@ -322,7 +352,7 @@ export default function LogHabits() {
           <h2 id="home-city" className="font-semibold">
             Add your home city
           </h2>
-          <p className="mt-1 text-sm text-spruce/75">
+          <p className="mt-1 text-sm text-moss">
             It is used for the weather when you do not share your device location. You can still save without it.
           </p>
           <div className="mt-3">
@@ -337,7 +367,7 @@ export default function LogHabits() {
             <span aria-hidden className="text-sun">★ </span>
             {celebration}
           </p>
-          <p className="mt-1 text-spruce/80">Thank you for making time for yourself.</p>
+          <p className="mt-1 text-moss">Thank you for making time for yourself.</p>
         </div>
       )}
 
@@ -357,7 +387,7 @@ export default function LogHabits() {
           <p id="unsaved-title" className="font-semibold">
             You have unsaved changes for {longDate(date)}.
           </p>
-          <p className="mt-1 text-sm text-spruce/75">Save them before opening {longDate(pendingDate)}, or they will be lost.</p>
+          <p className="mt-1 text-sm text-moss">Save them before opening {longDate(pendingDate)}, or they will be lost.</p>
           <div className="mt-3 flex flex-wrap gap-2">
             <button type="button" onClick={saveThenSwitch} className={primaryBtn}>
               Save, then open {longDate(pendingDate)}
@@ -394,7 +424,7 @@ export default function LogHabits() {
               onChange={(e) => e.target.value && requestDate(e.target.value)}
             />
           </label>
-          <p className="mt-2 text-sm text-spruce/70" role="status">
+          <p className="mt-2 text-sm text-moss" role="status">
             {loadingDay ? 'Loading…' : isExisting ? `Editing your entry for ${longDate(date)}.` : `New entry for ${longDate(date)}.`}
           </p>
           {!loadingDay && (
@@ -518,7 +548,7 @@ export default function LogHabits() {
           </button>
           {dirty && !saving && <p className="text-sm font-medium text-sun">Unsaved changes</p>}
           {date === todayIso && (
-            <p className="text-sm text-spruce/70">Your browser may ask to share your location for the weather. Saying no is fine.</p>
+            <p className="text-sm text-moss">Your browser may ask to share your location for the weather. Saying no is fine.</p>
           )}
         </div>
         </fieldset>
@@ -538,7 +568,7 @@ export default function LogHabits() {
                   type="button"
                   onClick={() => requestDate(d)}
                   aria-current={d === date ? 'date' : undefined}
-                  aria-label={`${longDate(d)}: ${logged ? 'logged' : 'not logged'}`}
+                  aria-label={`${longDate(d)}: ${logged ? 'logged' : 'day off'}`}
                   className={`flex min-h-11 w-full flex-col items-center rounded-md border bg-white px-1 py-2 text-xs hover:bg-mist ${
                     d === date ? 'border-spruce' : 'border-line'
                   }`}
@@ -553,7 +583,7 @@ export default function LogHabits() {
             );
           })}
         </ul>
-        <p className="mt-2 text-sm text-spruce/70">A check mark means that day has an entry. Choose a day to open it.</p>
+        <p className="mt-2 text-sm text-moss">A check mark means that day has an entry. Choose a day to open it.</p>
         <div className="mt-6">
           <MonthCalendar dayNumbers={dayNumbers(allDates)} todayIso={todayIso} selected={date} onSelect={requestDate} />
         </div>

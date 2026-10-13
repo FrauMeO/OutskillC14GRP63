@@ -10,6 +10,7 @@ export type ExportData = {
   goals: Row[];
   daily_conditions: Row[];
   reflections: Row[];
+  care_shares: Row[];
 };
 
 export function exportFileName(todayIso: string, ext: 'json' | 'csv'): string {
@@ -29,6 +30,7 @@ export function toJson(data: ExportData, email: string | null, exportedAt: strin
         goals: 'The goals you set.',
         daily_conditions: 'The weather, air and moon for each logged day, from Open-Meteo.com (CC BY 4.0).',
         reflections: 'Dates the gentle check-in was offered, and any answers you chose to give.',
+        care_shares: 'The people you invited to follow along, which pillars you shared, and when it started or ended.',
       },
       ...data,
     },

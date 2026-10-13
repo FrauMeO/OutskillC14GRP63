@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- HealthKit capability. Needed only for the optional "Import from Health" button.
+	     Requires a paid Apple Developer account to sign (docs/mobile-build.md).
+	     Read-only: the app never writes to Apple Health, so no clinical-records or
+	     background-delivery keys are declared (App Review 5.1.1(iii): ask only for what is used). -->
+	<key>com.apple.developer.healthkit</key>
+	<true/>
+	<key>com.apple.developer.healthkit.access</key>
+	<array/>
+</dict>
+</plist>

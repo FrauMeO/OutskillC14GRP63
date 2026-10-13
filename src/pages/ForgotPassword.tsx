@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase';
 import AuthShell from '../components/AuthShell';
 
 const inputClass =
-  'mt-1.5 block w-full rounded-md border border-line bg-white px-3 py-2.5 text-spruce placeholder:text-sage focus:border-current focus:outline-none';
+  'mt-1.5 block w-full rounded-md border border-line bg-white px-3 py-2.5 text-spruce placeholder:text-moss focus:border-current focus:outline-none';
 
 // Step 1 of resetting a password: send a link to the email. The same message shows whether or
 // not an account exists, so the page never reveals who has signed up.
@@ -42,7 +42,7 @@ export default function ForgotPassword() {
             If there is an account for {email.trim()}, a link to choose a new password is on its way. It can take a
             minute or two; check your spam folder too.
           </p>
-          <p className="text-sm text-spruce/75">
+          <p className="text-sm text-moss">
             <Link to="/login" className="font-semibold text-spruce underline underline-offset-4">
               Back to log in
             </Link>
@@ -50,7 +50,7 @@ export default function ForgotPassword() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="mt-8 space-y-5">
-          <p className="text-spruce/75">Enter the email you signed up with, and we will send you a link to choose a new password.</p>
+          <p className="text-moss">Enter the email you signed up with, and we will send you a link to choose a new password.</p>
           <label className="block text-sm font-medium">
             Email
             <input
@@ -74,7 +74,7 @@ export default function ForgotPassword() {
           >
             {sending ? 'Sending…' : 'Send reset link'}
           </button>
-          <p className="text-sm text-spruce/75">
+          <p className="text-sm text-moss">
             Remembered it?{' '}
             <Link to="/login" className="font-semibold text-spruce underline underline-offset-4">
               Log in
