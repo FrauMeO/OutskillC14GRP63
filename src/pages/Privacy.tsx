@@ -93,7 +93,7 @@ export default function Privacy() {
 
         <Section id="who" title="Who we are">
           <p>
-            Build Your Pillars is run by Miah Shull Olmsted and Robert Olmsted, a husband and wife. We decide why and how your
+            Build Your Pillars is run by Miah Shull Olmsted and Bob Olmsted, a husband and wife. We decide why and how your
             information is used, which makes us the &ldquo;controller&rdquo; of your data under privacy laws such as the EU&rsquo;s GDPR.
           </p>
           <p>

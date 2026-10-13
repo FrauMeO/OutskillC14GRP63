@@ -11,7 +11,7 @@ export default function Why() {
 
         <div className="mt-8 space-y-5">
           <p>
-            We are a husband and wife. Robert is 72 and Miah is 60, and we wanted a simple way to share our health journey together,
+            We are a husband and wife. Bob is 72 and Miah is 60, and we wanted a simple way to share our health journey together,
             without confusion and without pressure.
           </p>
           <p>
@@ -32,7 +32,7 @@ export default function Why() {
             you give today.
           </p>
           <p className="font-display text-xl font-bold">
-            Miah and Robert
+            Miah and Bob
           </p>
         </div>
 

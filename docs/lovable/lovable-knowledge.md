@@ -7,7 +7,7 @@ A clickable DEMO front end for Build Your Pillars of Health: a gentle health tra
 
 Tagline: `Build your pillars of health.`
 Fixed signature: `p.s. live well` (lowercase, always the last line on a screen, never a heading, same size as body text).
-Founders: Robert "Bob" Olmsted and Miah Shull Olmsted. Never name a hackathon, group number or team. Founder ages appear only on a "Why we built it" page, so omit them here.
+Founders: Bob Olmsted and Miah Shull Olmsted. Never name a hackathon, group number or team. Founder ages appear only on a "Why we built it" page, so omit them here.
 
 ## The four pillars
 Always written `Drink. Sleep. Move. Balance.` in this order, with these periods, everywhere.
