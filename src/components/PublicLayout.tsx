@@ -1,6 +1,7 @@
 import { useEffect, type ReactNode } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { copyrightLine } from '../lib/company';
 
 const linkClass =
   'inline-flex min-h-11 items-center rounded-md px-3 font-semibold text-spruce underline-offset-4 hover:underline';
@@ -82,6 +83,7 @@ export default function PublicLayout({ title, children }: { title: string; child
               Terms
             </Link>
           </p>
+          <p className="mt-4 text-base text-moss">{copyrightLine()}</p>
         </div>
       </footer>
     </div>
