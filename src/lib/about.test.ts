@@ -3,7 +3,7 @@ import { ABOUT_STORY, FOUNDERS, foundersLine } from './about';
 
 describe('about', () => {
   it('names both founders', () => {
-    expect(foundersLine()).toBe('Miah Shull Olmsted and Robert Olmsted');
+    expect(foundersLine()).toBe('Miah Shull Olmsted and Bob Olmsted');
     expect(FOUNDERS).toHaveLength(2);
   });
 
