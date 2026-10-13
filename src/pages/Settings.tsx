@@ -175,7 +175,7 @@ export default function Settings() {
 
         <form onSubmit={handleSave} className="mt-6 space-y-4">
           <label className="block text-sm font-medium">
-            What should we call you?
+            What would you like us to call you?
             <input
               className="mt-1.5 block w-full rounded-md border border-line px-3 py-2.5 focus:border-current focus:outline-none"
               value={fullName}

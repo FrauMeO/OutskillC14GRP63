@@ -118,7 +118,7 @@ export default function AuthPage({ mode }: { mode: Mode }) {
       <form onSubmit={handleSubmit} className="mt-8 space-y-5" noValidate={false}>
         {mode === 'signup' && (
           <label className="block text-sm font-medium">
-            What should we call you?
+            What would you like us to call you?
             <input
               className={inputClass}
               type="text"

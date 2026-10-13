@@ -166,7 +166,7 @@ export default function Reflect() {
       <div className="max-w-2xl">
         {header}
         <p className="text-moss">
-          There are no right or wrong answers. Answer the way things have actually been, not the way you think they should be.
+          There are no right or wrong answers. Answer with how things have actually been.
         </p>
         <div className="mt-6 flex flex-wrap gap-2">
           <button type="button" className={primaryBtn} onClick={() => setStep('short')}>
