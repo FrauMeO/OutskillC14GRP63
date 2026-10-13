@@ -49,7 +49,7 @@ export default function Landing() {
           <p className="mt-1 max-w-xl italic text-mist/90">{PILLAR_PS}</p>
           <p className="mt-6 max-w-2xl text-mist">
             A gentle place to notice your drink, sleep, movement and balance, and to share that with the people who care about you.
-            Notice what is going well.
+            Notice what works.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2">
             <Link
