@@ -12,12 +12,14 @@ const sendToServer = (granted: boolean) =>
 const EVENT = 'byp-ai-consent-changed';
 
 export function useAiConsent(userId: string | null | undefined) {
-  const [status, setStatus] = useState<ConsentStatus>(() => readConsent(userId));
+  const [snapshot, setSnapshot] = useState<{ userId: typeof userId; status: ConsentStatus }>(() => ({ userId, status: readConsent(userId) }));
+  // Never expose the previous account's choice during the render before effects refresh.
+  const status = snapshot.userId === userId ? snapshot.status : readConsent(userId);
   const [snoozed, setSnoozed] = useState(() => isSnoozed(userId));
 
   useEffect(() => {
     const refresh = () => {
-      setStatus(readConsent(userId));
+      setSnapshot({ userId, status: readConsent(userId) });
       setSnoozed(isSnoozed(userId));
     };
     refresh();

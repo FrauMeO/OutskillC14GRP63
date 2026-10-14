@@ -4,7 +4,9 @@ import { useAuth } from '../context/AuthContext';
 import { toISODate } from '../lib/dates';
 import SharedLevelView from './SharedLevelView';
 import ShareConsentDialog from './ShareConsentDialog';
-import { SAVE_PROBLEM, setConsent } from '../lib/consentApi';
+import { CONSENT_CHANGED, setConsent } from '../lib/consentApi';
+import { consentHash, CURRENT_VERSION } from '../lib/consentTexts';
+import { invitationOperation, saveShareInvitation, saveShareScope, scopeArgs, UNCERTAIN_INVITE } from '../lib/sharingWrites';
 import {
   NO_PILLAR_ERROR,
   flagsOf,
@@ -13,7 +15,6 @@ import {
   openShares,
   pillarSummary,
   sameFlags,
-  sharedPillarNames,
   statusLabel,
   validateEmail,
   type CareShareRow,
@@ -23,7 +24,6 @@ import {
 } from '../lib/careShares';
 import {
   GENERIC_PROBLEM,
-  NOT_AVAILABLE_YET,
   PREVIEW_DAYS,
   SHARE_LEVELS,
   accessText,
@@ -196,6 +196,8 @@ export default function SharingSettings() {
   const [invite, setInvite] = useState<PillarFlags>(NO_PILLARS); // everything off until the owner chooses
   const [inviteLevel, setInviteLevel] = useState<ShareLevel>('presence');
   const [inviting, setInviting] = useState(false);
+  const inviteOperation = useRef<{ key: string; id: string } | null>(null);
+  const inviteInFlight = useRef(false);
   const [inviteFlash, setInviteFlash] = useState<Flash>(null);
   const [askingConsent, setAskingConsent] = useState(false);
   const [drafts, setDrafts] = useState<Record<string, { flags: PillarFlags; level: ShareLevel }>>({});
@@ -248,57 +250,43 @@ export default function SharingSettings() {
     setAskingConsent(true);
   }
 
-  // Step 2, after "Send invitation" in the dialog: create the share, save the level, then record the
-  // consent for THIS share. If the record cannot be saved, the share is ended so none exists without one.
+  // One transaction creates the invitation, chosen scope and consent record together.
+  // Retain the operation UUID after an uncertain reply; retry recovers the same server result.
   async function sendInvite() {
+    if (!user || inviteInFlight.current) return;
+    inviteInFlight.current = true;
     setInviteFlash(null);
     const clean = normaliseEmail(email);
     setInviting(true);
-    let createError: { code?: string; message: string } | null = null;
-    let newId: string | null = null;
     try {
-      const res = await supabase.rpc('create_care_share', {
-        p_email: clean,
-        p_eat: invite.eat,
-        p_sleep: invite.sleep,
-        p_move: invite.move,
-        p_balance: invite.balance,
-      });
-      createError = res.error;
-      newId = (res.data as string | null) ?? null;
-    } catch {
-      createError = { message: '' };
-    }
-    if (createError) {
-      setInviting(false);
-      setAskingConsent(false);
-      return setInviteFlash({ kind: 'error', text: friendlyError(createError) });
-    }
-    // Save the level on the new share (the invitation itself still waits for them to accept).
-    const levelProblem = newId ? await call('set_care_share_options', { p_id: newId, p_level: inviteLevel, p_paused: false }) : NOT_AVAILABLE_YET;
-    // Record what they agreed to, naming the person, the pillars and the level at this moment.
-    const recordProblem = newId
-      ? await setConsent('share_caregiver', true, { shareId: newId, details: { recipient: clean, pillars: sharedPillarNames(invite), level: inviteLevel } })
-      : SAVE_PROBLEM;
-    if (recordProblem) {
-      if (newId) await call('end_care_share', { p_id: newId });
-      setInviting(false);
-      setAskingConsent(false);
+      const payload = {
+        p_email: clean, p_eat: invite.eat, p_sleep: invite.sleep,
+        p_move: invite.move, p_balance: invite.balance, p_level: inviteLevel,
+        p_version: CURRENT_VERSION.share_caregiver, p_text_hash: await consentHash('share_caregiver'),
+      };
+      const key = JSON.stringify([user.id, payload]);
+      inviteOperation.current = invitationOperation(inviteOperation.current, key, () => crypto.randomUUID());
+      const result = await saveShareInvitation(supabase, { ...payload, p_request_id: inviteOperation.current.id });
+      if (!result.ok) {
+        setInviteFlash({ kind: 'error', text: result.message });
+        await load();
+        return;
+      }
+      // Confirmed completion ends this operation; a later identical invitation is a new intent.
+      inviteOperation.current = null;
+      window.dispatchEvent(new Event(CONSENT_CHANGED));
+      setEmail('');
+      setInvite(NO_PILLARS);
+      setInviteLevel('presence');
+      setInviteFlash({ kind: 'ok', text: `Invitation recorded for ${clean}. Check its current status below. We do not send email yet, so please tell them. They need to create an account or log in with exactly ${clean} to accept.` });
       await load();
-      return setInviteFlash({ kind: 'error', text: 'We could not save your invitation, so nothing was shared. Please try again.' });
+    } catch {
+      setInviteFlash({ kind: 'error', text: UNCERTAIN_INVITE });
+    } finally {
+      inviteInFlight.current = false;
+      setInviting(false);
+      setAskingConsent(false);
     }
-    setInviting(false);
-    setAskingConsent(false);
-    setEmail('');
-    setInvite(NO_PILLARS);
-    setInviteLevel('presence');
-    const base = `Invitation saved for ${clean}. We do not send email yet, so please tell them. They need to create an account or log in with exactly ${clean} to accept.`;
-    setInviteFlash(
-      levelProblem
-        ? { kind: 'error', text: `${base} Your choice of how much they see could not be saved: ${levelProblem} Please check it below before they accept.` }
-        : { kind: 'ok', text: base },
-    );
-    await load();
   }
 
   async function saveRow(r: CareShareRow) {
@@ -308,16 +296,14 @@ export default function SharingSettings() {
       return setRowFlash((f) => ({ ...f, [r.id]: { kind: 'error', text: 'Choose at least one pillar, or end the share.' } }));
     }
     setBusyId(r.id);
-    let problem: string | null = null;
-    if (!sameFlags(d.flags, flagsOf(r))) {
-      problem = await call('update_care_share', { p_id: r.id, p_eat: d.flags.eat, p_sleep: d.flags.sleep, p_move: d.flags.move, p_balance: d.flags.balance });
-    }
-    if (!problem && d.level !== levelOf(r)) {
-      problem = await call('set_care_share_options', { p_id: r.id, p_level: d.level, p_paused: isPaused(r) });
-    }
+    const result = await saveShareScope(supabase, scopeArgs(r.id, d.flags, d.level));
     setBusyId(null);
-    if (problem) return setRowFlash((f) => ({ ...f, [r.id]: { kind: 'error', text: problem } }));
-    setRowFlash((f) => ({ ...f, [r.id]: { kind: 'ok', text: `Saved. ${r.viewer_email} can now see ${pillarSummary(d.flags)}.` } }));
+    if (!result.ok) {
+      setRowFlash((f) => ({ ...f, [r.id]: { kind: 'error', text: result.message } }));
+      await load();
+      return;
+    }
+    setRowFlash((f) => ({ ...f, [r.id]: { kind: 'ok', text: `Saved the selected pillars and what they can see for ${r.viewer_email}. Any pause remains unchanged.` } }));
     await load();
   }
 
@@ -325,7 +311,7 @@ export default function SharingSettings() {
     setBusyId(r.id);
     setRowFlash((f) => ({ ...f, [r.id]: null }));
     // Pause and resume keep the level that is saved, not an unsaved choice on screen.
-    const problem = await call('set_care_share_options', { p_id: r.id, p_level: levelOf(r), p_paused: paused });
+    const problem = await call('set_care_share_options', { p_id: r.id, p_level: null, p_paused: paused });
     setBusyId(null);
     if (problem) return setRowFlash((f) => ({ ...f, [r.id]: { kind: 'error', text: problem } }));
     setRowFlash((f) => ({

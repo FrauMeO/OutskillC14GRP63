@@ -401,6 +401,14 @@ export type Database = {
         }[]
       }
       join_waitlist: { Args: { p_email: string; p_ios: boolean; p_android: boolean; p_consent: boolean }; Returns: undefined }
+      invite_care_share_atomic: {
+        Args: { p_request_id: string; p_email: string; p_eat: boolean; p_sleep: boolean; p_move: boolean; p_balance: boolean; p_level: string; p_version: number; p_text_hash: string }
+        Returns: string
+      }
+      update_care_share_scope: {
+        Args: { p_id: string; p_eat: boolean; p_sleep: boolean; p_move: boolean; p_balance: boolean; p_level: string }
+        Returns: undefined
+      }
       create_care_share: {
         Args: { p_email: string; p_eat: boolean; p_sleep: boolean; p_move: boolean; p_balance: boolean }
         Returns: string
