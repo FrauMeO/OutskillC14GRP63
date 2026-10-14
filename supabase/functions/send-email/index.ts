@@ -460,7 +460,7 @@ Deno.serve(async (req) => {
       const id = String(body.share_id ?? '');
       if (!/^[0-9a-f-]{36}$/i.test(id)) return reply(req, { error: 'Bad request.' }, 400);
       const out = await sendInvite(admin, who.user.id, id, now);
-      return reply(req, { ok: true, sent: out.sent });
+      return reply(req, { ok: true, sent: out.sent && out.reason !== 'dry_run' });
     }
     if (kind === 'care_nudge') {
       const id = String(body.nudge_id ?? '');

@@ -62,6 +62,8 @@ export type Database = {
           id: string
           // Care sharing v2 (migration 0015, docs/care-sharing-v2-contract.md)
           last_confirmed_at: string
+          pillar_levels: Json | null
+          report_cadence: string
           level: string
           owner_id: string
           paused_at: string | null
@@ -370,6 +372,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      set_care_share_matrix: { Args: { p_id: string; p_levels: Json; p_cadence: string }; Returns: undefined }
+      followed_people_scoped: { Args: Record<PropertyKey, never>; Returns: Json }
+      shared_pillar_report: { Args: { p_owner: string; p_preview_share?: string }; Returns: Json }
+
       array_has_no_duplicates: { Args: { arr: string[] }; Returns: boolean }
       delete_my_account: { Args: Record<PropertyKey, never>; Returns: undefined }
       set_ai_consent: { Args: { p_granted: boolean; p_version: number }; Returns: undefined }

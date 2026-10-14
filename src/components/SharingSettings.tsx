@@ -39,6 +39,9 @@ import {
 } from '../lib/careShareLevels';
 import { CATEGORY_FIELDS, addDays } from '../lib/dashboard';
 import Notice from './Notice';
+import PillarSharingSettings from './PillarSharingSettings';
+import { sendEmail } from '../lib/email/client';
+import { invitationDeliveryText } from '../lib/email/invitationDelivery';
 
 type Flash = { kind: 'ok' | 'error'; text: string } | null;
 type OwnRow = Record<string, unknown> & { log_date: string };
@@ -278,7 +281,8 @@ export default function SharingSettings() {
       setEmail('');
       setInvite(NO_PILLARS);
       setInviteLevel('presence');
-      setInviteFlash({ kind: 'ok', text: `Invitation recorded for ${clean}. Check its current status below. We do not send email yet, so please tell them. They need to create an account or log in with exactly ${clean} to accept.` });
+      const delivery = await sendEmail({ kind: 'care_invite', share_id: result.id! });
+      setInviteFlash({ kind: delivery.sent ? 'ok' : 'error', text: invitationDeliveryText(clean, delivery) });
       await load();
     } catch {
       setInviteFlash({ kind: 'error', text: UNCERTAIN_INVITE });
@@ -287,6 +291,13 @@ export default function SharingSettings() {
       setInviting(false);
       setAskingConsent(false);
     }
+  }
+
+  async function retryInvitation(r: CareShareRow) {
+    setBusyId(r.id);
+    const delivery = await sendEmail({ kind: 'care_invite', share_id: r.id });
+    setRowFlash(f => ({ ...f, [r.id]: { kind: delivery.sent ? 'ok' : 'error', text: invitationDeliveryText(r.viewer_email, delivery) } }));
+    setBusyId(null);
   }
 
   async function saveRow(r: CareShareRow) {
@@ -316,7 +327,7 @@ export default function SharingSettings() {
     if (problem) return setRowFlash((f) => ({ ...f, [r.id]: { kind: 'error', text: problem } }));
     setRowFlash((f) => ({
       ...f,
-      [r.id]: { kind: 'ok', text: paused ? `Sharing with ${r.viewer_email} is paused. They see nothing until you resume.` : `Sharing with ${r.viewer_email} has resumed.` },
+      [r.id]: { kind: 'ok', text: paused ? `Sharing with ${r.viewer_email} is paused. New access is blocked until you resume. An already-open app clears its view on the next access check, normally within 15 seconds.` : `Sharing with ${r.viewer_email} has resumed.` },
     }));
     await load();
   }
@@ -362,7 +373,7 @@ export default function SharingSettings() {
         Sharing
       </h2>
       <p className="mt-2 text-base text-moss">
-        You choose who can follow along, and how much. They get a read-only view, you can pause or end it any time, and it stops at once.
+        You choose who can follow along, and how much. They get a read-only view, you can pause or end it any time, and new access stops when the change is saved. Open views recheck every 15 seconds while active; saved copies cannot be recalled.
         Your notes, feelings and places are never shared.
       </p>
 
@@ -403,8 +414,7 @@ export default function SharingSettings() {
           />
         </label>
         <p id="sharing-email-help" className="text-base text-moss">
-          They need to create an account or log in with this exact email address to accept. We do not send email yet, so
-          let them know yourself.
+          We will try to email an invitation after you confirm. They need to create an account or log in with this exact email address, then open Following to accept. If email is unavailable, you can tell them yourself.
         </p>
         <fieldset>
           <legend className="text-base font-medium">Which pillars?</legend>
@@ -454,9 +464,10 @@ export default function SharingSettings() {
               <p className="text-base text-moss">
                 {paused ? 'Paused' : statusLabel(r.status)} · {pillarSummary(flagsOf(r))}
               </p>
-              {r.level && <p className="text-base text-moss">{levelLabel}</p>}
+              {r.level && !r.pillar_levels && <p className="text-base text-moss">{levelLabel}</p>}
               {r.status === 'active' && viewsAvailable && <p className="text-base text-moss">{accessText(r.viewer_email, lookDays)}</p>}
 
+              {!r.pillar_levels && <>
               <fieldset className="mt-2">
                 <legend className="text-base font-medium">Change what they see</legend>
                 <PillarBoxes value={d.flags} onChange={(next) => setDrafts((all) => ({ ...all, [r.id]: { ...d, flags: next } }))} idPrefix={`share-${r.id}`} />
@@ -464,8 +475,11 @@ export default function SharingSettings() {
               <LevelChoice value={d.level} onChange={(next) => setDrafts((all) => ({ ...all, [r.id]: { ...d, level: next } }))} idPrefix={`share-${r.id}`} />
               <Preview who={r.viewer_email} flags={d.flags} level={d.level} paused={paused} own={own} idPrefix={`share-${r.id}`} />
 
+              </>}
+              <PillarSharingSettings key={`${r.id}-${JSON.stringify(r.pillar_levels)}-${r.report_cadence}`} share={r} onSaved={load} />
               <div className="mt-3 flex flex-wrap gap-2">
-                <button type="button" onClick={() => saveRow(r)} disabled={busyId === r.id || !changed} className={primaryBtn}>
+                {r.status === 'pending' && <button type="button" onClick={() => void retryInvitation(r)} disabled={busyId === r.id} className={quietBtn}>Try invitation email</button>}
+                <button type="button" onClick={() => saveRow(r)} disabled={busyId === r.id || !changed || !!r.pillar_levels} className={primaryBtn}>
                   Save
                 </button>
                 {r.status === 'active' && (
@@ -482,7 +496,7 @@ export default function SharingSettings() {
               {endingId === r.id && (
                 <div role="alertdialog" aria-label={`End sharing with ${r.viewer_email}`} className="mt-3 rounded-md border border-line bg-mist p-3">
                   <p className="text-base">
-                    End sharing with {r.viewer_email}? They will stop seeing your pillars straight away. You can invite them again later.
+                    End sharing with {r.viewer_email}? New access will stop when saved. An open view clears on its next access check, normally within 15 seconds. Copies they already saved cannot be recalled. You can invite them again later.
                   </p>
                   <div className="mt-2 flex gap-2">
                     <button type="button" onClick={() => endShare(r)} disabled={busyId === r.id} className={primaryBtn}>

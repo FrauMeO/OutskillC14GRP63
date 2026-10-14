@@ -1,4 +1,4 @@
--- DRAFT: live schema/migration drift not yet verified. Apply only after that read-only check.
+-- Live dependency inventory verified 2026-10-14; isolated Postgres rollback tests passed. See docs/schema-log.md.
 -- Additive R1/R2 fix. Existing APIs remain for old clients; new UI never falls back to them.
 -- Requests contain sharing choices, not health values. Account/share deletion cascades cleanup.
 create table public.care_share_invite_requests (

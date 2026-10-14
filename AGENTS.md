@@ -2,14 +2,14 @@
 
 ## Summary
 
-Build Your Pillars (formerly Personal Health Manager) is a web app for gentle, reflective self-tracking (see **Product principles** below). A signed-in user logs a day (exercise, steps, sleep, water, notes, Mood/Energy/Stress from 1 to 5, and feelings that match Apple Health's State of Mind labels), with the day's location and real weather attached. The dashboard shows today against the user's own goals, 7-day trends and a logging streak; the Insights page finds associations between outside conditions and the person's habits and check-ins. Prompts 1 and 2 were built in a Codex chat; Prompts 3A, 3B and 4 were built in Codex (see docs/development-log.md and docs/reports/). The gentle check-in (3C) is in progress.
+Build Your Pillars (formerly Personal Health Manager) is a web app for gentle, reflective self-tracking (see **Product principles** below). A signed-in user logs a day (exercise, steps, sleep, water, notes, Mood/Energy/Stress from 1 to 5, and feelings that match Apple Health's State of Mind labels), with the day's location and real weather attached. The dashboard shows today against the user's own goals, 7-day trends and cumulative logging milestones; the Insights page finds associations between outside conditions and the person's habits and check-ins. Prompts 1 and 2 were built in a Codex chat; Prompts 3A, 3B and 4 were built in Codex (see docs/development-log.md and docs/reports/). The gentle check-in (3C) is in progress.
 
 ## Tech stack
 
 - React 19, TypeScript 5 (strict), Vite 6
 - Tailwind CSS v4 through `@tailwindcss/vite`, with design tokens in `src/index.css`
 - React Router 7
-- Supabase (`@supabase/supabase-js` v2) for auth and Postgres data. There is no other backend.
+- Supabase (`@supabase/supabase-js` v2) for auth and Postgres data. Supabase is the active backend; do not introduce a second backend merely to repair an existing flow.
 - Node 20 or newer for the dev server and the sample-data scripts (plain `.mjs`, no extra packages)
 
 ## Supabase project
@@ -75,7 +75,7 @@ Supabase Authentication settings that the chat could not change through the conn
 - All data access goes through `src/lib/supabase.ts`. Row Level Security scopes every query to the signed-in user, so client code does not filter by `user_id` and does not send `user_id` on insert (the column defaults to `auth.uid()`).
 - Goal types, labels, units, ranges, and colors come only from `src/lib/goals.ts`. Stored `goal_type` values are `exercise`, `sleep`, and `water`; stored units are `minutes/day`, `hours/night`, and `liters/day`.
 - Habit colors are fixed: exercise uses `ember`, sleep uses `dusk`, water uses `current`. Use the tokens in `src/index.css`, not raw hex values.
-- Fonts: Bricolage Grotesque for display (`font-display`), Public Sans for body.
+- Fonts: use the current tokens in `src/index.css`; the body uses system fonts. Do not restore older font specifications from archived briefs.
 - Dates use the device's local calendar through `toISODate()` in `src/lib/dates.ts`, never UTC, so the app works in any time zone.
 - A habit with no data for a day is `null`, never `0`.
 - Accessibility: errors use `role="alert"`, confirmations use `role="status"`, confirm dialogs are inline (no `window.confirm`), focus rings stay visible, and reduced motion is respected.
@@ -120,3 +120,12 @@ The full history of how these came about is in `docs/development-log.md`.
 8. Update everything that depends on the schema in the same change: `src/lib/database.types.ts`, `src/lib/goals.ts` when goal types or ranges change, the Apple Health importer and seed file when `habit_logs` changes, and `docs/schema-log.md`.
 9. Verify every change before calling it done. Run a rolled-back SQL test that includes a positive control, run the Supabase security advisor, run `npm run build`, and run `npm run test:import`.
 10. When a change reverses or replaces an earlier decision, record it in `docs/schema-log.md` under the current prompt. Name the earlier decision, the prompt that made it, and the reason for the change.
+
+## Current decisions and evaluation continuity (2026-10-14)
+
+- Documentation home: `/Users/olmstedhome/Library/CloudStorage/Box-Box/Build Your Pillars of Health AARP AgeTech after Dark/`. Start with `FINAL CHOICES/T3-Beta-Decisions-2026-10-14.md` and current dated decisions. Historical briefs are context, not authority over newer user decisions.
+- Preserve `Evaluation/2026-10-14-Baseline-A0/` unchanged. Save fixes and new A/B results in a new dated round; never invent participant scores from automated tests.
+- Appointment summaries, NativeShell and reminders already exist and are mounted. Inspect before rebuilding them. A report is owner-only and excludes journal notes, feelings content and location.
+- A supporter is read-only. Delegated authority and dementia-related restrictions are unresolved; do not infer incapacity or silently restrict revocation.
+- Use the current pillar tokens and latest colour decisions; do not revive older palette/font proposals from archived briefs.
+- Use isolated synthetic fixtures for permission tests. No real health records are needed. Database project restrictions above remain in force; local disposable Postgres is appropriate for migration tests and must not be mistaken for live verification.

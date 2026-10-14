@@ -69,7 +69,7 @@ export default function Following() {
               <li key={p.share_id} className="rounded-md border border-line p-4">
                 <p className="text-lg font-semibold">{p.owner_name} would like you to follow along.</p>
                 <p className="mt-1 text-lg text-moss">
-                  You would see {viewerLevelText(levelOf(p), flagsOf(p))}, as a read-only view. Their notes, feelings and places are never shared.
+                  You would see {p.pillar_levels ? (p.report_cadence === 'monthly' ? 'a report of the last completed month, with a separate permission level for each pillar' : 'recent entries with a separate permission level for each pillar') : viewerLevelText(levelOf(p), flagsOf(p))}, as a read-only view. Their notes, feelings and places are never shared.
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <button type="button" disabled={busy === p.share_id} onClick={() => run(p.share_id, 'accept_care_share', `You are now following ${p.owner_name}.`)} className={primaryBtn}>

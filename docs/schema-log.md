@@ -252,3 +252,12 @@ Written, not yet applied (Miah's main session applies it and runs `supabase/test
 - `npx tsc -b --pretty false`: passed after these changes with the integrated working tree.
 - `supabase/tests/atomic_care_sharing_test_after_0021.sql`: passed on isolated local PostgreSQL 17 using synthetic Supabase auth bootstrap and repository migrations 0001–0021. It deliberately raises `ZB021` with `RESULT: PASS` then rolls back all fixtures and test triggers. Tests injection at creation/scope/consent/request receipt; authorization, idempotency, old-scope preservation, presence-only disclosure, pause, removed-pillar disclosure, anonymous grants and no resurrection.
 - Local PostgreSQL proves SQL transaction behavior under the fixture schema, **not live schema compatibility, PostgREST behavior, deployment, or a real two-account browser journey**. Live security advisor, deployed migration and device/browser verification remain outstanding. No remote mutation, deployment, credential access or commits performed.
+
+
+## 2026-10-14 — baseline remediation 0021 / 0022
+
+Read-only live dependency inventory confirmed the atomic RPCs were missing. Applied `0021_atomic_care_sharing.sql` as `20261014204109_atomic_care_sharing`, then `0022_scoped_sharing.sql` as `20261014204132_scoped_sharing` to PersonalHealthManager (`gzsawayrorlcjmpssalc`). Both passed isolated Postgres rollback tests before application. No existing owner choices expanded; no real health records read or edited.
+
+0022 adds nullable `pillar_levels` and default-live `report_cadence` to care_shares, authenticated owner-only matrix updates, a scoped metadata RPC, and a server-filtered report/owner preview RPC. It replaces legacy data/email functions to deny mixed/monthly access through old paths. Existing uniform shares retain their behavior. Monthly access exposes the previous completed calendar month only, with averages/counts at detail level and no daily values. Client types updated.
+
+This supersedes the single-level-per-recipient limitation of 0015 only when the owner explicitly saves mixed settings. Pause state remains unchanged. Existing matrix grants cannot be silently overwritten using old clients. See `docs/reports/2026-10-14-baseline-remediation.md` for tests and release limits. Security advisor completed; intentional definer/request-ledger notices and pre-existing Auth warnings are documented there. Frontend build and import positive-control tests passed.

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  SUMMARY_COLUMNS, SUMMARY_FOOTER, buildSummary, daysLoggedText, fewDaysNote, formatDate, formatMeasure,
+  appointmentQuestions, SUMMARY_COLUMNS, SUMMARY_FOOTER, buildSummary, daysLoggedText, fewDaysNote, formatDate, formatMeasure,
   formatNumber, formatRange, goalText, periodBounds, summaryTitle, todayLocal, trendWords, type SummaryRow,
 } from './appointmentSummary';
 import { addDays } from './dashboard';
@@ -156,8 +156,8 @@ describe('trend against the previous period of the same length', () => {
   it('a little higher for a small change up', () => {
     expect(trendOf([...series(0, 5, 7.8), ...series(-30, 5, 7)])!.text).toBe('A little higher than the 30 days before.');
   });
-  it('clearly lower for a large change', () => {
-    expect(trendOf([...series(0, 5, 5), ...series(-30, 5, 8)])!.text).toBe('Clearly lower than the 30 days before.');
+  it('describes a large change without claiming certainty', () => {
+    expect(trendOf([...series(0, 5, 5), ...series(-30, 5, 8)])!.text).toBe('The logged average is lower than the 30 days before.');
   });
   it('no trend when the previous period has fewer than 3 values (control: 3 gives one)', () => {
     expect(trendOf([...series(0, 5, 7), ...series(-30, 2, 7)])).toBeNull();
@@ -260,4 +260,19 @@ describe('words', () => {
   it('the footer is exactly the agreed sentence', () => {
     expect(SUMMARY_FOOTER).toBe('Notes written by me, from what I logged in Build Your Pillars. This is not a medical record or a diagnosis.');
   });
+});
+
+describe('coverage and preparation', () => {
+ it('reports both current and prior counts and dates without filling gaps', () => {
+  const m=measure(buildSummary([day(0,{sleep_hours:7}),day(-30,{sleep_hours:8}),day(-31,{sleep_hours:6})],[],end,30),'Sleep','sleep_hours')!;
+  expect(m.previousDays).toBe(2);expect(m.coverage).toContain('1 of 30');expect(m.coverage).toContain('2 of 30');expect(m.coverage).toContain('Unlogged days are unknown');
+ });
+});
+
+it('offers exactly three local questions, using concerns without copying private text', () => {
+ const s=buildSummary([day(0,{sleep_hours:7})],[],end,30);
+ const q=appointmentQuestions(s,'I am tired; private-name-123');
+ expect(q).toHaveLength(3);expect(q[0]).toContain('sleep and rest');expect(q.join(' ')).not.toContain('private-name-123');
+ expect(q[1]).toContain('1 of 30 days');
+ expect(appointmentQuestions(buildSummary([],[],end,30),'')[1]).toContain('few or no entries');
 });

@@ -72,6 +72,8 @@ export type MeasureSummary = {
   low: Extreme | null;
   high: Extreme | null;
   previousAverage: number | null;
+  previousDays: number;
+  coverage: string;
   trend: Trend | null; // null when either period has too few values
   goal: { target: number; unit: string } | null; // shown beside, never coloured
 };
@@ -126,7 +128,7 @@ export function trendWords(spec: Pick<MeasureSpec, 'same'>, current: number, pre
   const period = `the ${periodDays} days before`;
   if (size < spec.same) return { direction: 'same', text: `About the same as ${period}.` };
   const direction = diff > 0 ? 'higher' : 'lower';
-  const amount = size < spec.same * 3 ? 'A little' : 'Clearly';
+  const amount = size < spec.same * 3 ? 'A little' : 'The logged average is';
   return { direction, text: `${amount} ${direction} than ${period}.` };
 }
 
@@ -180,6 +182,8 @@ export function buildSummary(
       low: { value: lowest.v, date: lowest.date },
       high: { value: highest.v, date: highest.date },
       previousAverage,
+      previousDays: before.length,
+      coverage: `Based on ${now.length} of ${periodDays} days (${formatRange(from, to)}) and ${before.length} of ${periodDays} days (${formatRange(prevFrom, prevTo)}). Unlogged days are unknown. These entries may not represent the whole period.`,
       trend,
       goal: goalFor(spec.goalType),
     };
@@ -255,4 +259,31 @@ export const SUMMARY_FOOTER =
 // Today's local date, never UTC.
 export function todayLocal(now = new Date()): string {
   return toISODate(now);
+}
+
+/** Local, deterministic visit preparation. No model, storage or third-party transmission.
+ * Concerns stay private unless the owner separately chooses to print them.
+ */
+export function appointmentQuestions(summary: AppointmentSummary, concerns: string): string[] {
+  const measures = summary.pillars.flatMap(p => p.measures);
+  const compared = measures.find(m => m.trend && m.trend.direction !== 'same');
+  const logged = compared ?? measures[0];
+  const topics = [
+    [/\b(sleep|tired|fatigue|awake|rest)\b/i, 'sleep and rest'],
+    [/\b(walk|walking|steps|move|movement|exercise|strength|fall|falls|balance)\b/i, 'movement and daily activities'],
+    [/\b(water|drink|thirst|food|eat|appetite)\b/i, 'eating and drinking'],
+    [/\b(mood|feelings|stress|lonely|loneliness|sad|anxious)\b/i, 'emotional wellbeing'],
+  ] as const;
+  const chosen = topics.filter(([pattern]) => pattern.test(concerns)).map(([,topic]) => topic).slice(0, 2);
+  return [
+    chosen.length
+      ? `Given my concerns about ${chosen.join(' and ')}, what should we discuss first?`
+      : concerns.trim()
+      ? 'Of the concerns I have written down, which should we discuss first, and what information would help?'
+      : 'What would be most useful for us to discuss about my day-to-day wellbeing?',
+    logged
+      ? `I logged ${logged.label.toLowerCase()} on ${logged.days} of ${summary.periodDays} days. What, if anything, is useful to notice in these entries?`
+      : 'I have few or no entries yet. What would be useful for me to track before our next visit?',
+    'What next step fits my needs, and when should we follow up?',
+  ];
 }
