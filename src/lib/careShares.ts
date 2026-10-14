@@ -6,6 +6,7 @@
 // never part of any row type here.
 import { addDays, CATEGORY_FIELDS, FULL_WEEK_DAYS, num, series, weeklyRhythm } from './dashboard';
 import { goalConfig, type GoalType } from './goals';
+import type { PillarLevels, Cadence } from './scopedSharing';
 import { PILLARS } from './pillars';
 
 // ---------- Row types (hand-written to match the RPC and table shapes in 0010) ----------
@@ -33,6 +34,8 @@ export type CareShareRow = {
   ended_at: string | null;
   // Added by migration 0015; absent until it is applied.
   level?: ShareLevel;
+  pillar_levels?: PillarLevels | null;
+  report_cadence?: Cadence;
   paused_at?: string | null;
   last_confirmed_at?: string | null;
 };
@@ -51,6 +54,8 @@ export type FollowedPerson = {
   accepted_at: string | null;
   // Added by migration 0015; absent until it is applied.
   level?: ShareLevel;
+  pillar_levels?: PillarLevels | null;
+  report_cadence?: Cadence;
   paused?: boolean;
 };
 

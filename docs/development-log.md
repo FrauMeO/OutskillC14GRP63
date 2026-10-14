@@ -375,3 +375,8 @@ decision below should be read in that light.
 - **Not done here.** The welcome-back lines exist as `src/lib/welcomeBack.ts` with tests but nothing in the app calls them yet.
   Billing code still holds the old prices (`src/lib/billing.ts`) because it is not public copy; Miah to decide.
 
+
+
+## 2026-10-14 — remediation after frozen A0 audit
+
+Addressed sharing freshness, invitation handoff, mixed pillar/monthly permissions, appointment preparation/printing/coverage, and stale agent instructions. A0 is immutable; candidate R1 evidence lives in the Box Evaluation/2026-10-14-Remediation-R1 folder. See docs/reports/2026-10-14-baseline-remediation.md. 737 tests plus build/import and isolated SQL controls passed; participant results remain unmeasured.

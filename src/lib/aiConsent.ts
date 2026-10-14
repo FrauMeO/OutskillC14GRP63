@@ -39,18 +39,28 @@ function defaultStore(): Store | null {
   }
 }
 
-export function readConsent(userId: string | null | undefined, store: Store | null = defaultStore()): ConsentStatus {
-  if (!userId) return 'unset';
+function readConsentValue(userId: string | null | undefined, store: Store | null = defaultStore()): string | null {
+  if (!userId) return null;
   const key = consentKey(userId);
   try {
     if (store) {
       const raw = store.getItem(key);
-      if (raw !== null) return parseConsent(raw);
+      if (raw !== null) return raw;
     }
   } catch {
     /* fall through to memory */
   }
-  return parseConsent(memory.get(key));
+  return memory.get(key) ?? null;
+}
+
+export function readConsent(userId: string | null | undefined, store: Store | null = defaultStore()): ConsentStatus {
+  return parseConsent(readConsentValue(userId, store));
+}
+
+// Version + grant timestamp identify one consent decision, without retaining any health data.
+export function consentRevision(userId: string | null | undefined): string | null {
+  const raw = readConsentValue(userId);
+  return parseConsent(raw) === 'granted' ? raw : null;
 }
 
 export function writeConsent(

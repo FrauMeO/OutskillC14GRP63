@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import {
-  SUMMARY_CHOICES, SUMMARY_COLUMNS, SUMMARY_FOOTER, buildSummary, daysLoggedText, fewDaysNote, formatDate,
+  appointmentQuestions, SUMMARY_CHOICES, SUMMARY_COLUMNS, SUMMARY_FOOTER, buildSummary, daysLoggedText, fewDaysNote, formatDate,
   formatMeasure, formatRange, goalText, periodBounds, summaryTitle, todayLocal,
   type MeasureSummary, type SummaryDays, type SummaryGoal, type SummaryRow,
 } from '../lib/appointmentSummary';
@@ -45,6 +45,7 @@ function MeasureBlock({ m }: { m: MeasureSummary }) {
         </div>
       </dl>
       {m.trend && <p className="mt-2 text-lg">{m.trend.text}</p>}
+      <p className="mt-2 text-base text-moss">{m.coverage}</p>
       {m.goal && <p className="mt-1 text-lg">My own goal: {goalText(m.goal)}</p>}
     </div>
   );
@@ -58,14 +59,21 @@ export default function AppointmentSummary() {
   const [days, setDays] = useState<SummaryDays>(30);
   const [name, setName] = useState('');
   const [mention, setMention] = useState('');
+  const [includeMention, setIncludeMention] = useState(false);
+  const [attempt, setAttempt] = useState(0);
   const today = useMemo(() => todayLocal(), []);
 
   // One read covers the longest choice plus the period before it, so switching 30 and 90 is instant.
   useEffect(() => {
     let alive = true;
+    setLoading(true);
+    setError(null);
+    setRows([]);
+    setGoals([]);
     const longest = Math.max(...SUMMARY_CHOICES);
     const { prevFrom } = periodBounds(today, longest);
     (async () => {
+      try {
       const [logs, g] = await Promise.all([
         supabase.from('habit_logs').select(SUMMARY_COLUMNS.join(',')).gte('log_date', prevFrom).lte('log_date', today),
         supabase.from('goals').select('goal_type,target_value,unit'),
@@ -77,22 +85,27 @@ export default function AppointmentSummary() {
         setRows((logs.data ?? []) as unknown as SummaryRow[]);
         setGoals((g.data ?? []) as unknown as SummaryGoal[]);
       }
-      setLoading(false);
+      } catch {
+        if (alive) setError('We could not load your days just now. Please try again in a moment.');
+      } finally {
+        if (alive) setLoading(false);
+      }
     })();
     return () => {
       alive = false;
     };
-  }, [today]);
+  }, [today, attempt]);
 
   const summary = useMemo(() => buildSummary(rows, goals, today, days), [rows, goals, today, days]);
   const note = fewDaysNote(summary.loggedDays);
+  const questions = appointmentQuestions(summary, mention);
 
   return (
     <div className="summary-page text-lg">
       <div className="summary-no-print mb-6 space-y-5">
         <h1 className="font-display text-4xl font-bold tracking-tight md:text-5xl">Summary for my appointment</h1>
         <p className="max-w-prose text-lg text-moss">
-          A one-page look at what you logged, to bring to a visit. It is built on this device from your own days.
+          A look at what you logged, to bring to a visit. It is built on this device from your own days.
           Nothing is sent anywhere.
         </p>
 
@@ -110,6 +123,23 @@ export default function AppointmentSummary() {
           />
           <p className="mt-1 text-base text-moss">Not saved. It is only on this page.</p>
         </div>
+
+            <section className="summary-block summary-no-print" aria-labelledby="mention-heading">
+              <h2 id="mention-heading" className="font-display text-2xl font-bold">
+                Things I want to mention
+              </h2>
+              <textarea
+                className={`${input} summary-no-print mt-2 min-h-40`}
+                aria-labelledby="mention-heading"
+                value={mention}
+                onChange={(e) => setMention(e.target.value)}
+                placeholder="Optional: what would you like to discuss? This stays on your device and is not saved."
+              />
+              <label className="mt-3 flex min-h-12 items-center gap-3">
+                <input type="checkbox" checked={includeMention} onChange={e => setIncludeMention(e.target.checked)} className="h-5 w-5" />
+                Include my written concerns in the printed report
+              </label>
+            </section>
 
         <fieldset>
           <legend className="mb-1 font-semibold">Choose 30 or 90 days</legend>
@@ -130,9 +160,9 @@ export default function AppointmentSummary() {
 
         <button
           type="button"
-          onClick={() => window.print()}
+          onClick={() => { if (!loading && !error) window.print(); }}
           className={`${button} bg-spruce text-mist hover:bg-spruce-soft disabled:opacity-60`}
-          disabled={loading}
+          disabled={loading || !!error}
         >
           Print or save as PDF
         </button>
@@ -142,8 +172,9 @@ export default function AppointmentSummary() {
       </div>
 
       {error && (
-        <Notice kind="error" className="summary-no-print rounded-md border border-alert bg-white p-4">
+        <Notice kind="error" className="rounded-md border border-alert bg-white p-4">
           {error}
+          <button type="button" className={`${button} summary-no-print mt-3 border border-spruce`} onClick={() => setAttempt(a => a + 1)}>Try again</button>
         </Notice>
       )}
 
@@ -189,18 +220,13 @@ export default function AppointmentSummary() {
               </section>
             ))}
 
-            <section className="summary-block" aria-labelledby="mention-heading">
-              <h2 id="mention-heading" className="font-display text-2xl font-bold">
-                Things I want to mention
-              </h2>
-              <textarea
-                className={`${input} summary-no-print mt-2 min-h-40`}
-                aria-labelledby="mention-heading"
-                value={mention}
-                onChange={(e) => setMention(e.target.value)}
-                placeholder="Write anything you want to say at the visit. It is not saved and it prints with this page."
-              />
-              <p className="summary-print-only mt-2 min-h-32 whitespace-pre-wrap border border-line p-3">{mention}</p>
+
+
+            {includeMention && mention.trim() && <section className="summary-block" aria-label="My written concerns"><h2 className="font-display text-2xl font-bold">My written concerns</h2><p className="whitespace-pre-wrap">{mention}</p></section>}
+            <section className="summary-block" aria-labelledby="questions-heading">
+              <h2 id="questions-heading" className="font-display text-2xl font-bold">Three questions for my visit</h2>
+              <p className="text-base text-moss">Suggestions to help you prepare, based on your entries and whether you added concerns. Choose the questions that feel useful to you.</p>
+              <ol className="mt-2 list-decimal space-y-2 pl-6">{questions.map(q => <li key={q}>{q}</li>)}</ol>
             </section>
 
             <footer className="summary-block border-t border-line pt-3 text-base text-moss">

@@ -232,3 +232,32 @@ Written, not yet applied (Miah's main session applies it and runs `supabase/test
 
 ### Not done (see the status table in the spec)
 - A `consent_texts` table checking the hash against stored wording; `has_consent` and the insert policies on `habit_logs`, `goals`, `reflections`; the AI gate in the edge function and `set_ai_consent` calling `record_consent`; a withdraw dialog that pauses saving; export of `consents` in the download; retention jobs.
+
+## 0021_atomic_care_sharing — R1/R2 review repairs (2026-10-13)
+
+**Local draft only. Not applied to the live PersonalHealthManager project.** The connected environment did not provide live SQL/schema access at implementation time. Before deployment, compare live care_shares/consents definitions, migration history, grants and functions with 0010/0014/0015/0020; run the security advisor and the rolled-back tests on the authorized test environment. Migration numbering may need reconciliation if another writer has added 0021.
+
+### Changes and rationale
+
+- Adds `update_care_share_scope`: owner-authorized single UPDATE for all four pillar flags plus level. It preserves the database's current pause timestamp, avoiding stale browser state. Replaces the browser's two independent RPCs that could partially widen disclosure when the second call failed (R1).
+- Adds `invite_care_share_atomic`: creates invitation, chosen scope and `share_caregiver` consent record within one transaction. Server-derived consent details match the normalized recipient, pillars and level. Any failure rolls everything back; no browser compensating revocation is required (R2).
+- Adds private RLS-protected `care_share_invite_requests` with no browser grants, keyed by authenticated owner and request UUID. Retries return the original share only when the complete payload matches; mismatch is rejected. Owner advisory lock serializes invitation creation/limit checks and concurrent retries. Request rows cascade on account/share deletion; revoked shares retain receipts so retries cannot revive them.
+- Existing APIs remain available for compatibility. **Old clients still using split writes do not gain atomicity automatically**; deploy the new UI and retire stale clients before calling the rollout complete. There is no global claim that every legacy invitation has ledger evidence. The new UI fails closed without its new RPCs and never falls back to the unsafe sequence.
+- Browser retains the request UUID after uncertain result in the mounted form, clears it after confirmed success, and warns that sharing status is unknown rather than claiming “nothing was shared.” A page reload loses the in-memory retry token: the owner must inspect the refreshed share list; the server's existing unique open-invitation constraint prevents a duplicate invitation for that recipient. No recipient/health payload is persisted to browser storage.
+- Pause/resume sends a null level to preserve the database level rather than overwrite it with a stale UI value.
+
+### Evidence
+
+- `src/lib/sharingWrites.test.ts`: 9 tests passed. Tests one-call contracts, missing-RPC refusal, failures/empty responses, lost-response retry, and new intent after confirmed success.
+- `npx tsc -b --pretty false`: passed after these changes with the integrated working tree.
+- `supabase/tests/atomic_care_sharing_test_after_0021.sql`: passed on isolated local PostgreSQL 17 using synthetic Supabase auth bootstrap and repository migrations 0001–0021. It deliberately raises `ZB021` with `RESULT: PASS` then rolls back all fixtures and test triggers. Tests injection at creation/scope/consent/request receipt; authorization, idempotency, old-scope preservation, presence-only disclosure, pause, removed-pillar disclosure, anonymous grants and no resurrection.
+- Local PostgreSQL proves SQL transaction behavior under the fixture schema, **not live schema compatibility, PostgREST behavior, deployment, or a real two-account browser journey**. Live security advisor, deployed migration and device/browser verification remain outstanding. No remote mutation, deployment, credential access or commits performed.
+
+
+## 2026-10-14 — baseline remediation 0021 / 0022
+
+Read-only live dependency inventory confirmed the atomic RPCs were missing. Applied `0021_atomic_care_sharing.sql` as `20261014204109_atomic_care_sharing`, then `0022_scoped_sharing.sql` as `20261014204132_scoped_sharing` to PersonalHealthManager (`gzsawayrorlcjmpssalc`). Both passed isolated Postgres rollback tests before application. No existing owner choices expanded; no real health records read or edited.
+
+0022 adds nullable `pillar_levels` and default-live `report_cadence` to care_shares, authenticated owner-only matrix updates, a scoped metadata RPC, and a server-filtered report/owner preview RPC. It replaces legacy data/email functions to deny mixed/monthly access through old paths. Existing uniform shares retain their behavior. Monthly access exposes the previous completed calendar month only, with averages/counts at detail level and no daily values. Client types updated.
+
+This supersedes the single-level-per-recipient limitation of 0015 only when the owner explicitly saves mixed settings. Pause state remains unchanged. Existing matrix grants cannot be silently overwritten using old clients. See `docs/reports/2026-10-14-baseline-remediation.md` for tests and release limits. Security advisor completed; intentional definer/request-ledger notices and pre-existing Auth warnings are documented there. Frontend build and import positive-control tests passed.

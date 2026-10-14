@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { Plugin } from 'vite';
-import { defineConfig } from 'vitest/config';
+import { configDefaults, defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
@@ -73,6 +73,8 @@ export default defineConfig({
     rollupOptions: { output: { manualChunks: vendorChunk } },
   },
   test: {
+    // Agent worktrees are separate checkouts, not additional tests for this candidate.
+    exclude: [...configDefaults.exclude, '.claude/**'],
     // Let the aliases above apply inside supabase-js during tests (src/lib/supabaseStubs.test.ts).
     server: { deps: { inline: [/@supabase\//] } },
   },

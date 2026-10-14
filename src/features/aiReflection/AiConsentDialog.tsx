@@ -7,7 +7,7 @@ import { useEffect, useRef } from 'react';
 type Props = { onYes: () => void; onNotNow: () => void };
 
 const FOCUSABLE = 'button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-const btn = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-md px-5 text-lg font-semibold';
+const btn = 'inline-flex min-h-12 min-w-12 items-center justify-center rounded-md px-5 text-lg font-semibold';
 
 export default function AiConsentDialog({ onYes, onNotNow }: Props) {
   const box = useRef<HTMLDivElement>(null);

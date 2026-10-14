@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { SHARING_APP_ACTIVE } from '../lib/useFollowedPeople';
 import { supabase } from '../lib/supabase';
 import {
   exitApp,
@@ -49,6 +50,7 @@ export default function NativeShell() {
     }).then(keep);
 
     void onAppActiveChange((isActive) => {
+      window.dispatchEvent(new CustomEvent(SHARING_APP_ACTIVE, { detail: isActive }));
       // startAutoRefresh also checks the token straight away, so a stale one is renewed on return.
       if (isActive) void supabase.auth.startAutoRefresh();
       else void supabase.auth.stopAutoRefresh();

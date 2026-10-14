@@ -2,7 +2,7 @@
 // Shown only when VITE_AI_REFLECTION is "on". Opt-in: nothing is sent until the person asks, or
 // until they turn on "Write my daily reflection automatically" in Settings (profiles.auto_reflection).
 // Two asks: a reflection on today, and a gentle coach on the week (Michael's idea, with goals).
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { supabase } from '../../lib/supabase';
@@ -15,82 +15,105 @@ import { useAiConsent } from './useAiConsent';
 import { useDataSaver } from '../../lib/useDataSaver';
 import { REFLECTION_DATA_NOTE } from '../../lib/dataSaver';
 import Notice from '../../components/Notice';
+import { consentRevision, mayCallAi, readConsent } from '../../lib/aiConsent';
 
 export const AI_REFLECTION_ENABLED = import.meta.env.VITE_AI_REFLECTION === 'on';
 
 type Mode = 'day' | 'week';
 type Result = { text: string; source: 'ai' | 'fixed'; mode: Mode; reason?: string };
 
-// The last automatic reflection, kept in memory only (never stored), so moving between pages does
-// not ask Claude again. A reload, or a changed entry, writes a fresh one.
-let lastAuto: { date: string; fingerprint: string; result: Result } | null = null;
+let cachedAuto: { scope: string; result: Result } | null = null;
 
-const buttonClass = 'inline-flex min-h-11 items-center rounded-md px-5 font-semibold disabled:opacity-60';
+const buttonClass = 'inline-flex min-h-12 min-w-12 items-center rounded-md px-5 font-semibold disabled:opacity-60';
 
 type Props = { date: string; today: Record<string, unknown> | null; auto: boolean };
 
 export default function AiReflectionCard({ date, today, auto: autoSetting }: Props) {
   const { user } = useAuth();
   const consent = useAiConsent(user?.id);
-  const allowed = consent.allowed;
-  const allowedRef = useRef(allowed);
-  allowedRef.current = allowed;
-  const [asking, setAsking] = useState(false);
-  // Data saver: never write a reflection by itself; only when the person taps.
   const { saveData } = useDataSaver();
-  const auto = autoSetting && !saveData;
   const fingerprint = entryFingerprint(today);
-  const cached = allowed && auto && lastAuto && lastAuto.date === date && lastAuto.fingerprint === fingerprint ? lastAuto.result : null;
-  const [result, setResult] = useState<Result | null>(cached);
+  // A new account, consent state, day or entry owns a fresh component and fresh state.
+  // Automatic navigation cache is keyed by account, consent decision and entry context.
+  const scope = JSON.stringify([user?.id, consent.allowed, consentRevision(user?.id), date, fingerprint, autoSetting && !saveData]);
+  if (!consent.allowed) cachedAuto = null;
+  return <ScopedReflection key={scope} scope={scope} date={date} fingerprint={fingerprint} userId={user?.id}
+    consent={consent} autoSetting={autoSetting} saveData={saveData} />;
+}
+
+function ScopedReflection({ scope, date, fingerprint, userId, consent, autoSetting, saveData }: {
+  scope: string; date: string; fingerprint: string | null; userId: string | undefined;
+  consent: ReturnType<typeof useAiConsent>; autoSetting: boolean; saveData: boolean;
+}) {
+  const allowed = consent.allowed;
+  const [asking, setAsking] = useState(false);
+  const auto = autoSetting && !saveData;
+  const [result, setResult] = useState<Result | null>(cachedAuto?.scope === scope ? cachedAuto.result : null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState<Mode | null>(null);
-  const started = useRef<string | null>(null);
+  const lastAuto = useRef<Result | null>(cachedAuto?.scope === scope ? cachedAuto.result : null);
+  const generation = useRef(0);
+  const mounted = useRef(false);
+  useLayoutEffect(() => {
+    mounted.current = true;
+    return () => { mounted.current = false; generation.current++; };
+  }, []);
+
+  const revision = consentRevision(userId);
 
   async function ask(mode: Mode): Promise<Result | null> {
-    // The one gate: without a current yes from this person, nothing leaves the browser.
-    if (!allowedRef.current) return null;
+    // Re-read consent as well as render state: a storage event can precede React's update.
+    if (!allowed || !userId || !mayCallAi(readConsent(userId))) return null;
+    const request = ++generation.current;
+    const current = () => mounted.current && request === generation.current && revision === consentRevision(userId) && mayCallAi(readConsent(userId));
     setBusy(mode);
     setError(null);
-    const { data, error: err } = await supabase.functions.invoke('daily-reflection', { body: { date, mode } });
-    setBusy(null);
-    if (err || !data?.text) {
-      const status = (err as { context?: { status?: number } } | null)?.context?.status;
-      setError(
-        mode === 'week' && status === 404
-          ? 'Log a day or two this week, and the coach can look at it with you.'
-          : 'A reflection is not available right now. Please try again in a moment.',
-      );
+    try {
+      const { data, error: err } = await supabase.functions.invoke('daily-reflection', { body: { date, mode } });
+      if (!current()) return null;
+      if (err || !data?.text) {
+        const status = (err as { context?: { status?: number } } | null)?.context?.status;
+        setError(
+          mode === 'week' && status === 404
+            ? 'Log a day or two this week, and the coach can look at it with you.'
+            : 'A reflection is not available right now. Please try again in a moment.',
+        );
+        return null;
+      }
+      // Second line of defence: the same checker the server uses. Anything doubtful becomes the fixed kind
+      // message. The check fails closed (it never throws; a surprise is "not ok").
+      const checked = data.source === 'ai' && !checkReply(data.text, { mode: mode === 'week' ? 'coach' : 'day' }).ok;
+      const next: Result = checked
+        ? { text: FALLBACK_MESSAGE, source: 'fixed', mode, reason: 'filtered' }
+        : { text: data.text, source: data.source === 'ai' ? 'ai' : 'fixed', mode, reason: typeof data.reason === 'string' ? data.reason : undefined };
+      setResult(next);
+      if (auto && mode === 'day') { lastAuto.current = next; cachedAuto = { scope, result: next }; }
+      return next;
+    } catch {
+      if (current()) setError('A reflection is not available right now. Please try again in a moment.');
       return null;
+    } finally {
+      if (current()) setBusy(null);
     }
-    // Second line of defence: the same checker the server uses. Anything doubtful becomes the fixed kind
-    // message. The check fails closed (it never throws; a surprise is "not ok").
-    const checked = data.source === 'ai' && !checkReply(data.text, { mode: mode === 'week' ? 'coach' : 'day' }).ok;
-    const next: Result = checked
-      ? { text: FALLBACK_MESSAGE, source: 'fixed', mode, reason: 'filtered' }
-      : { text: data.text, source: data.source === 'ai' ? 'ai' : 'fixed', mode, reason: typeof data.reason === 'string' ? data.reason : undefined };
-    setResult(next);
-    return next;
   }
 
-  // Automatic mode: write once per changed entry.
+  // One automatic request per mounted scope. Cleanup invalidates even StrictMode replay.
   useEffect(() => {
-    if (!AI_REFLECTION_ENABLED || !allowed || !auto || !fingerprint || cached || started.current === fingerprint) return;
-    started.current = fingerprint;
-    ask('day').then((r) => {
-      if (r) lastAuto = { date, fingerprint, result: r };
+    let disposed = false;
+    // StrictMode replays effects: wait until its first cleanup can mark that setup obsolete.
+    queueMicrotask(() => {
+      if (!disposed && AI_REFLECTION_ENABLED && allowed && auto && fingerprint && !lastAuto.current) void ask('day');
     });
-    // ask is recreated each render; the fingerprint decides when to run.
-  }, [auto, fingerprint, date, allowed]);
+    // Scope changes remount this component, so this effect never reuses old context.
+    return () => { disposed = true; };
+  }, []);
 
-  // Withdrawing consent removes any reflection on screen and the in-memory copy.
-  useEffect(() => {
-    if (!allowed) {
-      lastAuto = null;
-      started.current = null;
-      setResult(null);
-      setError(null);
-    }
-  }, [allowed]);
+  function back() {
+    generation.current++;
+    setBusy(null);
+    setError(null);
+    setResult(auto ? lastAuto.current : null);
+  }
 
   if (!AI_REFLECTION_ENABLED) return null;
 
@@ -139,7 +162,7 @@ export default function AiReflectionCard({ date, today, auto: autoSetting }: Pro
           <p className="mt-2 text-lg leading-relaxed" aria-live="polite">
             {result.text}
           </p>
-          <p className="mt-2 text-xs text-moss">
+          <p className="mt-2 text-base leading-relaxed text-moss">
             {result.source === 'ai'
               ? `Written by AI (Claude, by Anthropic) from ${result.mode === 'week' ? 'this week’s entries and your goals' : 'today’s entry'}${autoDay ? ', automatically after you logged' : ''}. `
               : 'A kind message from the app. '}
@@ -148,16 +171,16 @@ export default function AiReflectionCard({ date, today, auto: autoSetting }: Pro
           {needsSupportLines(result.reason) && <HardDaySupport />}
           <div className="mt-3 flex flex-wrap gap-4 text-sm font-semibold">
             {result.mode === 'week' ? (
-              <button type="button" onClick={() => setResult(auto && lastAuto?.date === date ? lastAuto.result : null)} className="underline underline-offset-4">
+              <button type="button" onClick={back} className="inline-flex min-h-12 min-w-12 items-center underline underline-offset-4">
                 Back
               </button>
             ) : (
-              <button type="button" onClick={() => ask('week')} disabled={busy !== null} className="underline underline-offset-4 disabled:opacity-60">
+              <button type="button" onClick={() => ask('week')} disabled={busy !== null} className="inline-flex min-h-12 min-w-12 items-center underline underline-offset-4 disabled:opacity-60">
                 {busy === 'week' ? 'Looking at your week…' : 'Coach me on my week'}
               </button>
             )}
             {!auto && result.mode === 'day' && (
-              <button type="button" onClick={() => setResult(null)} className="underline underline-offset-4">
+              <button type="button" onClick={back} className="inline-flex min-h-12 min-w-12 items-center underline underline-offset-4">
                 Back
               </button>
             )}
@@ -200,11 +223,11 @@ export default function AiReflectionCard({ date, today, auto: autoSetting }: Pro
               {busy === 'week' ? 'Looking at your week…' : 'Coach me on my week'}
             </button>
           </div>
-          {saveData && <p className="mt-2 text-xs text-moss">{REFLECTION_DATA_NOTE}</p>}
+          {saveData && <p className="mt-2 text-base leading-relaxed text-moss">{REFLECTION_DATA_NOTE}</p>}
           {!autoSetting && (
-            <p className="mt-2 text-xs text-moss">
+            <p className="mt-2 text-base leading-relaxed text-moss">
               Prefer it written automatically after each log?{' '}
-              <Link to="/settings" className="underline underline-offset-4">
+              <Link to="/settings" className="inline-flex min-h-12 min-w-12 items-center underline underline-offset-4">
                 Turn it on in Settings
               </Link>
               .

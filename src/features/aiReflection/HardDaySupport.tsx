@@ -33,11 +33,11 @@ export default function HardDaySupport() {
         <li key={r.key} className="rounded-md border border-line bg-white p-3">
           <p className="font-semibold">
             {r.href ? (
-              <a href={r.href} target="_blank" rel="noreferrer" className="underline underline-offset-4">
+              <a href={r.href} target="_blank" rel="noreferrer" className="inline-flex min-h-12 min-w-12 items-center underline underline-offset-4">
                 {r.name}
               </a>
             ) : r.tel ? (
-              <a href={`tel:${r.tel}`} className="underline underline-offset-4">
+              <a href={`tel:${r.tel}`} className="inline-flex min-h-12 min-w-12 items-center underline underline-offset-4">
                 {r.name}
               </a>
             ) : (
