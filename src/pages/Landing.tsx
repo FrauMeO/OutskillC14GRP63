@@ -32,7 +32,9 @@ export default function Landing() {
         <div className="mx-auto grid max-w-5xl gap-10 px-4 py-14 sm:px-6 sm:py-20 md:grid-cols-[1.25fr_0.75fr] md:items-center">
           <div>
             <p className="font-display text-xl font-bold text-mist/90">{PILLAR_TAGLINE}</p>
-            <h1 className="mt-3 font-display text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl">{HERO_LINE}</h1>
+            <h1 className="mt-3 whitespace-nowrap font-display text-[clamp(1.65rem,7vw,3.75rem)] font-bold leading-[1.05] tracking-tight">
+              {HERO_LINE}
+            </h1>
             <p className="mt-6 max-w-2xl text-xl text-mist">
               Celebrate the life you are living. Notice your water, sleep, movement and balance with curiosity, kindness and reflection.
             </p>
