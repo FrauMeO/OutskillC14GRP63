@@ -71,7 +71,7 @@ describe('the public routes', () => {
   });
 
   it('gives the home page the title Miah chose', () => {
-    expect(routeTitle('/')).toBe('Build Your Pillars: gentle health tracking, no judgment');
+    expect(routeTitle('/')).toBe('Build Your Pillars: a joyful, gentle way to live well');
   });
 
   it('builds canonical addresses', () => {
@@ -96,8 +96,8 @@ describe('the public routes', () => {
 describe('the home page and the offer', () => {
   const home = visibleText(render('/'));
   it('leads with the everyday value and no-judgment positioning', () => {
-    expect(home).toContain('Notice your days. Build what works for you.');
-    expect(home).toContain('See your patterns without grades, streaks or judgment.');
+    expect(home).toContain('A joyful, gentle way to live well.');
+    expect(home).toContain('Celebrate the life you are living.');
   });
   it('uses the offer wording verbatim and shows no dollar figure', () => {
     expect(home).toContain(OFFER_LINE);

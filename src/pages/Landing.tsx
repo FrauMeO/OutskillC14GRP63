@@ -21,7 +21,7 @@ const EVERYDAY = [
   },
   {
     title: 'Goals that are yours',
-    body: 'Set a goal, change it, or skip goals altogether. Nothing is graded, and a Day off is just a Day off.',
+    body: 'Set a goal, change it, or simply follow your own rhythm. A Day off gives the story of your week room to breathe.',
   },
 ];
 
@@ -34,7 +34,7 @@ export default function Landing() {
             <p className="font-display text-xl font-bold text-mist/90">{PILLAR_TAGLINE}</p>
             <h1 className="mt-3 font-display text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl">{HERO_LINE}</h1>
             <p className="mt-6 max-w-2xl text-xl text-mist">
-              A gentle place to track your water, sleep, movement and balance. See your patterns without grades, streaks or judgment.
+              Celebrate the life you are living. Notice your water, sleep, movement and balance with curiosity, kindness and reflection.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2">
               <Link
@@ -64,18 +64,18 @@ export default function Landing() {
 
       <section aria-labelledby="for-you" className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
         <h2 id="for-you" className="font-display text-3xl font-bold tracking-tight">
-          Your health is more than a score
+          Make space to notice what feels good
         </h2>
         <p className="mt-4 max-w-3xl text-xl">
-          Build Your Pillars helps you notice what is happening across your days. Enter as much or as little as you want. A Day off is simply
-          a Day off. You are never behind.
+          Build Your Pillars gives you a quiet place to notice what helps you feel well. Follow your own rhythm, celebrate what feels good and
+          return whenever curiosity brings you back. Every day adds to the story in its own way.
         </p>
       </section>
 
       <section aria-labelledby="everyday" className="border-y border-line bg-white">
         <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
           <h2 id="everyday" className="font-display text-3xl font-bold tracking-tight">
-            What you can do
+            Notice with curiosity
           </h2>
           <ul className="mt-6 grid gap-6 md:grid-cols-3">
             {EVERYDAY.map((f) => (
@@ -90,9 +90,9 @@ export default function Landing() {
 
       <section aria-labelledby="pillars" className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
         <h2 id="pillars" className="font-display text-3xl font-bold tracking-tight">
-          Four parts of one life
+          Four parts of your whole life
         </h2>
-        <p className="mt-4 max-w-2xl">Drink. Sleep. Move. Balance. Look at each pillar on its own, or notice how they move together.</p>
+        <p className="mt-4 max-w-2xl">Drink. Sleep. Move. Balance. Notice each pillar on its own, then discover how they move together across your days.</p>
         <ul className="mt-6 grid gap-4 sm:grid-cols-2">
           {PILLAR_ORDER.map((key) => {
             const p = PILLARS[key];
@@ -110,13 +110,15 @@ export default function Landing() {
         <div className="mx-auto grid max-w-5xl gap-6 px-4 py-12 sm:px-6 md:grid-cols-[1fr_auto] md:items-center">
           <div>
             <h2 id="sharing" className="font-display text-3xl font-bold tracking-tight">
-              Share if it helps
+              Keep it close, or share it with someone special
             </h2>
             <p className="mt-4 max-w-2xl">
-              Invite one person you trust to follow selected pillars. You choose what they see. Sharing is read-only, and you can pause or end
-              it whenever you want.
+              Your journey can stay private and reflective. Or you can invite someone special to follow selected pillars and create space for
+              them to love you back—with warmth, encouragement and care.
             </p>
-            <p className="mt-3 max-w-2xl text-base text-moss">Your own tracking works fully whether you share or not.</p>
+            <p className="mt-3 max-w-2xl text-base text-moss">
+              Both choices are complete. If you share, you decide what they see and can pause or end it whenever you want.
+            </p>
           </div>
           <Link to="/sharing" className={`${primaryLink} whitespace-nowrap`}>
             How sharing works

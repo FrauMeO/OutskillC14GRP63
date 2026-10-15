@@ -31,7 +31,7 @@ export default function Why() {
           </p>
           <p>
             Build Your Pillars rests on four everyday pillars: Drink, Sleep, Move and Balance, which is our word for mental health. You log what you
-            choose, you set goals only if you want them, and you look back with curiosity instead of judgment.
+            choose, you set goals only if you want them, and you look back with curiosity and reflection.
           </p>
           <p>
             We kept it independent on purpose. There is no insurer or medical provider behind it and there are no ads. Nothing is
