@@ -98,7 +98,7 @@ describe('the public and product copy', () => {
   it('control: the scanner really reads the pages (it finds known sentences)', () => {
     const landing = visibleStrings(readFileSync(join(pagesDir, 'Landing.tsx'), 'utf8')).join(' ');
     expect(landing).toContain('Create your account');
-    expect(landing).toContain('Sharing, on your terms');
+    expect(landing).toContain('Share if it helps');
     const terms = visibleStrings(readFileSync(join(pagesDir, 'Terms.tsx'), 'utf8')).join(' ');
     expect(terms).toContain('keep the app working and your data secure');
   });
