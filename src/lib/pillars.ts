@@ -15,7 +15,7 @@ export const PILLARS: Record<Category, Pillar> = {
   nutrition: { key: 'nutrition', name: 'Drink', subtitle: 'Water and hydration', color: 'var(--color-sprout)' },
   sleep: { key: 'sleep', name: 'Sleep', subtitle: 'Sleep and rest', color: 'var(--color-dusk)' },
   exercise: { key: 'exercise', name: 'Move', subtitle: 'Movement, your way', color: 'var(--color-ember)' },
-  wellbeing: { key: 'wellbeing', name: 'Balance', subtitle: 'Stress, mood and how you feel', color: 'var(--color-bloom)' },
+  wellbeing: { key: 'wellbeing', name: 'Balance', subtitle: 'Feelings and mood', color: 'var(--color-bloom)' },
 };
 
 // Display order everywhere: Drink, Sleep, Move, Balance.
