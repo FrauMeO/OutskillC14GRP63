@@ -36,7 +36,8 @@ export default function Landing() {
               {HERO_LINE}
             </h1>
             <p className="mt-6 max-w-2xl text-xl text-mist">
-              Celebrate the life you are living. Notice your water, sleep, movement and balance with curiosity, kindness and reflection.
+              Celebrate the life you are living. Notice how much you drink, sleep, and move. Reflect on the balance in your life with
+              curiosity, kindness and reflection.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2">
               <Link
