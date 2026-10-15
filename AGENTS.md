@@ -18,6 +18,19 @@ Build Your Pillars (formerly Personal Health Manager) is a web app for gentle, r
 - **Never** read from or write to any other Supabase project. In particular, the original PersonalHealthManager (ref `dfjkeuqycklxnvitmjby`) and FacilityRecords (ref `hyrxwkicuycyzzqzmqtw`) both live in the Impact Arts organization FacilityRecordsHolding, which this app must not use.
 - Keys live only in `.env.local` (git-ignored). Use the publishable or anon key in the browser. Never put the service_role or secret key in this app.
 
+## Several agents at once: one worktree each
+
+> Adopted by Miah on 2026-10-15. Applies to every model and tool (Claude, Codex and any other). Change it only with her approval.
+
+1. The main folder, `/Users/olmstedhome/Projects/OutskillC14GRP63`, stays on `main` and belongs to Miah. Agents never switch its branch, commit in it or edit files in it.
+2. Every agent works in its own git worktree, made from the latest `main` on a new branch: `git fetch origin && git worktree add -b <branch> <folder> origin/main`. Claude Code's worktrees under `.claude/worktrees/` count.
+3. Before every commit, check that `git branch --show-current` is your own branch. If it is not, stop and tell Miah.
+4. One agent per branch. Never commit to a branch another agent is using.
+5. One agent at a time changes a Supabase database. Take the next migration number from the latest `main` and the live migration list; if two branches pick the same number, tell Miah before either merges.
+6. After the branch is merged, remove the worktree with `git worktree remove <folder>`.
+
+Why: on 2026-10-14 and 15, two agents shared the main folder, and one agent's homepage commits landed on another agent's billing branch.
+
 ## Folder map
 
 ```
