@@ -64,10 +64,10 @@ export default function Landing() {
 
       <section aria-labelledby="for-you" className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
         <h2 id="for-you" className="font-display text-3xl font-bold tracking-tight">
-          Make space to notice what feels good
+          What helps you feel good?
         </h2>
         <p className="mt-4 max-w-3xl text-xl">
-          Build Your Pillars gives you a quiet place to notice what helps you feel well. Follow your own rhythm, celebrate what feels good and
+          Build Your Pillars gives you a quiet place to discover your own answer. Follow your rhythm, celebrate what feels good and
           return whenever curiosity brings you back. Every day adds to the story in its own way.
         </p>
       </section>
