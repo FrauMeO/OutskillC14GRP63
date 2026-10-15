@@ -16,6 +16,10 @@ export default function Why() {
             We are a husband and wife. Bob is 72 and Miah is 60, and we wanted a simple, warm way to notice our days and stay connected.
           </p>
           <p>
+            At 60, Miah learned to build software with Claude without a traditional coding background. Build Your Pillars began as her
+            project in a 48-hour hackathon.
+          </p>
+          <p>
             We move in tandem with the world around us, like dance partners. Daylight shifts, weather changes, the moon waxes and wanes,
             and tides come and go. Our bodies and feelings have rhythms too. Miah wanted to build a place where we could notice those
             relationships with curiosity and discover our own answers over time.
