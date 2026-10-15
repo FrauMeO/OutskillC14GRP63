@@ -70,8 +70,8 @@ export default function Landing() {
           What helps you feel good?
         </h2>
         <p className="mt-4 max-w-3xl text-xl">
-          Build Your Pillars gives you a quiet place to discover your own answer. Follow your rhythm, celebrate what feels good and
-          return whenever curiosity brings you back. Every day adds to the story in its own way.
+          Build Your Pillars gives you a quiet place to discover your own answers. Move to your own beat. Flow with your own rhythm. Enjoy
+          what feels good and notice what doesn&apos;t. Every day adds to the story. Let curiosity be your coach.
         </p>
       </section>
 
