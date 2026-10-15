@@ -134,7 +134,9 @@ Accounts made before sign-up asked for birth data have `plan = 'unknown'`.
 3. `src/pages/Following.tsx` or `FollowingPerson.tsx` (supporter side): render `<CaregiverPlanCard name={ownerName} />` near the top, only for an active share.
 4. Legacy accounts: in `src/pages/Dashboard.tsx` (or `AppLayout`) when `profile_birth_needed()` is true, render `<BirthPrompt />`. The simplest version: the Plan page already shows it when needed, so a calm link to `/plan` is enough for v1.
 
-## 7. Wiring the care-sharing functions after 0015 is applied (not done: another agent owns them)
+## 7. Wiring the care-sharing functions (done in 0023, except the weekly email)
+
+**Status (2026-10-15):** `0023_gate_shared_views_on_billing.sql` adds the check below to `shared_days`, `shared_week_summary`, `shared_goals` and `shared_pillar_report` (viewer path only; the owner preview stays open). Test: `supabase/tests/billing_gate_test_after_0023.sql`. Still open: the weekly supporter email (`email_digest_inputs`, `email_week_trends`) runs as the service role, so it needs a check by viewer id instead of `viewer_may_view`. Do that before flipping `billing_enforced`.
 
 Only a caregiver with a paid caregiver plan may VIEW a shared pillar view. The one-line check, to add at the top of
 `shared_days`, `shared_week_summary` and `shared_goals` (and anything else that returns an owner's data to a viewer),
