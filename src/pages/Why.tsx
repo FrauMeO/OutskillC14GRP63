@@ -13,34 +13,33 @@ export default function Why() {
 
         <div className="mt-8 space-y-5">
           <p>
-            We are a husband and wife. Bob is 72 and Miah is 60, and we wanted a simple way to follow each other&apos;s days,
-            without confusion and without pressure.
+            We are a husband and wife. Bob is 72 and Miah is 60, and we wanted a simple, warm way to notice our days and stay connected.
           </p>
           <p>
-            We looked around, and many health tools felt like a report card. Numbers turned into verdicts. Days without an entry turned
-            into red marks. Many caregiver tools watch people without asking them first. That is not how we wanted to look after
-            ourselves, or each other.
+            We move in tandem with the world around us, like dance partners. Daylight shifts, weather changes, the moon waxes and wanes,
+            and tides come and go. Our bodies and feelings have rhythms too. Miah wanted to build a place where we could notice those
+            relationships with curiosity and discover our own answers over time.
           </p>
           <p>
-            So here, sharing starts with the older person. You invite someone you trust, you choose the pillars and how much they see,
-            and you can pause or stop whenever you like.{' '}
+            Build Your Pillars rests on four everyday pillars: Drink, Sleep, Move and Balance. Notice how much you drink, sleep and move,
+            then reflect on the balance in your life—your feelings and mood—with curiosity and kindness.
+          </p>
+          <p>
+            Your journey can stay private, a quiet conversation with yourself. Or you can share selected pillars with someone special and
+            create space for them to love you back with warmth, encouragement and care. You choose what they see and can pause or end
+            sharing whenever you like.{' '}
             <Link to="/sharing" className="font-semibold underline underline-offset-4">
               Read how sharing works
             </Link>
             .
           </p>
           <p>
-            Build Your Pillars rests on four everyday pillars: Drink, Sleep, Move and Balance, which is our word for mental health. You log what you
-            choose, you set goals only if you want them, and you look back with curiosity and reflection.
-          </p>
-          <p>
-            We kept it independent on purpose. There is no insurer or medical provider behind it and there are no ads. Nothing is
-            all-or-nothing, and your data can be downloaded or deleted whenever you wish.
+            We kept it independent on purpose. There is no insurer or medical provider behind it and there are no ads. Your information
+            can be downloaded or deleted whenever you wish.
           </p>
           <p>{OFFER_LINE}</p>
           <p>
-            We believe change is hard, and you are worth the effort. Be gentle with yourself. Your future self is grateful for the care
-            you give today.
+            Move to your own beat. Flow with your own rhythm. Enjoy what feels good and notice what doesn&apos;t. Let curiosity be your coach.
           </p>
           <p className="font-display text-xl font-bold">
             Bob and Miah
