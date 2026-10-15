@@ -71,7 +71,7 @@ describe('the public routes', () => {
   });
 
   it('gives the home page the title Miah chose', () => {
-    expect(routeTitle('/')).toBe('Build Your Pillars: share your days, on your terms');
+    expect(routeTitle('/')).toBe('Build Your Pillars: a joyful gentle way to live');
   });
 
   it('builds canonical addresses', () => {
@@ -95,9 +95,9 @@ describe('the public routes', () => {
 
 describe('the home page and the offer', () => {
   const home = visibleText(render('/'));
-  it('leads with the older person and the positioning', () => {
-    expect(home).toContain('Let someone you trust follow along. On your terms.');
-    expect(home).toContain('Most caregiver tools watch people. Build Your Pillars asks them first.');
+  it('leads with the everyday value and no-judgment positioning', () => {
+    expect(home).toContain('A joyful gentle way to live.');
+    expect(home).toContain('Celebrate the life you are living.');
   });
   it('uses the offer wording verbatim and shows no dollar figure', () => {
     expect(home).toContain(OFFER_LINE);

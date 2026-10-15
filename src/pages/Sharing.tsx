@@ -33,7 +33,7 @@ export default function Sharing() {
             {PILLAR_ORDER.map((key) => (
               <li key={key} className="rounded-lg border border-line bg-white px-4 py-3" style={{ borderTopColor: PILLARS[key].color, borderTopWidth: 5 }}>
                 <span className="font-display text-xl font-bold">{PILLARS[key].name}</span>
-                <span className="block">{key === 'wellbeing' ? 'Stress, mood and how you feel' : PILLARS[key].subtitle}</span>
+                <span className="block">{PILLARS[key].subtitle}</span>
               </li>
             ))}
           </ul>

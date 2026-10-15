@@ -14,8 +14,9 @@ describe('about', () => {
     expect(foundersLine([])).toBe('');
   });
 
-  it('control: the story carries no hackathon or team wording', () => {
-    expect(ABOUT_STORY).not.toMatch(/hackathon|group 63|outskill/i);
-    expect('Built by Group 63 at a hackathon').toMatch(/hackathon|group 63|outskill/i);
+  it('uses the approved founder origin without naming a team or programme', () => {
+    expect(ABOUT_STORY).toContain('48-hour hackathon project');
+    expect(ABOUT_STORY).toContain('with Claude at 60');
+    expect(ABOUT_STORY).not.toMatch(/group 63|outskill|hackathon team/i);
   });
 });

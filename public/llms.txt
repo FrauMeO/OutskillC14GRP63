@@ -1,12 +1,12 @@
 # Build Your Pillars
 
-> Drink. Sleep. Move. Balance. Gentle, private self-tracking for adults 50+ and the people who care about them. Share only what you choose, with someone you trust.
+> Drink. Sleep. Move. Balance. Celebrate a joyful, healthy way of gentle living, one day at a time.
 
-Most caregiver tools watch people. Build Your Pillars asks them first. Free for everyone 60 and over. Free for everyone else during the beta.
+Follow your own rhythm with curiosity and reflection. Keep the journey private or share selected pillars with someone special. Free for everyone 60 and over. Free for everyone else during the beta.
 
 ## Public pages
 
-- [Home](https://buildyourpillars.com/): Let someone you trust follow along, on your terms. The home page explains the everyday benefit of logging a day your way, how sharing works on the older person's terms, the four pillars (Drink, Sleep, Move, Balance), what you control about your data, and where you can use it today.
+- [Home](https://buildyourpillars.com/): A joyful gentle way to live. The home page asks what helps you feel good, celebrates the life you are living, explains the four pillars (Drink, Sleep, Move, Balance), and offers private reflection or optional sharing with someone special.
 - [How sharing works](https://buildyourpillars.com/sharing): Plain answers to the questions people ask first. You invite one person you trust, they have to say yes, you choose which pillars they see and how much, and you can pause or stop at any time. Sharing is for staying close. It does not detect falls or emergencies.
 - [Why we built it](https://buildyourpillars.com/why): The story of two people, a husband and wife, who wanted a simple way to follow each other's days without confusion or pressure. Built by Bob Olmsted and Miah Shull Olmsted.
 - [Privacy policy](https://buildyourpillars.com/privacy): What we collect and why, who else handles the data, where it is stored, how long we keep it, and how to download or delete your data.

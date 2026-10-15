@@ -33,9 +33,9 @@ export default function PublicLayout({ title, children }: { title: string; child
             Build Your Pillars
           </Link>
           <nav aria-label="Main" className="flex flex-wrap items-center">
-            <NavLink to="/sharing" className={linkClass}>
-              How sharing works
-            </NavLink>
+            <Link to="/#pillars" className={linkClass}>
+              The four pillars
+            </Link>
             <NavLink to="/why" className={linkClass}>
               Why we built it
             </NavLink>

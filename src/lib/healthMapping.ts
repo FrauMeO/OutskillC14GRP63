@@ -91,7 +91,7 @@ export const MAPPINGS: Mapping[] = [
     googleHealthApi: { dataType: 'Active Energy Burned', daily: 'sum of the day, kcal' },
   },
 
-  // ---------- Balance: stress, mood and how you feel ----------
+  // ---------- Balance: feelings and mood ----------
   {
     pillar: 'wellbeing', column: 'mood', label: 'Mood', unit: '1 to 5',
     apple: { type: 'HKStateOfMind', values: ['dailyMood'], daily: 'valence (-1 to 1) converted with valenceToMood' },
