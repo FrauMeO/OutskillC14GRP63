@@ -17,7 +17,7 @@ const EVERYDAY = [
   },
   {
     title: 'Notice your patterns',
-    body: 'See today against your own goals, a week of trends, and what tends to go along with what, including the weather where you are. Always with the number of days behind it.',
+    body: 'See the rhythm of your life across days and weeks. Notice what moves together, including the weather where you are. Every pattern shows how many days shaped it.',
   },
   {
     title: 'Goals that are yours',
