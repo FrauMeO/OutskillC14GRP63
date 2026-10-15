@@ -11,9 +11,9 @@ export const CANONICAL_DESCRIPTION =
 export const OFFER_LINE = 'Free for everyone 60 and over. Free for everyone else during the beta.';
 
 export const LEAD_CLAIM = 'Sharing is optional. You choose what another person can see, and you can stop at any time.';
-export const HERO_LINE = 'A joyful, gentle way to live well.';
+export const HERO_LINE = 'A joyful gentle way to live.';
 
 // The fixed signature: lowercase, always last, never a heading.
 export const SIGNATURE = 'p.s. live well';
 
-export const HOME_TITLE = 'Build Your Pillars: a joyful, gentle way to live well';
+export const HOME_TITLE = 'Build Your Pillars: a joyful gentle way to live';
