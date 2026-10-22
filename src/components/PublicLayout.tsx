@@ -7,9 +7,9 @@ import { CANONICAL_DESCRIPTION, SIGNATURE } from '../lib/brandCopy';
 
 // Footer links, in reading order. "Why build another new app?" sits on its own line above the credits.
 const FOOTER_LINKS = [
-  { to: '/sharing', label: 'How sharing works' },
   { to: '/signup', label: 'Create your account' },
   { to: '/login', label: 'Log in' },
+  { to: '/sharing', label: 'How sharing works' },
   { to: '/privacy', label: 'Privacy' },
   { to: '/health-data-privacy', label: 'Health data privacy' },
   { to: '/terms', label: 'Terms' },
@@ -97,11 +97,12 @@ export default function PublicLayout({ title, children }: { title: string; child
               Why build another new app?
             </Link>
           </p>
-          <p className="text-base text-moss">Made by {foundersLine()}.</p>
-          <p className="mt-2 text-xs text-moss">{postalAddress()}</p>
-          <p className="text-xs text-moss">{copyrightLine()}</p>
+          {/* Credits stay small and left-aligned; 14px (text-xs) is the smallest size the brand allows. */}
+          <p className="text-left text-xs text-moss">Made by {foundersLine()}.</p>
+          <p className="text-left text-xs text-moss">{postalAddress()}</p>
+          <p className="text-left text-xs text-moss">{copyrightLine()}</p>
           {/* The fixed signature: always last, never a heading. */}
-          <p className="mt-4 text-base italic text-moss">{SIGNATURE}</p>
+          <p className="mt-3 text-left text-sm italic text-moss">{SIGNATURE}</p>
         </div>
       </footer>
     </div>
