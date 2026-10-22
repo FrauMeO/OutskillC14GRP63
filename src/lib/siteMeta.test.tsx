@@ -106,9 +106,13 @@ describe('the home page and the offer', () => {
   it('links to /sharing', () => {
     expect(render('/')).toContain('href="/sharing"');
   });
-  it('ends every page with the signature, lower case, not as a heading', () => {
-    const html = render('/');
-    expect(html).toMatch(/<p[^>]*>p\.s\. live well<\/p>\s*<\/div>\s*<\/footer>/);
+  it('ends every page with the sign-off line: the lower-case signature, then the privacy policy and terms', () => {
+    for (const { path } of PUBLIC_ROUTES) {
+      const html = render(path);
+      const lastLine = html.slice(html.lastIndexOf('<div', html.lastIndexOf('</footer>')));
+      expect(lastLine, path).toMatch(/^<div[^>]*><p[^>]*>p\.s\. live well and laugh often<\/p><a[^>]*href="\/privacy"[^>]*>Your personal privacy and how we treat it<\/a><a[^>]*href="\/terms"[^>]*>Terms<\/a><\/div><\/div><\/footer>/);
+      expect(lastLine, path).not.toMatch(/<h\d/);
+    }
   });
 });
 

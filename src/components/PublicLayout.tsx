@@ -3,16 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { copyrightLine, postalAddress } from '../lib/company';
 import { foundersLine } from '../lib/about';
-import { CANONICAL_DESCRIPTION, SIGNATURE } from '../lib/brandCopy';
-
-// Footer links, in reading order. "Why build another new app?" sits on its own line above the credits.
-// The Consumer Health Data Privacy Policy is linked from the box above, so it is not repeated here.
-// Create your account and Log in are in the "Ready when you are" box, so they are not repeated either.
-const FOOTER_LINKS = [
-  { to: '/sharing', label: 'How sharing works' },
-  { to: '/privacy', label: 'Privacy' },
-  { to: '/terms', label: 'Terms' },
-];
+import { CANONICAL_DESCRIPTION, FOOTER_SIGNATURE } from '../lib/brandCopy';
 
 const linkClass =
   'inline-flex min-h-11 items-center rounded-md px-3 font-semibold text-spruce underline-offset-4 hover:underline';
@@ -79,19 +70,12 @@ export default function PublicLayout({ title, children }: { title: string; child
           <p className="max-w-2xl text-base text-moss">
             Build Your Pillars is for reflection. It is not medical advice and it does not diagnose anything.
           </p>
-          {/* Two even columns on phones, one row on wider screens, so no link wraps onto a line by itself. */}
-          <nav aria-label="Footer" className="mt-3">
-            <ul className="grid grid-cols-2 gap-x-6 text-base sm:flex sm:flex-wrap">
-              {FOOTER_LINKS.map((l) => (
-                <li key={l.to}>
-                  <Link to={l.to} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-          <p className="mt-4 text-base">
+          <p className="mt-3 text-base">
+            <Link to="/sharing" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+              How sharing works
+            </Link>
+          </p>
+          <p className="text-base">
             <Link to="/why" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
               Why build another new app?
             </Link>
@@ -100,8 +84,17 @@ export default function PublicLayout({ title, children }: { title: string; child
           <p className="text-left text-xs text-moss">Made by {foundersLine()}.</p>
           <p className="text-left text-xs text-moss">{postalAddress()}</p>
           <p className="text-left text-xs text-moss">{copyrightLine()}</p>
-          {/* The fixed signature: always last, never a heading. */}
-          <p className="mt-3 text-left text-sm italic text-moss">{SIGNATURE}</p>
+          {/* The footer signature, with the privacy policy and terms beside it on the same line (wraps on phones).
+              The Consumer Health Data Privacy Policy keeps its own prominent link in the box above. */}
+          <div className="mt-3 flex flex-wrap items-center gap-x-5 text-left text-sm">
+            <p className="italic text-moss">{FOOTER_SIGNATURE}</p>
+            <Link to="/privacy" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+              Your personal privacy and how we treat it
+            </Link>
+            <Link to="/terms" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+              Terms
+            </Link>
+          </div>
         </div>
       </footer>
     </div>
