@@ -5,6 +5,16 @@ import { copyrightLine, postalAddress } from '../lib/company';
 import { foundersLine } from '../lib/about';
 import { CANONICAL_DESCRIPTION, SIGNATURE } from '../lib/brandCopy';
 
+// Footer links, in reading order. "Why build another new app?" sits on its own line above the credits.
+const FOOTER_LINKS = [
+  { to: '/sharing', label: 'How sharing works' },
+  { to: '/signup', label: 'Create your account' },
+  { to: '/login', label: 'Log in' },
+  { to: '/privacy', label: 'Privacy' },
+  { to: '/health-data-privacy', label: 'Health data privacy' },
+  { to: '/terms', label: 'Terms' },
+];
+
 const linkClass =
   'inline-flex min-h-11 items-center rounded-md px-3 font-semibold text-spruce underline-offset-4 hover:underline';
 
@@ -70,32 +80,26 @@ export default function PublicLayout({ title, children }: { title: string; child
           <p className="max-w-2xl text-base text-moss">
             Build Your Pillars is for reflection. It is not medical advice and it does not diagnose anything.
           </p>
-          <p className="mt-3 flex flex-wrap gap-x-2 text-base">
-            <Link to="/sharing" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
-              How sharing works
-            </Link>
+          {/* Two even columns on phones, one row on wider screens, so no link wraps onto a line by itself. */}
+          <nav aria-label="Footer" className="mt-3">
+            <ul className="grid grid-cols-2 gap-x-6 text-base sm:flex sm:flex-wrap">
+              {FOOTER_LINKS.map((l) => (
+                <li key={l.to}>
+                  <Link to={l.to} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <p className="mt-4 text-base">
             <Link to="/why" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
-              Why we built it
-            </Link>
-            <Link to="/signup" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
-              Create your account
-            </Link>
-            <Link to="/login" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
-              Log in
-            </Link>
-            <Link to="/privacy" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
-              Privacy
-            </Link>
-            <Link to="/health-data-privacy" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
-              Health data privacy
-            </Link>
-            <Link to="/terms" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
-              Terms
+              Why build another new app?
             </Link>
           </p>
-          <p className="mt-4 text-base text-moss">Made by {foundersLine()}.</p>
-          <p className="text-base text-moss">{postalAddress()}</p>
-          <p className="text-base text-moss">{copyrightLine()}</p>
+          <p className="text-base text-moss">Made by {foundersLine()}.</p>
+          <p className="mt-2 text-xs text-moss">{postalAddress()}</p>
+          <p className="text-xs text-moss">{copyrightLine()}</p>
           {/* The fixed signature: always last, never a heading. */}
           <p className="mt-4 text-base italic text-moss">{SIGNATURE}</p>
         </div>
