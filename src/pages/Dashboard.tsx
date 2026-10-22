@@ -264,7 +264,7 @@ export default function Dashboard() {
 
   const header = (
     <PageHeader title={firstName ? `Hello, ${firstName}` : 'Your dashboard'}>
-      Today against your goals, and how the last seven days went.
+      Your health today. Plus, a peek at your week.
     </PageHeader>
   );
 
