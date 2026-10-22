@@ -67,7 +67,8 @@ type Json = Record<string, unknown>;
 
 const ORG_ID = `${SITE_URL}/#organization`;
 
-export function organizationLd(): Json {
+// Founders' full names are listed only where the page shows them (/why); the footer says "Miah and Bob Olmsted".
+export function organizationLd(withFounders = false): Json {
   return {
     '@type': 'Organization',
     '@id': ORG_ID,
@@ -84,7 +85,7 @@ export function organizationLd(): Json {
       postalCode: COMPANY.postalCode,
       addressCountry: COMPANY.country,
     },
-    founder: FOUNDERS.map((name) => ({ '@type': 'Person', name })),
+    ...(withFounders ? { founder: FOUNDERS.map((name) => ({ '@type': 'Person', name })) } : {}),
     // sameAs is left out on purpose: no social profile URL exists in this repo, and none is invented.
   };
 }
@@ -127,7 +128,7 @@ export function faqPageLd(items: readonly FaqItem[] = SHARING_FAQ): Json {
 
 /** The JSON-LD graph for one public page. Organization and SoftwareApplication on every page, WebSite on the home page, FAQPage on /sharing. */
 export function jsonLdFor(path: string): Json {
-  const graph: Json[] = [organizationLd(), softwareApplicationLd()];
+  const graph: Json[] = [organizationLd(path === '/why'), softwareApplicationLd()];
   if (path === '/') graph.push(webSiteLd());
   if (path === '/sharing') graph.push(faqPageLd());
   return { '@context': 'https://schema.org', '@graph': graph };
