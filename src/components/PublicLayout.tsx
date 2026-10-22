@@ -73,8 +73,8 @@ export default function PublicLayout({ title, children }: { title: string; child
           </div>
           <p className="mt-4 text-sm text-moss">Build Your Pillars is for reflection. It is not medical advice and it does not diagnose anything.</p>
 
-          {/* Two tidy columns on wider screens, one column on phones. */}
-          <div className="mt-8 grid gap-8 border-t border-line pt-8 sm:grid-cols-2">
+          {/* Every row below uses the same two-column grid, so both columns start at the same line all the way down. */}
+          <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2 sm:items-start border-t border-line pt-8">
             <div>
               <Link to="/sharing" className="inline-flex min-h-11 items-center text-base font-semibold underline underline-offset-4">
                 How sharing works
@@ -98,7 +98,7 @@ export default function PublicLayout({ title, children }: { title: string; child
           </div>
 
           {/* The legal entity in very small print, with the feedback button beside it. */}
-          <div className="mt-8 grid items-center gap-6 border-t border-line pt-8 sm:grid-cols-2">
+          <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2 sm:items-start border-t border-line pt-8">
             <div className="text-moss">
               <address className="text-[0.75rem] not-italic leading-snug">
                 {COMPANY.legalName}
@@ -127,10 +127,10 @@ export default function PublicLayout({ title, children }: { title: string; child
           </div>
 
           {/* The sign-off, then (after a wide gap) the small two-line link to privacy and how we work. */}
-          <div className="mt-10 grid gap-10 sm:grid-cols-2 sm:items-end">
-            <p className="text-sm italic text-moss">{FOOTER_SIGNATURE}</p>
+          <div className="mt-10 grid gap-x-8 gap-y-10 sm:grid-cols-2 sm:items-start">
+            <p className="text-sm leading-snug italic text-moss">{FOOTER_SIGNATURE}</p>
             <p className="text-xs">
-              <Link to="/privacy" className="inline-block py-2 font-semibold leading-snug underline underline-offset-4">
+              <Link to="/privacy" className="inline-block font-semibold leading-snug underline underline-offset-4">
                 Privacy in this app.
                 <br />
                 How we work

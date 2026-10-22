@@ -111,7 +111,7 @@ describe('the home page and the offer', () => {
       const html = render(path);
       const footer = html.slice(html.lastIndexOf('<footer'));
       expect(footer, path).toMatch(
-        /<div class="mt-10 grid gap-10[^"]*"><p class="[^"]*italic[^"]*">p\.s\. live well and laugh often<\/p><p class="text-xs"><a[^>]*href="\/privacy"[^>]*>Privacy in this app\.<br\/>How we work<\/a><\/p><\/div><\/div><\/footer>/,
+        /<div class="mt-10 grid gap-x-8[^"]*"><p class="[^"]*italic[^"]*">p\.s\. live well and laugh often<\/p><p class="text-xs"><a[^>]*href="\/privacy"[^>]*>Privacy in this app\.<br\/>How we work<\/a><\/p><\/div><\/div><\/footer>/,
       );
       expect(footer, path).not.toMatch(/>Terms</);
     }
