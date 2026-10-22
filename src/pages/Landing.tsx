@@ -30,11 +30,11 @@ export default function Landing() {
     <PublicLayout title={HOME_TITLE}>
       <section className="bg-spruce text-mist">
         <div className="mx-auto grid max-w-5xl gap-10 px-4 py-14 sm:px-6 sm:py-20 md:grid-cols-[1.25fr_0.75fr] md:items-center">
-          <div>
+          <div className="min-w-0">
             <p className="font-display text-xl font-bold text-mist/90">{PILLAR_TAGLINE}</p>
-            {/* The banner stays on one line. From md up it shares the row with the pillar cards, so it is sized to its
-                column there; at 7vw it was wider than the column between about 768 and 1100px and ran off the page. */}
-            <h1 className="mt-3 whitespace-nowrap font-display text-[clamp(1.3rem,7vw,3.75rem)] font-bold leading-[1.05] tracking-tight md:text-[clamp(1.65rem,4.4vw,2.6rem)]">
+            {/* The banner is sized to fit on one line at every screen width (from md up it shares the row with the
+                pillar cards). If someone enlarges their text, it wraps onto two even lines instead of running off the page. */}
+            <h1 className="mt-3 text-balance font-display text-[clamp(1.3rem,7vw,3.75rem)] font-bold leading-[1.05] tracking-tight md:text-[clamp(1.65rem,4.4vw,2.6rem)]">
               {HERO_LINE}
             </h1>
             <p className="mt-6 max-w-2xl text-xl text-mist">
