@@ -6,12 +6,12 @@ import { foundersLine } from '../lib/about';
 import { CANONICAL_DESCRIPTION, SIGNATURE } from '../lib/brandCopy';
 
 // Footer links, in reading order. "Why build another new app?" sits on its own line above the credits.
+// The Consumer Health Data Privacy Policy is linked from the box above, so it is not repeated here.
 const FOOTER_LINKS = [
   { to: '/signup', label: 'Create your account' },
   { to: '/login', label: 'Log in' },
   { to: '/sharing', label: 'How sharing works' },
   { to: '/privacy', label: 'Privacy' },
-  { to: '/health-data-privacy', label: 'Health data privacy' },
   { to: '/terms', label: 'Terms' },
 ];
 
