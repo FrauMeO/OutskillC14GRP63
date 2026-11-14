@@ -380,3 +380,11 @@ decision below should be read in that light.
 ## 2026-10-14 — remediation after frozen A0 audit
 
 Addressed sharing freshness, invitation handoff, mixed pillar/monthly permissions, appointment preparation/printing/coverage, and stale agent instructions. A0 is immutable; candidate R1 evidence lives in the Box Evaluation/2026-10-14-Remediation-R1 folder. See docs/reports/2026-10-14-baseline-remediation.md. 737 tests plus build/import and isolated SQL controls passed; participant results remain unmeasured.
+
+## 2026-11-14 — health-topic sources with Tavily (function only, not deployed)
+
+Miah chose "health-topic sources": short, sourced explanations for a pillar topic. Added the edge function `supabase/functions/health-topic-sources/` (see its README for the source list, checks and deploy commands) and the browser helper `src/lib/healthTopicSources.ts`. No screen uses it yet. Decisions and reasons:
+- Only the checked topic and fixed pillar words go to Tavily, called from the server; the key is a Supabase secret (`TAVILY_API_KEY`). Topics about the person ("my…", "I'm…") and long numbers are refused, so a topic cannot carry personal details. "im" without an apostrophe is allowed because it is German ("im Alltag").
+- Sources limited to nih.gov, cdc.gov, who.int, medlineplus.gov and nhs.uk. NIH's research databases (PubMed, PMC) are left out after the first live check returned only research abstracts.
+- Plain fetch to Tavily's REST API, no SDK (the same choice as Stripe). The lookup limit is in memory (20 per person per hour); a firm limit would need a migration.
+- Checked: 31 new tests including a safety test with a positive control and a planted-leak mutation that the test caught; `npm test` and `npm run build` pass; live keyless Tavily calls through the real handler returned NIH, NHS and CDC pages.
