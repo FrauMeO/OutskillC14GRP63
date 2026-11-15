@@ -1,6 +1,7 @@
-import type { ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, type ReactNode } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import PublicLayout from '../components/PublicLayout';
+import HowWeWork from '../components/HowWeWork';
 import { routeTitle } from '../lib/siteMeta';
 import { CONTACT_EMAIL } from '../lib/waitlist';
 import { COMPANY, postalAddress } from '../lib/company';
@@ -44,7 +45,14 @@ const mail = (
   </a>
 );
 
-export default function Privacy() {
+export default function Privacy({ focus }: { focus?: string } = {}) {
+  const { hash } = useLocation();
+  // Open at "How we work" when arriving from /terms or a #how-we-work link.
+  const target = focus ?? (hash ? hash.slice(1) : undefined);
+  useEffect(() => {
+    if (target) document.getElementById(target)?.scrollIntoView();
+  }, [target]);
+
   return (
     <PublicLayout title={routeTitle('/privacy')}>
       <article className="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-16">
@@ -361,10 +369,9 @@ export default function Privacy() {
           </p>
         </Section>
 
+        <HowWeWork />
+
         <div className="mt-12 flex flex-wrap items-center gap-x-4 gap-y-2">
-          <Link to="/terms" className="inline-flex min-h-12 items-center font-semibold underline underline-offset-4">
-            Read the terms of use
-          </Link>
           <Link to="/" className="inline-flex min-h-12 items-center font-semibold underline underline-offset-4">
             Back to the start
           </Link>

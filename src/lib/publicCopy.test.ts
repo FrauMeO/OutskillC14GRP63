@@ -83,7 +83,7 @@ describe('the public and product copy', () => {
     });
   }
 
-  for (const rel of ['src/components/PublicLayout.tsx', 'src/lib/brandCopy.ts', 'src/lib/siteMeta.ts', 'src/lib/welcomeBack.ts']) {
+  for (const rel of ['src/components/PublicLayout.tsx', 'src/components/HowWeWork.tsx', 'src/lib/brandCopy.ts', 'src/lib/siteMeta.ts', 'src/lib/welcomeBack.ts']) {
     it(`${rel} uses no banned word`, () => {
       expect(visibleStrings(read(rel)).flatMap(findBannedWords)).toEqual([]);
     });
@@ -99,7 +99,7 @@ describe('the public and product copy', () => {
     const landing = visibleStrings(readFileSync(join(pagesDir, 'Landing.tsx'), 'utf8')).join(' ');
     expect(landing).toContain('Create your account');
     expect(landing).toContain('Keep it close, or share it with someone special');
-    const terms = visibleStrings(readFileSync(join(pagesDir, 'Terms.tsx'), 'utf8')).join(' ');
+    const terms = visibleStrings(read('src/components/HowWeWork.tsx')).join(' ');
     expect(terms).toContain('keep the app working and your data secure');
   });
 

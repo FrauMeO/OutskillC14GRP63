@@ -15,5 +15,7 @@ export const HERO_LINE = 'A joyful gentle way to live.';
 
 // The fixed signature: lowercase, always last, never a heading.
 export const SIGNATURE = 'p.s. live well';
+// The website footer's longer sign-off (Miah, 2026-10-22). The sign-in screen and app keep SIGNATURE.
+export const FOOTER_SIGNATURE = 'p.s. live well and laugh often';
 
 export const HOME_TITLE = 'Build Your Pillars: a joyful gentle way to live';

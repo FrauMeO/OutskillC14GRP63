@@ -340,8 +340,8 @@ export default function HealthDataPrivacy() {
           <Link to="/privacy" className="inline-flex min-h-12 items-center font-semibold underline underline-offset-4">
             Read the general Privacy Policy
           </Link>
-          <Link to="/terms" className="inline-flex min-h-12 items-center font-semibold underline underline-offset-4">
-            Read the terms of use
+          <Link to="/privacy#how-we-work" className="inline-flex min-h-12 items-center font-semibold underline underline-offset-4">
+            Read how we work
           </Link>
           <Link to="/" className="inline-flex min-h-12 items-center font-semibold underline underline-offset-4">
             Back to the start

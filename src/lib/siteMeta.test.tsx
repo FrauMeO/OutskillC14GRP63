@@ -18,7 +18,7 @@ import {
   softwareApplicationLd,
 } from './siteMeta';
 import { COMPANY } from './company';
-import { foundersLine } from './about';
+import { FOOTER_FOUNDERS, foundersLine } from './about';
 
 // Public pages must render with no session and no network call: the Supabase client is never reached.
 vi.mock('./supabase', () => ({ supabase: new Proxy({}, { get: () => { throw new Error('Supabase was called while rendering a public page'); } }) }));
@@ -106,9 +106,15 @@ describe('the home page and the offer', () => {
   it('links to /sharing', () => {
     expect(render('/')).toContain('href="/sharing"');
   });
-  it('ends every page with the signature, lower case, not as a heading', () => {
-    const html = render('/');
-    expect(html).toMatch(/<p[^>]*>p\.s\. live well<\/p>\s*<\/div>\s*<\/footer>/);
+  it('ends every page with the sign-off, then a wide gap and the small privacy link, never a heading', () => {
+    for (const { path } of PUBLIC_ROUTES) {
+      const html = render(path);
+      const footer = html.slice(html.lastIndexOf('<footer'));
+      expect(footer, path).toMatch(
+        /<div class="mt-10 grid gap-x-8[^"]*"><p class="[^"]*italic[^"]*">p\.s\. live well and laugh often<\/p><p class="text-xs"><a[^>]*href="\/privacy"[^>]*>Privacy in this app\.<br\/>How we work<\/a><\/p><\/div><\/div><\/footer>/,
+      );
+      expect(footer, path).not.toMatch(/>Terms</);
+    }
   });
 });
 
@@ -153,8 +159,8 @@ describe('JSON-LD', () => {
     for (const p of ['/why', '/privacy', '/terms', '/health-data-privacy']) expect(types(p)).toEqual(['Organization', 'SoftwareApplication']);
   });
 
-  it('describes the company from src/lib/company.ts and names both founders', () => {
-    const org = organizationLd() as { legalName: string; address: Record<string, string>; founder: { name: string }[] };
+  it('describes the company from src/lib/company.ts and names both founders (on /why)', () => {
+    const org = organizationLd(true) as { legalName: string; address: Record<string, string>; founder: { name: string }[] };
     expect(org.legalName).toBe(COMPANY.legalName);
     expect(org.address.streetAddress).toBe(COMPANY.street);
     expect(org.address.addressLocality).toBe(COMPANY.city);
@@ -185,7 +191,10 @@ describe('JSON-LD', () => {
       expect(text, path).toContain(COMPANY.legalName);
       expect(text, path).toContain(COMPANY.street);
       expect(text, path).toContain(COMPANY.postalCode);
-      expect(text, path).toContain(foundersLine());
+      expect(text, path).toContain(FOOTER_FOUNDERS);
+      const founders = (jsonLdFor(path)['@graph'] as { founder?: { name: string }[] }[])[0].founder;
+      if (path === '/why') expect(text, path).toContain(foundersLine());
+      else expect(founders, path).toBeUndefined();
     }
   });
 
